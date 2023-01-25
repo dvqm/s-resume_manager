@@ -4,11 +4,15 @@ class Section extends React.Component {
     constructor(props) {
         super(props);
 
-        this.props = props;
+        this.nextId = 0;
+
+        this.edit = props.edit;
+
+        this.view = props.view;
 
         this.state = {
-            title: props.section.title,
-            btnName: props.section.btnName,
+            fields: props.section.fields,
+            default: props.section.default,
             list: props.section.list,
         };
 
@@ -25,113 +29,142 @@ class Section extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleAdd() {
-        const newExperience = {
-            editing: true,
-            title: '',
-            employmentType: 'Full-time',
-            companyName: '',
-            location: '',
-            contractType: 'On-site',
-            currentlyWork: false,
-            startDate: '',
-            endDate: '',
-            description: '',
+    createId(list) {
+        if (list.length > 0) {
+            this.nextId = Math.max(...list.map(x => x.id)) + 1;
+        } else {
+            this.nextId = 1;
         }
+        return this.nextId;
+    }
+
+    handleAdd() {
+        const newArticle = {
+            ...this.state.default,
+            id: this.createId(this.state.list),
+            init: true
+        };
 
         this.setState(prevState => {
-            const newExperiences = [...prevState.list, newExperience]
-            return {list: newExperiences};
+            const newArticles = [...prevState.list, newArticle]
+            return {list: newArticles};
         });
     }
 
-    handleEdit(index) {
-        let newExperiences = [...this.state.list];
+    handleEdit(id) {
+        let newArticles = [...this.state.list];
 
-        newExperiences[index].editing = true;
+        const item = newArticles.find(i => i.id === id);
+
+        item.editing = true;
 
         this.setState({
-            list: newExperiences
+            list: newArticles
         });
 
-        this.originalExperience = {...this.state.list[index]};
+        this.originalArticle = {...item};
     }
 
-    handleDelete(index) {
-        const newExperiences = this.state.list.filter((exp, i) => i !== index);
+    handleDelete(id) {
+        const newArticles = this.state.list.filter((article) => article.id !== id);
 
         this.setState({
-            list: newExperiences
+            list: newArticles
         });
     }
 
-    handleSave(e, index) {
+    handleSave(e, id) {
         e.preventDefault();
 
-        let newExperiences = [...this.state.list];
+        const newArticles = this.state.list.map((article) => {
+            if (article.id === id) {
+                article.editing = false;
 
-        newExperiences[index].editing = false;
-
-        this.setState({
-            list: newExperiences
+                if (article.init) delete article.init;
+            }
+            return article;
         });
 
-        this.originalExperience = null;
+        newArticles.sort((a, b) => {
+            if (a.startDate < b.startDate) return -1;
+            if (a.startDate > b.startDate) return 1;
+            return 0;
+        });
+
+        this.setState({
+            list: newArticles
+        });
+
+        this.originalArticle = null;
     }
 
-    handleCancel(index) {
-        let newExperiences = [...this.state.list];
+    handleCancel(id) {
+        let newArticles = [...this.state.list];
 
-        newExperiences[index] = {...this.originalExperience};
+        newArticles = newArticles.map(article => {
+            if (article.id === id) {
+                article = this.originalArticle;
 
-        newExperiences[index].editing = false;
+                article.editing = false;
+            }
+            return article;
+        });
 
         this.setState({
-            list: newExperiences
+            list: newArticles
         });
+        this.originalArticle = null;
     }
 
-    handleChange(e, index, field) {
-        let newExperiences = [...this.state.list];
-
-        if (!newExperiences[index]) {
-            newExperiences[index] = {};
-        }
-
-        if (e.target.type === 'checkbox') newExperiences[index][field] = e.target.checked;
-        else newExperiences[index][field] = e.target.value;
-
-        this.setState({
-            list: newExperiences
+    handleChange(e, id, field) {
+        let newArticles = this.state.list.map((article) => {
+            if (article.id === id) {
+                if (e.target.type === 'checkbox') {
+                    return { ...article, [field]: e.target.checked };
+                } else {
+                    return { ...article, [field]: e.target.value };
+                }
+            } else {
+                return article;
+            }
         });
+        this.setState({ list: newArticles });
     }
 
     render() {
         return (
             <section>
-                <button onClick={this.handleAdd}>{this.state.btnName}</button>
+                <button onClick={this.handleAdd}>{this.state.fields.btnName}</button>
                 {
                     this.state.list.length > 0 &&
-                    this.state.list.map((section, index) => (
+                    this.state.list.map((section) => (
                             section.editing
                                 ?
-                                React.createElement(this.props.edit, {
-                                    section: section,
-                                    index: index,
-                                    key: index,
-                                    handleSave: this.handleSave,
-                                    handleCancel: this.handleCancel,
-                                    handleChange: this.handleChange,
-                                })
+                                <form key={section.id} onSubmit={(e) => this.handleSave(e, section.id)}>
+                                    {section.id}
+                                    {React.createElement(this.edit, {
+                                        fields: this.state.fields,
+                                        section: section,
+                                        handleChange: this.handleChange,
+                                    })}
+
+                                    <button type="submit">Save</button>
+
+                                    {section.init
+                                        ? ''
+                                        : <button onClick={() => this.handleCancel(section.id)}>Cancel</button>
+                                    }
+                                    <button onClick={() => this.handleDelete(section.id)}>Delete</button>
+                                </form>
                                 :
-                                React.createElement(this.props.view, {
-                                    section: section,
-                                    index: index,
-                                    key: index,
-                                    handleEdit: this.handleEdit,
-                                    handleDelete: this.handleDelete,
-                                    handleChange: this.handleChange,
-                                })
+                                <article key={section.id}>
+                                    {React.createElement(this.view, {
+                                        fields: this.state.fields,
+                                        section: section,
+                                    })}
+
+                                    <button onClick={() => this.handleEdit(section.id)}>Edit</button>
+                                </article>
                         )
                     )
                 }
