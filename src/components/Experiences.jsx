@@ -1,98 +1,135 @@
-import {Component} from "react";
+import React from "react";
 
-export class EditExperiences extends Component {
+export class EditExperiences extends React.Component {
     constructor(props) {
         super(props);
+
+        this.fields = props.fields;
+
         this.section = props.section;
-
-        this.index = props.index
-
-        this.handleSave = props.handleSave;
-
-        this.handleCancel = props.handleCancel;
 
         this.handleChange = props.handleChange;
     }
 
     render() {
         return (
-            <form key={this.index} onSubmit={(e) => this.handleSave(e, this.index)}>
-                <h3>Company name: </h3> <input type="text" value={this.section.companyName}
-                                               onChange={(e) => this.handleChange(e, this.index, 'companyName')}/>
-                <h3>Start date: </h3> <input type="date" value={this.section.startDate}
-                                             onChange={(e) => this.handleChange(e, this.index, 'startDate')}/>
-                <label><span>Currently work</span><input type="checkbox" value={this.section.currentlyWork}
-                                                         onChange={(e) => this.handleChange(e, this.index, 'currentlyWork')}/></label>
+            <>
+                <label>
+                    <span>{this.fields.companyName}</span>
+                    <input type="text"
+                           value={this.section.companyName}
+                           onChange={(e) => this.handleChange(e, this.section.id, 'companyName')}
+                    />
+                </label>
+
+                <label>
+                    <span>{this.fields.startDate}</span>
+                    <input type="date"
+                           value={this.section.startDate}
+                           onChange={(e) => this.handleChange(e, this.section.id, 'startDate')}
+                    />
+                </label>
+
+                <label>
+                    <span>{this.fields.currentlyWork}</span>
+                    <input type="checkbox"
+                           value={this.section.currentlyWork}
+                           onChange={(e) => this.handleChange(e, this.section.id, 'currentlyWork')}
+                    />
+                </label>
+
                 {this.section.currentlyWork
                     ? ''
-                    : <>
-                        <h3>End date: </h3> <input type="date" value={this.section.endDate}
-                                                   onChange={(e) => this.handleChange(e, this.index, 'endDate')}/>
-                    </>
+                    : <label>
+                        <span>{this.fields.endDate}</span>
+                        <input type="date"
+                               value={this.section.endDate}
+                               onChange={(e) => this.handleChange(e, this.section.id, 'endDate')}
+                        />
+                    </label>
                 }
-                <h3>Position: </h3> <input type="text" value={this.section.title}
-                                           onChange={(e) => this.handleChange(e, this.index, 'title')}/>
-                <h3>Employment type: </h3>
-                <select value={this.section.employmentType}
-                        onChange={(e) => this.handleChange(e, this.index, 'employmentType')}>
-                    <option value="Full-time">Full-time</option>
-                    <option value="Part-time">Part-time</option>
-                    <option value="Contract">Contract</option>
-                </select>
-                <h3>Location: </h3><input type="text" value={this.section.location}
-                                          onChange={(e) => this.handleChange(e, this.index, 'location')}/>
-                <h3>Type of contract: </h3>
-                <select value={this.section.contractType}
-                        onChange={(e) => this.handleChange(e, this.index, 'contractType')}>
-                    <option value="On-site">On-site</option>
-                    <option value="Hybrid">Hybrid</option>
-                    <option value="Remote">Remote</option>
-                </select>
-                <h3>Description: </h3> <textarea value={this.section.description} cols="50"
-                                                 rows="15"
-                                                 onChange={(e) => this.handleChange(e, this.index, 'description')}></textarea>
-                <button type="submit">Save</button>
-                <button onClick={() => this.handleCancel(this.index)}>Cancel</button>
-            </form>
+
+                <label>
+                    <span>{this.fields.name}</span>
+                    <input type="text"
+                           value={this.section.title}
+                           onChange={(e) => this.handleChange(e, this.section.id, 'title')}
+                    />
+                </label>
+
+                <label>
+                    <span>{this.fields.employmentType}</span>
+                    <select value={this.section.employmentType}
+                            onChange={(e) => this.handleChange(e, this.section.id, 'employmentType')}>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>{this.fields.location}</span>
+                    <input type="text"
+                           value={this.section.location}
+                           onChange={(e) => this.handleChange(e, this.section.id, 'location')}
+                    />
+                </label>
+
+                <label>
+                    <span>{this.fields.contractType}</span>
+                    <select value={this.section.contractType}
+                            onChange={(e) => this.handleChange(e, this.section.id, 'contractType')}>
+                        <option value="On-site">On-site</option>
+                        <option value="Hybrid">Hybrid</option>
+                        <option value="Remote">Remote</option>
+                    </select>
+                </label>
+
+                <label>
+                    <span>{this.fields.description}</span>
+                    <textarea cols="50" rows="15"
+                              value={this.section.description}
+                              onChange={(e) => this.handleChange(e, this.section.id, 'description')}>
+                    </textarea>
+                </label>
+            </>
         )
     }
 }
 
-export class ViewExperiences extends Component {
+export class ViewExperiences extends React.Component {
     constructor(props) {
         super(props);
 
+        this.fields = props.fields;
+
         this.section = props.section;
 
-        this.index = props.index
-
         this.handleEdit = props.handleEdit;
-
-        this.handleDelete = props.handleDelete;
-
-        this.handleChange = props.handleChange;
     }
 
     render() {
         return (
-            <article key={this.index}>
+            <>
                 <h1>{this.section.companyName}</h1>
-                <h3>Start date: </h3> <span>{this.section.startDate}</span>
+                <h3>Started: {this.section.startDate}</h3>
                 {this.section.currentlyWork
-                    ? <span>Currently work</span>
-                    : <>
-                        <h3>End date: </h3> <span>{this.section.endDate}</span>
-                    </>
+                    ? <h3>Currently work</h3>
+                    : <h3>Ended: {this.section.endDate}</h3>
                 }
                 <h2>{this.section.title}</h2>
-                <h3>Employment type: </h3> <span>{this.section.employmentType}</span>
-                <h3>Location: </h3><span>{this.section.location}</span>
-                <h3>Type of contract: </h3><span>{this.section.contractType}</span>
-                <h3>Description: </h3><pre>{this.section.description}</pre>
-                {/*<Skills skills={this.section.skills}/>*/}
-                <button onClick={() => this.handleEdit(this.index)}>Edit</button>
-                <button onClick={() => this.handleDelete(this.index)}>Delete</button>
-            </article>
+
+                <span>{this.fields.employmentType}</span>
+                <span>{this.section.employmentType}</span>
+
+                <h3>{this.fields.location}{this.section.location}</h3>
+
+                <span>{this.fields.contractType}</span>
+                <span>{this.section.contractType}</span>
+
+                <span>{this.fields.description}</span>
+                <pre>{this.section.description}</pre>
+            </>
         )
     }
 }
