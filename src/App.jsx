@@ -3,6 +3,10 @@ import Section from "./components/Section";
 import {EditExperiences, ViewExperiences} from "./components/Experiences";
 import {EditEducations, ViewEducations} from "./components/Educations";
 import {EditProjects, ViewProjects} from "./components/Projects";
+import {EditAbout, ViewAbout} from "./components/About";
+import {EditSummary, ViewSummary} from "./components/Summary";
+import {EditExpertise, ViewExpertise} from "./components/Expertise";
+import Article from "./components/Article";
 
 class App extends Component {
     constructor() {
@@ -11,6 +15,48 @@ class App extends Component {
         this.state = {
             cvBase: [],
             currentCv: {
+                about: {
+                    fields: {
+                        btnName: 'Edit About',
+                        name: {
+                            first: 'First Name',
+                            last: 'Last Name',
+                        },
+                        photo: 'Upload Photo',
+                        position: 'Applied Position',
+                        address: {
+                            city: 'City',
+                            state: 'State',
+                            country: 'Country',
+                        },
+                        contacts: {
+                            phone: 'Phone number',
+                            email: 'Email',
+                            linkedin: 'Linkedin',
+                            gitHub: 'GitHub',
+                            other: 'Other contacts',
+                        },
+                    },
+                    values: {}
+                },
+                summary: {
+                    fields: {
+                        title: 'Summary',
+                        btnName: 'Edit Summary',
+                        summary: 'Summary',
+                    },
+                    values: {
+                        summary: '',
+                    },
+                },
+                expertise: {
+                    fields: {
+                        title: 'Area of Expertise',
+                        btnName: 'Edit Expertise',
+                        description: 'Description',
+                    },
+                    values: {},
+                },
                 projects: {
                     fields: {
                         title: 'My Projects',
@@ -37,7 +83,7 @@ class App extends Component {
                         description: '',
 
                     },
-                    list: [],
+                    values: [],
                 },
                 experiences: {
                     fields: {
@@ -65,7 +111,7 @@ class App extends Component {
                         endDate: '',
                         description: '',
                     },
-                    list: [],
+                    values: [],
                 },
                 educations: {
                     fields: {
@@ -91,39 +137,89 @@ class App extends Component {
                         activities: '',
                         description: '',
                     },
-                    list: [],
+                    values: [],
                 }
             },
         };
+
+        this.helper.setState = this.helper.setState.bind(this);
+    }
+
+    helper = {
+        getEventValue: (e) => {
+            if (e.target.type === 'checkbox') {
+                return e.target.checked;
+            } else {
+                return e.target.value;
+            }
+        },
+
+        onChange: (context, value, e, field, upperHandler) => {
+            context.setState({values: {...context.state.values, [field]: value}},
+                () => {
+                    upperHandler(e, field);
+                });
+        },
+
+        setState: (keyName, newValues) => {
+            this.setState({
+                    currentCv: {
+                        ...this.state.currentCv,
+                        [keyName]: {
+                            ...this.state.currentCv[keyName],
+                            values: newValues,
+                        }
+                    },
+                },
+            )
+        },
     }
 
     render() {
         return (
             <div className="resume">
                 <div className="main-area">
-                    {/*<Contacts />*/}
-                    {/*<About />*/}
-                    {/*<Skills />*/}
-                    <h2>{this.state.currentCv.projects.fields.title}</h2>
-                    <hr/>
+                    <Article article={this.state.currentCv.about}
+                             keyName="about"
+                             helper={this.helper}
+                             view={ViewAbout}
+                             edit={EditAbout}
+                    />
+
+                    <Article article={this.state.currentCv.summary}
+                             keyName="summary"
+                             helper={this.helper}
+                             view={ViewSummary}
+                             edit={EditSummary}
+                    />
+
+                    <Article article={this.state.currentCv.expertise}
+                             keyName="expertise"
+                             helper={this.helper}
+                             view={ViewExpertise}
+                             edit={EditExpertise}
+                    />
+
                     <Section section={this.state.currentCv.projects}
+                             keyName="projects"
+                             helper={this.helper}
                              view={ViewProjects}
                              edit={EditProjects}
                     />
-                    {/*<Projects />*/}
-                    <h2>{this.state.currentCv.experiences.fields.title}</h2>
-                    <hr/>
+
                     <Section section={this.state.currentCv.experiences}
+                             keyName="experiences"
+                             helper={this.helper}
                              view={ViewExperiences}
                              edit={EditExperiences}
                     />
-                    <h2>{this.state.currentCv.educations.fields.title}</h2>
-                    <hr/>
+
                     <Section section={this.state.currentCv.educations}
+                             keyName="esucation"
+                             helper={this.helper}
                              view={ViewEducations}
                              edit={EditEducations}
                     />
-                    {/*<Additional />*/}
                 </div>
             </div>
         );
