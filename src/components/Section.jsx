@@ -11,150 +11,165 @@ class Section extends React.Component {
         this.view = props.view;
 
         this.state = {
+            keyName: props.keyName,
             fields: props.section.fields,
             default: props.section.default,
-            list: props.section.list,
+            values: props.section.values,
         };
 
-        this.handleAdd = this.handleAdd.bind(this);
+        this.helper = props.helper;
 
-        this.handleEdit = this.handleEdit.bind(this);
-
-        this.handleDelete = this.handleDelete.bind(this);
-
-        this.handleSave = this.handleSave.bind(this);
-
-        this.handleCancel = this.handleCancel.bind(this);
-
-        this.handleChange = this.handleChange.bind(this);
+        this.handle = this.handlers(this);
     }
 
-    createId(list) {
-        if (list.length > 0) {
-            this.nextId = Math.max(...list.map(x => x.id)) + 1;
+    createId(values) {
+        if (values.length > 0) {
+            this.nextId = Math.max(...values.map(x => x.id)) + 1;
         } else {
             this.nextId = 1;
         }
         return this.nextId;
     }
 
-    handleAdd() {
-        const newArticle = {
-            ...this.state.default,
-            id: this.createId(this.state.list),
-            init: true
-        };
+    handlers(context) {
+        return {
+            add() {
+                context.setState(prevState => {
+                    return {
+                        values: [...prevState.values, {
+                            ...context.state.default,
+                            id: context.createId(context.state.values),
+                            init: true
+                        }]
+                    };
+                }, () => {
+                    context.helper.setState(context.state.keyName, context.state.values);
+                });
+            },
 
-        this.setState(prevState => {
-            const newArticles = [...prevState.list, newArticle]
-            return {list: newArticles};
-        });
-    }
+            edit(id) {
+                let newArticles = [...context.state.values];
 
-    handleEdit(id) {
-        let newArticles = [...this.state.list];
+                const item = newArticles.find(i => i.id === id);
 
-        const item = newArticles.find(i => i.id === id);
+                item.editing = true;
 
-        item.editing = true;
+                context.setState({
+                    values: newArticles
+                });
 
-        this.setState({
-            list: newArticles
-        });
+                context.originalArticle = {...item};
+            },
 
-        this.originalArticle = {...item};
-    }
+            delete(id) {
+                const newArticles = context.state.values.filter((article) => article.id !== id);
 
-    handleDelete(id) {
-        const newArticles = this.state.list.filter((article) => article.id !== id);
+                context.setState({
+                        values: newArticles
+                    }, () => {
+                        context.helper.setState(context.state.keyName, context.state.values);
+                    }
+                );
 
-        this.setState({
-            list: newArticles
-        });
-    }
+            },
 
-    handleSave(e, id) {
-        e.preventDefault();
+            save(e, id) {
+                e.preventDefault();
 
-        const newArticles = this.state.list.map((article) => {
-            if (article.id === id) {
-                article.editing = false;
+                const newArticles = context.state.values.map((article) => {
+                    if (article.id === id) {
+                        article.editing = false;
 
-                if (article.init) delete article.init;
-            }
-            return article;
-        });
+                        if (article.init) delete article.init;
+                    }
+                    return article;
+                });
 
-        newArticles.sort((a, b) => {
-            if (a.startDate < b.startDate) return -1;
-            if (a.startDate > b.startDate) return 1;
-            return 0;
-        });
+                newArticles.sort((a, b) => {
+                    if (a.startDate < b.startDate) return -1;
+                    if (a.startDate > b.startDate) return 1;
+                    return 0;
+                });
 
-        this.setState({
-            list: newArticles
-        });
+                context.setState({
+                    values: newArticles
+                }, () => {
+                    context.helper.setState(context.state.keyName, context.state.values);
 
-        this.originalArticle = null;
-    }
+                    context.originalArticle = null;
+                });
+            },
 
-    handleCancel(id) {
-        let newArticles = [...this.state.list];
+            cancel(id) {
+                let newArticles = [...context.state.values];
 
-        newArticles = newArticles.map(article => {
-            if (article.id === id) {
-                article = this.originalArticle;
+                newArticles = newArticles.map(article => {
+                    if (article.id === id) {
+                        article = context.originalArticle;
 
-                article.editing = false;
-            }
-            return article;
-        });
+                        article.editing = false;
+                    }
 
-        this.setState({
-            list: newArticles
-        });
-        this.originalArticle = null;
-    }
+                    return article;
+                });
 
-    handleChange(e, id, field) {
-        let newArticles = this.state.list.map((article) => {
-            if (article.id === id) {
-                if (e.target.type === 'checkbox') {
-                    return { ...article, [field]: e.target.checked };
-                } else {
-                    return { ...article, [field]: e.target.value };
-                }
-            } else {
-                return article;
-            }
-        });
-        this.setState({ list: newArticles });
+                context.setState({
+                    values: newArticles
+                }, () => {
+                    context.helper.setState(context.state.keyName, context.state.values);
+
+                    context.originalArticle = null;
+                });
+            },
+
+            change(e, id, field) {
+                context.setState(prevState => {
+                    const newArticles = [...context.state.values].map((article) => {
+                        if (article.id === id) {
+                            article[field] = context.helper.getEventValue(e);
+
+                            return article;
+                        } else {
+                            return article;
+                        }
+                    });
+                    return {...prevState, values: newArticles}
+                }, () => {
+                    context.helper.setState(
+                        context.state.keyName,
+                        context.state.values,
+                    );
+                });
+            },
+        }
     }
 
     render() {
         return (
             <section>
-                <button onClick={this.handleAdd}>{this.state.fields.btnName}</button>
+                <h2>{this.state.fields.title}</h2>
+                <hr/>
+                <button onClick={this.handle.add}>{this.state.fields.btnName}</button>
                 {
-                    this.state.list.length > 0 &&
-                    this.state.list.map((section) => (
+                    this.state.values.length > 0 &&
+                    this.state.values.map((section) => (
                             section.editing
                                 ?
-                                <form key={section.id} onSubmit={(e) => this.handleSave(e, section.id)}>
-                                    {section.id}
+                                <form key={section.id} onSubmit={(e) => this.handle.save(e, section.id)}>
+
                                     {React.createElement(this.edit, {
                                         fields: this.state.fields,
                                         section: section,
-                                        handleChange: this.handleChange,
+                                        handleChange: this.handle.change,
                                     })}
 
                                     <button type="submit">Save</button>
 
                                     {section.init
                                         ? ''
-                                        : <button onClick={() => this.handleCancel(section.id)}>Cancel</button>
+                                        : <button onClick={() => this.handle.cancel(section.id)}>Cancel</button>
                                     }
-                                    <button onClick={() => this.handleDelete(section.id)}>Delete</button>
+                                    <button onClick={() => this.handle.delete(section.id)}>Delete</button>
                                 </form>
                                 :
                                 <article key={section.id}>
@@ -163,7 +178,7 @@ class Section extends React.Component {
                                         section: section,
                                     })}
 
-                                    <button onClick={() => this.handleEdit(section.id)}>Edit</button>
+                                    <button onClick={() => this.handle.edit(section.id)}>Edit</button>
                                 </article>
                         )
                     )
