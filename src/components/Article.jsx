@@ -17,63 +17,57 @@ class Article extends React.Component {
 
         this.helper = props.helper;
 
-        this.handleEdit = this.handleEdit.bind(this);
-
-        this.handleSave = this.handleSave.bind(this);
-
-        this.handleCancel = this.handleCancel.bind(this);
-
-        this.handleClear = this.handleClear.bind(this);
-
-        this.handleChange = this.handleChange.bind(this);
-
+        this.handle = this.handlers(this);
     }
 
-    handleEdit() {
-        this.original = {...this.state.values};
+    handlers(context) {
+        return {
+            edit() {
+                context.original = {...context.state.values};
 
-        this.setState({editing: true});
+                context.setState({editing: true});
+            },
+
+            save() {
+                const {values} = {...context.state};
+
+                context.setState({editing: false, values: values})
+
+                context.helper.setState(context.state.keyName, context.state.values);
+            },
+
+            cancel() {
+                context.setState({editing: false, values: context.original}, () => {
+                    context.helper.setState(context.state.keyName, context.state.values);
+
+                    context.original = null;
+                });
+
+            },
+
+            clear() {
+                const newValues = {...context.state.values};
+
+                Object.keys(newValues).forEach((key) => {
+                    if (typeof newValues[key] === 'boolean') newValues[key] = false;
+                    else newValues[key] = '';
+                })
+
+                context.setState({values: newValues},
+                    () => {
+                        context.helper.setState(context.state.keyName, context.state.values);
+                    });
+
+
+            },
+
+            change(e, field) {
+                const value = context.helper.getEventValue(e);
+
+                context.helper.onChange(context, value, e, field, context.helper.setState)
+            },
+        }
     }
-
-    handleSave() {
-        const {values} = {...this.state};
-
-        this.setState({editing: false, values: values})
-
-        this.helper.setState(this.state.keyName, this.state.values);
-    }
-
-    handleCancel() {
-        this.setState({editing: false, values: this.original}, () => {
-            this.helper.setState(this.state.keyName, this.state.values);
-
-            this.original = null;
-        });
-
-    }
-
-    handleClear() {
-        const newValues = {...this.state.values};
-
-        Object.keys(newValues).forEach((key) => {
-            if (typeof newValues[key] === 'boolean') newValues[key] = false;
-            else newValues[key] = '';
-        })
-
-        this.setState({values: newValues},
-            () => {
-                this.helper.setState(this.state.keyName, this.state.values);
-            });
-
-
-    }
-
-    handleChange(e, field) {
-        const value = this.helper.getEventValue(e);
-
-        this.helper.onChange(this, value, e, field, this.helper.setState)
-    }
-
 
     render() {
         return (
@@ -88,22 +82,22 @@ class Article extends React.Component {
 
                 {this.state.editing ?
                     <>
-                        <button onClick={() => this.handleSave()}>Save</button>
+                        <button onClick={() => this.handle.save()}>Save</button>
 
-                        <button onClick={() => this.handleCancel()}>Cancel</button>
+                        <button onClick={() => this.handle.cancel()}>Cancel</button>
 
-                        <button onClick={() => this.handleClear()}>Clear</button>
+                        <button onClick={() => this.handle.clear()}>Clear</button>
 
                         {React.createElement(this.edit, {
                             fields: this.state.fields,
                             values: this.state.values,
-                            handleChange: this.handleChange,
+                            handleChange: this.handle.change,
                             helper: this.helper,
                         })}
                     </>
                     :
                     <>
-                        <button onClick={() => this.handleEdit()}>{this.state.fields.btnName}</button>
+                        <button onClick={() => this.handle.edit()}>{this.state.fields.btnName}</button>
 
                         {React.createElement(this.view, {
                             fields: this.state.fields,
