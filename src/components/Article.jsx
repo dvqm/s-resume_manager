@@ -71,18 +71,17 @@ class Article extends React.Component {
 
     render() {
         return (
-            <article>
-                {this.state.fields.title
-                    ? <>
+            <>
+                {this.state.fields.title &&
+                    <>
                         <h2>{this.state.fields.title}</h2>
                         <hr/>
                     </>
-                    : ''
                 }
 
                 {this.state.editing ?
-                    <>
-                        <button onClick={() => this.handle.save()}>Save</button>
+                    <form onSubmit={this.handle.save}>
+                        <button type="submit">Save</button>
 
                         <button onClick={() => this.handle.cancel()}>Cancel</button>
 
@@ -94,18 +93,18 @@ class Article extends React.Component {
                             handleChange: this.handle.change,
                             helper: this.helper,
                         })}
-                    </>
+                    </form>
                     :
-                    <>
+                    <article>
                         <button onClick={() => this.handle.edit()}>{this.state.fields.btnName}</button>
 
                         {React.createElement(this.view, {
                             fields: this.state.fields,
                             values: this.state.values,
                         })}
-                    </>
+                    </article>
                 }
-            </article>
+            </>
         )
     }
 }

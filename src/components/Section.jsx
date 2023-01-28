@@ -165,9 +165,8 @@ class Section extends React.Component {
 
                                     <button type="submit">Save</button>
 
-                                    {section.init
-                                        ? ''
-                                        : <button onClick={() => this.handle.cancel(section.id)}>Cancel</button>
+                                    {!section.init &&
+                                        <button onClick={() => this.handle.cancel(section.id)}>Cancel</button>
                                     }
                                     <button onClick={() => this.handle.delete(section.id)}>Delete</button>
                                 </form>

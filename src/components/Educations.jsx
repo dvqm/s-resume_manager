@@ -110,28 +110,25 @@ export class ViewEducations extends React.Component {
                     <span>{this.section.endDate}</span>
                 </span>
 
-                {this.section.grade ?
+                {this.section.grade &&
                     <>
                         <span>{this.fields.grade}</span>
                         <span>{this.section.grade}</span>
                     </>
-                    : ''
                 }
 
-                {this.section.activities ?
+                {this.section.activities &&
                     <>
                         <span>{this.fields.activities}</span>
                         <pre>{this.section.activities}</pre>
                     </>
-                    : ''
                 }
 
-                {this.section.description ?
+                {this.section.description &&
                     <>
                         <span>Description: </span>
                         <pre>{this.section.description}</pre>
                     </>
-                    : ''
                 }
             </>
         )

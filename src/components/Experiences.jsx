@@ -38,9 +38,8 @@ export class EditExperiences extends React.Component {
                     />
                 </label>
 
-                {this.section.currentlyWork
-                    ? ''
-                    : <label>
+                {!this.section.currentlyWork &&
+                    <label>
                         <span>{this.fields.endDate}</span>
                         <input type="date"
                                value={this.section.endDate}
