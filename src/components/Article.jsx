@@ -88,6 +88,7 @@ class Article extends React.Component {
                         <button onClick={() => this.handle.clear()}>Clear</button>
 
                         {React.createElement(this.edit, {
+                            keyName: this.state.keyName,
                             fields: this.state.fields,
                             values: this.state.values,
                             handleChange: this.handle.change,
