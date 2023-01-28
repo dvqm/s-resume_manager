@@ -7,6 +7,7 @@ import {EditAbout, ViewAbout} from "./components/About";
 import {EditSummary, ViewSummary} from "./components/Summary";
 import {EditExpertise, ViewExpertise} from "./components/Expertise";
 import Article from "./components/Article";
+import {EditAdditional, ViewAdditional} from "./components/Additional";
 
 class App extends Component {
     constructor() {
@@ -18,26 +19,33 @@ class App extends Component {
                 about: {
                     fields: {
                         btnName: 'Edit About',
-                        name: {
-                            first: 'First Name',
-                            last: 'Last Name',
-                        },
-                        photo: 'Upload Photo',
-                        position: 'Applied Position',
-                        address: {
-                            city: 'City',
-                            state: 'State',
-                            country: 'Country',
-                        },
-                        contacts: {
-                            phone: 'Phone number',
-                            email: 'Email',
-                            linkedin: 'Linkedin',
-                            gitHub: 'GitHub',
-                            other: 'Other contacts',
-                        },
+                        first: 'First Name: ',
+                        middle: 'Middle Name: ',
+                        last: 'Last Name: ',
+                        photo: 'Upload Photo: ',
+                        position: 'Applied Position: ',
+                        city: 'City: ',
+                        state: 'State: ',
+                        country: 'Country: ',
+                        tel: 'Phone number: ',
+                        email: 'Email: ',
+                        linkedin: 'Linkedin: ',
+                        gitHub: 'GitHub: ',
                     },
-                    values: {}
+                    values: {
+                        first: '',
+                        middle: '',
+                        last: '',
+                        photo: '',
+                        position: '',
+                        city: '',
+                        state: '',
+                        country: '',
+                        tel: '',
+                        email: '',
+                        linkedin: '',
+                        gitHub: '',
+                    }
                 },
                 summary: {
                     fields: {
@@ -52,10 +60,18 @@ class App extends Component {
                 expertise: {
                     fields: {
                         title: 'Area of Expertise',
-                        btnName: 'Edit Expertise',
-                        description: 'Description',
+                        btnName: 'Add Area of Expertise',
+                        scope: 'Scope of expertise: ',
+                        labels: 'Labels: ',
+                        placeholder: 'Enter the scope name',
+                        tip: 'Enter your areas of expertise in the scope divided by comma and space',
                     },
-                    values: {},
+                    default: {
+                        editing: true,
+                        scopeTitle: '',
+                        labels: '',
+                    },
+                    values: [],
                 },
                 projects: {
                     fields: {
@@ -138,7 +154,21 @@ class App extends Component {
                         description: '',
                     },
                     values: [],
-                }
+                },
+                additional: {
+                    fields: {
+                        title: 'Additional information',
+                        btnName: 'Add Section',
+                        name: 'Title',
+                        description: 'Description: ',
+                    },
+                    default: {
+                        editing: true,
+                        name: '',
+                        description: '',
+                    },
+                    values: [],
+                },
             },
         };
 
@@ -149,6 +179,8 @@ class App extends Component {
         getEventValue: (e) => {
             if (e.target.type === 'checkbox') {
                 return e.target.checked;
+            } else if (e.target.type === 'file') {
+                return e.target.files[0];
             } else {
                 return e.target.value;
             }
@@ -193,7 +225,7 @@ class App extends Component {
                              edit={EditSummary}
                     />
 
-                    <Article article={this.state.currentCv.expertise}
+                    <Section section={this.state.currentCv.expertise}
                              keyName="expertise"
                              helper={this.helper}
                              view={ViewExpertise}
@@ -219,6 +251,13 @@ class App extends Component {
                              helper={this.helper}
                              view={ViewEducations}
                              edit={EditEducations}
+                    />
+
+                    <Section section={this.state.currentCv.additional}
+                             keyName="additional"
+                             helper={this.helper}
+                             view={ViewAdditional}
+                             edit={EditAdditional}
                     />
                 </div>
             </div>
