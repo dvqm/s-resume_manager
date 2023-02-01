@@ -82,7 +82,9 @@ export class EditAbout extends React.Component {
                         <img src={URL.createObjectURL(this.state.values.photo)} alt="Applicant"/>}
                 </label>
 
-                <button onClick={(e) => this.deletePhoto(e)}>Delete Photo</button>
+                {this.state.values.photo &&
+                    <button onClick={(e) => this.deletePhoto(e)}>Delete Photo</button>
+                }
 
                 <label>
                     <span>{this.fields.position}</span>
@@ -169,6 +171,10 @@ export class ViewAbout extends React.Component {
                 </h2>
 
                 <h2>{this.values.position}</h2>
+
+                {this.values.photo &&
+                    <img src={URL.createObjectURL(this.values.photo)} alt="Applicant"/>
+                }
 
                 <address>
                     {this.values.city && `${this.values.city}, `}
