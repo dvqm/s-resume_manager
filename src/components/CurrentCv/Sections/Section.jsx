@@ -4,14 +4,13 @@ class Section extends React.Component {
     constructor(props) {
         super(props);
 
-        this.nextId = 0;
-
         this.edit = props.edit;
 
         this.view = props.view;
 
         this.state = {
             keyName: props.keyName,
+            nextId: 0,
             fields: props.section.fields,
             default: props.section.default,
             values: props.section.values,
@@ -22,15 +21,6 @@ class Section extends React.Component {
         this.handle = this.handlers(this);
     }
 
-    createId(values) {
-        if (values.length > 0) {
-            this.nextId = Math.max(...values.map(x => x.id)) + 1;
-        } else {
-            this.nextId = 1;
-        }
-        return this.nextId;
-    }
-
     handlers(context) {
         return {
             add() {
@@ -38,7 +28,7 @@ class Section extends React.Component {
                     return {
                         values: [...prevState.values, {
                             ...context.state.default,
-                            id: context.createId(context.state.values),
+                            id: context.helper.setId(context.state.values, context),
                             init: true
                         }]
                     };
@@ -61,7 +51,9 @@ class Section extends React.Component {
                 context.originalArticle = {...item};
             },
 
-            delete(id) {
+            delete(e, id) {
+                e.preventDefault();
+
                 const newArticles = context.state.values.filter((article) => article.id !== id);
 
                 context.setState({
@@ -100,7 +92,9 @@ class Section extends React.Component {
                 });
             },
 
-            cancel(id) {
+            cancel(e, id) {
+                e.preventDefault();
+
                 let newArticles = [...context.state.values];
 
                 newArticles = newArticles.map(article => {
@@ -166,9 +160,9 @@ class Section extends React.Component {
                                     <button type="submit">Save</button>
 
                                     {!section.init &&
-                                        <button onClick={() => this.handle.cancel(section.id)}>Cancel</button>
+                                        <button onClick={(e) => this.handle.cancel(e, section.id)}>Cancel</button>
                                     }
-                                    <button onClick={() => this.handle.delete(section.id)}>Delete</button>
+                                    <button onClick={(e) => this.handle.delete(e, section.id)}>Delete</button>
                                 </form>
                                 :
                                 <article key={section.id}>
