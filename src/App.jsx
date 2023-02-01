@@ -1,21 +1,16 @@
 import {Component} from "react";
-import Section from "./components/Section";
-import {EditExperiences, ViewExperiences} from "./components/Experiences";
-import {EditEducations, ViewEducations} from "./components/Educations";
-import {EditProjects, ViewProjects} from "./components/Projects";
-import {EditAbout, ViewAbout} from "./components/About";
-import {EditSummary, ViewSummary} from "./components/Summary";
-import {EditExpertise, ViewExpertise} from "./components/Expertise";
-import Article from "./components/Article";
-import {EditAdditional, ViewAdditional} from "./components/Additional";
+import ContentsCv from "./components/ContentsCv/ContentsCv";
+import CurrentCv from "./components/CurrentCv/CurrentCv";
+import ManageCv from "./components/ManageCv/ManageCv";
 
 class App extends Component {
     constructor() {
         super();
 
         this.state = {
-            cvBase: [],
+            cvBase: [{cvName: 'a'}, {cvName: 'b'}, {cvName: 'c'}],
             currentCv: {
+                cvName: '',
                 about: {
                     fields: {
                         btnName: 'Edit About',
@@ -175,7 +170,24 @@ class App extends Component {
         this.helper.setState = this.helper.setState.bind(this);
     }
 
+    manage = {
+        save: (key, value) => {
+            this.setState({...this.state, [key]: value}
+                , () => console.log(this.state)
+            );
+        }
+    }
+
     helper = {
+        setId: (list, context = this) => {
+            if (list.length > 0) {
+                context.state.id = Math.max(...list.map(x => x.id)) + 1;
+            } else {
+                context.state.id = 1;
+            }
+            return context.state.id;
+        },
+
         getEventValue: (e) => {
             if (e.target.type === 'checkbox') {
                 return e.target.checked;
@@ -187,79 +199,52 @@ class App extends Component {
         },
 
         onChange: (context, value, e, field, upperHandler) => {
-            context.setState({values: {...context.state.values, [field]: value}},
+            if (field === 'cvName') context.setState({currentCv: {...context.state.currentCv, cvName: value}},
+                () => upperHandler(e, field));
+            else context.setState({values: {...context.state.values, [field]: value}},
                 () => {
                     upperHandler(e, field);
                 });
         },
 
         setState: (keyName, newValues) => {
-            this.setState({
+            if (keyName === 'cvName') {
+                this.setState({
                     currentCv: {
                         ...this.state.currentCv,
-                        [keyName]: {
-                            ...this.state.currentCv[keyName],
-                            values: newValues,
-                        }
+                        [keyName]: newValues,
                     },
-                },
-            )
-        },
+                })
+            } else {
+                this.setState({
+                        currentCv: {
+                            ...this.state.currentCv,
+                            [keyName]: {
+                                ...this.state.currentCv[keyName],
+                                values: newValues,
+                            }
+                        },
+                    }
+                )
+            }
+        }
     }
 
     render() {
         return (
             <div className="resume">
-                <div className="main-area">
-                    <Article article={this.state.currentCv.about}
-                             keyName="about"
-                             helper={this.helper}
-                             view={ViewAbout}
-                             edit={EditAbout}
-                    />
+                <ContentsCv state={this.state}
+                            helper={this.helper}
+                />
 
-                    <Article article={this.state.currentCv.summary}
-                             keyName="summary"
-                             helper={this.helper}
-                             view={ViewSummary}
-                             edit={EditSummary}
-                    />
+                <ManageCv state={this.state}
+                          helper={this.helper}
+                          manage={this.manage}
+                />
 
-                    <Section section={this.state.currentCv.expertise}
-                             keyName="expertise"
-                             helper={this.helper}
-                             view={ViewExpertise}
-                             edit={EditExpertise}
-                    />
-
-                    <Section section={this.state.currentCv.projects}
-                             keyName="projects"
-                             helper={this.helper}
-                             view={ViewProjects}
-                             edit={EditProjects}
-                    />
-
-                    <Section section={this.state.currentCv.experiences}
-                             keyName="experiences"
-                             helper={this.helper}
-                             view={ViewExperiences}
-                             edit={EditExperiences}
-                    />
-
-                    <Section section={this.state.currentCv.educations}
-                             keyName="esucation"
-                             helper={this.helper}
-                             view={ViewEducations}
-                             edit={EditEducations}
-                    />
-
-                    <Section section={this.state.currentCv.additional}
-                             keyName="additional"
-                             helper={this.helper}
-                             view={ViewAdditional}
-                             edit={EditAdditional}
-                    />
-                </div>
+                <CurrentCv state={this.state}
+                           helper={this.helper}
+                />
             </div>
         );
     }
@@ -267,3 +252,5 @@ class App extends Component {
 }
 
 export default App;
+
+
