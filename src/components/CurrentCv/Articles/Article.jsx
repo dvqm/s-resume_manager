@@ -28,7 +28,9 @@ class Article extends React.Component {
                 context.setState({editing: true});
             },
 
-            save() {
+            save(e) {
+                e.preventDefault();
+
                 const {values} = {...context.state};
 
                 context.setState({editing: false, values: values})
@@ -36,7 +38,9 @@ class Article extends React.Component {
                 context.helper.setState(context.state.keyName, context.state.values);
             },
 
-            cancel() {
+            cancel(e) {
+                e.preventDefault();
+
                 context.setState({editing: false, values: context.original}, () => {
                     context.helper.setState(context.state.keyName, context.state.values);
 
@@ -45,7 +49,9 @@ class Article extends React.Component {
 
             },
 
-            clear() {
+            clear(e) {
+                e.preventDefault();
+
                 const newValues = {...context.state.values};
 
                 Object.keys(newValues).forEach((key) => {
@@ -80,12 +86,12 @@ class Article extends React.Component {
                 }
 
                 {this.state.editing ?
-                    <form onSubmit={this.handle.save}>
+                    <form onSubmit={(e) => this.handle.save(e)}>
                         <button type="submit">Save</button>
 
-                        <button onClick={() => this.handle.cancel()}>Cancel</button>
+                        <button onClick={(e) => this.handle.cancel(e)}>Cancel</button>
 
-                        <button onClick={() => this.handle.clear()}>Clear</button>
+                        <button onClick={(e) => this.handle.clear(e)}>Clear</button>
 
                         {React.createElement(this.edit, {
                             keyName: this.state.keyName,
