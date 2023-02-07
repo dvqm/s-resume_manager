@@ -5,77 +5,77 @@ export class EditEducations extends React.Component {
     constructor(props) {
         super(props);
 
-        this.fields = props.fields;
+        this.key = props.keyName;
 
-        this.section = props.section;
+        this.id = props.section.id;
 
-        this.handleChange = props.handleChange;
+        this.handleChange = props.helper.onChange;
     }
 
     render() {
         return (
             <>
                 <label>
-                    <span>{this.fields.institution}</span>
+                    <span>{this.props.fields.institution}</span>
                     <input type="text"
-                           value={this.section.institution}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'institution')}
+                           value={this.props.section.institution}
+                           onChange={(e) => this.handleChange(this.key, 'institution', e, this.id)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.degree}</span>
+                    <span>{this.props.fields.degree}</span>
                     <input type="text"
-                           value={this.section.degree}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'degree')}
+                           value={this.props.section.degree}
+                           onChange={(e) => this.handleChange(this.key, 'degree', e, this.id)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.studyField}</span>
+                    <span>{this.props.fields.studyField}</span>
                     <input type="text"
-                           value={this.section.studyField}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'studyField')}
+                           value={this.props.section.studyField}
+                           onChange={(e) => this.handleChange(this.key, 'studyField', e, this.id)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.startDate}</span>
+                    <span>{this.props.fields.startDate}</span>
                     <input type="date"
-                           value={this.section.startDate}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'startDate')}
+                           value={this.props.section.startDate}
+                           onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.endDate}</span>
+                    <span>{this.props.fields.endDate}</span>
                     <input type="date"
-                           value={this.section.endDate}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'endDate')}
+                           value={this.props.section.endDate}
+                           onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.grade}</span>
+                    <span>{this.props.fields.grade}</span>
                     <input type="text"
-                           value={this.section.grade}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'grade')}
+                           value={this.props.section.grade}
+                           onChange={(e) => this.handleChange(this.key, 'grade', e, this.id)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.activities}</span>
+                    <span>{this.props.fields.activities}</span>
                     <textarea cols="40" rows="3"
-                              value={this.section.activities}
-                              onChange={(e) => this.handleChange(e, this.section.id, 'activities')}
+                              value={this.props.section.activities}
+                              onChange={(e) => this.handleChange(this.key, 'activities', e, this.id)}
                     ></textarea>
                 </label>
 
                 <label>
-                    <span>{this.fields.description}</span>
+                    <span>{this.props.fields.description}</span>
                     <textarea cols="40" rows="3"
-                              value={this.section.description}
-                              onChange={(e) => this.handleChange(e, this.section.id, 'description')}
+                              value={this.props.section.description}
+                              onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
                     ></textarea>
                 </label>
             </>
@@ -84,50 +84,40 @@ export class EditEducations extends React.Component {
 }
 
 export class ViewEducations extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.fields = props.fields;
-
-        this.section = props.section;
-
-        this.handleEdit = props.handleEdit;
-    }
-
     render() {
         return (
             <>
-                <h1>{this.section.institution}</h1>
+                <h1>{this.props.section.institution}</h1>
                 <span>
-                    <span>{this.section.degree}</span>
+                    <span>{this.props.section.degree}</span>
                     <span> &#183; </span>
-                    <span>{this.section.studyField}</span>
+                    <span>{this.props.section.studyField}</span>
                 </span>
 
                 <span>
-                    <span>{this.section.startDate}</span>
+                    <span>{this.props.section.startDate}</span>
                     <span> - </span>
-                    <span>{this.section.endDate}</span>
+                    <span>{this.props.section.endDate}</span>
                 </span>
 
-                {this.section.grade &&
+                {this.props.section.grade &&
                     <>
-                        <span>{this.fields.grade}</span>
-                        <span>{this.section.grade}</span>
+                        <span>{this.props.fields.grade}</span>
+                        <span>{this.props.section.grade}</span>
                     </>
                 }
 
-                {this.section.activities &&
+                {this.props.section.activities &&
                     <>
-                        <span>{this.fields.activities}</span>
-                        <pre>{this.section.activities}</pre>
+                        <span>{this.props.fields.activities}</span>
+                        <pre>{this.props.section.activities}</pre>
                     </>
                 }
 
-                {this.section.description &&
+                {this.props.section.description &&
                     <>
                         <span>Description: </span>
-                        <pre>{this.section.description}</pre>
+                        <pre>{this.props.section.description}</pre>
                     </>
                 }
             </>

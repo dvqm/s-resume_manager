@@ -4,148 +4,124 @@ export class EditAbout extends React.Component {
     constructor(props) {
         super(props);
 
-        this.fields = props.fields;
-
-        this.state = {
-            keyName: props.keyName,
-            values: props.values
-        };
-
-        this.upperHandleChange = props.handleChange;
-
-        this.helper = props.helper;
-
-        this.handleChange = this.handleChange.bind(this);
+        this.key = props.keyName;
 
         this.deletePhoto = this.deletePhoto.bind(this);
-    }
 
-    handleChange(e, field) {
-        const value = this.helper.getEventValue(e);
-
-        this.helper.onChange(this, value, e, field, this.upperHandleChange)
+        this.handleChange = props.helper.onChange;
     }
 
     deletePhoto(e) {
         e.preventDefault();
 
-        const values = {...this.state.values}
+        const values = {...this.props.values};
 
         values.photo = '';
 
-        this.setState({values: values});
-
-        this.helper.setState(this.state.keyName, this.state.values);
-    }
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.values !== this.props.values) {
-            this.setState({values: this.props.values});
-        }
+        this.props.helper.setState(this.key, values);
     }
 
     render() {
         return (
             <>
-
                 <label>
-                    <span>{this.fields.first}</span>
+                    <span>{this.props.fields.first}</span>
                     <input type="text"
-                           value={this.state.values.first}
-                           onChange={(e) => this.handleChange(e, 'first')}
+                           value={this.props.values.first}
+                           onChange={(e) => this.handleChange(this.key, 'first', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.middle}</span>
+                    <span>{this.props.fields.middle}</span>
                     <input type="text"
-                           value={this.state.values.middle}
-                           onChange={(e) => this.handleChange(e, 'middle')}
+                           value={this.props.values.middle}
+                           onChange={(e) => this.handleChange(this.key, 'middle', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.last}</span>
+                    <span>{this.props.fields.last}</span>
                     <input type="text"
-                           value={this.state.values.last}
-                           onChange={(e) => this.handleChange(e, 'last')}
+                           value={this.props.values.last}
+                           onChange={(e) => this.handleChange(this.key, 'last', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.photo}</span>
+                    <span>{this.props.fields.photo}</span>
                     <input type="file"
-                           onChange={(e) => this.handleChange(e, 'photo')}
+                           onChange={(e) => this.handleChange(this.key, 'photo', e)}
                     />
 
-                    {this.state.values.photo &&
-                        <img src={URL.createObjectURL(this.state.values.photo)} alt="Applicant"/>}
+                    {this.props.values.photo &&
+                        <img src={URL.createObjectURL(this.props.values.photo)} alt="Applicant"/>}
                 </label>
 
-                {this.state.values.photo &&
+                {this.props.values.photo &&
                     <button onClick={(e) => this.deletePhoto(e)}>Delete Photo</button>
                 }
 
                 <label>
-                    <span>{this.fields.position}</span>
+                    <span>{this.props.fields.position}</span>
                     <input type="text"
-                           value={this.state.values.position}
-                           onChange={(e) => this.handleChange(e, 'position')}
+                           value={this.props.values.position}
+                           onChange={(e) => this.handleChange(this.key, 'position', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.city}</span>
+                    <span>{this.props.fields.city}</span>
                     <input type="text"
-                           value={this.state.values.city}
-                           onChange={(e) => this.handleChange(e, 'city')}
+                           value={this.props.values.city}
+                           onChange={(e) => this.handleChange(this.key, 'city', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.state}</span>
+                    <span>{this.props.fields.state}</span>
                     <input type="text"
-                           value={this.state.values.state}
-                           onChange={(e) => this.handleChange(e, 'state')}
+                           value={this.props.values.state}
+                           onChange={(e) => this.handleChange(this.key, 'state', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.country}</span>
+                    <span>{this.props.fields.country}</span>
                     <input type="text"
-                           value={this.state.values.country}
-                           onChange={(e) => this.handleChange(e, 'country')}
+                           value={this.props.values.country}
+                           onChange={(e) => this.handleChange(this.key, 'country', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.email}</span>
+                    <span>{this.props.fields.email}</span>
                     <input type="email"
-                           value={this.state.values.email}
-                           onChange={(e) => this.handleChange(e, 'email')}
+                           value={this.props.values.email}
+                           onChange={(e) => this.handleChange(this.key, 'email', e)}
                     />
                 </label>
                 <label>
-                    <span>{this.fields.tel}</span>
+                    <span>{this.props.fields.tel}</span>
                     <input type="tel"
-                           value={this.state.values.tel}
-                           onChange={(e) => this.handleChange(e, 'tel')}
+                           value={this.props.values.tel}
+                           onChange={(e) => this.handleChange(this.key, 'tel', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.linkedin}</span>
+                    <span>{this.props.fields.linkedin}</span>
                     <input type="text"
-                           value={this.state.values.linkedin}
-                           onChange={(e) => this.handleChange(e, 'linkedin')}
+                           value={this.props.values.linkedin}
+                           onChange={(e) => this.handleChange(this.key, 'linkedin', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.gitHub}</span>
+                    <span>{this.props.fields.gitHub}</span>
                     <input type="text"
-                           value={this.state.values.gitHub}
-                           onChange={(e) => this.handleChange(e, 'gitHub')}
+                           value={this.props.values.gitHub}
+                           onChange={(e) => this.handleChange(this.key, 'gitHub', e)}
                     />
                 </label>
             </>
@@ -154,42 +130,32 @@ export class EditAbout extends React.Component {
 }
 
 export class ViewAbout extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.fields = props.fields;
-
-        this.values = props.values;
-    }
-
     render() {
         return (<>
                 <h2>
-                    {this.values.first && `${this.values.first} `}
-                    {this.values.middle && `${this.values.middle} `}
-                    {this.values.last}
+                    {this.props.values.first && `${this.props.values.first} `}
+                    {this.props.values.middle && `${this.props.values.middle} `}
+                    {this.props.values.last}
                 </h2>
 
-                <h2>{this.values.position}</h2>
+                <h2>{this.props.values.position}</h2>
 
-                {this.values.photo &&
-                    <img src={URL.createObjectURL(this.values.photo)} alt="Applicant"/>
+                {this.props.values.photo &&
+                    <img src={URL.createObjectURL(this.props.values.photo)} alt="Applicant"/>
                 }
 
                 <address>
-                    {this.values.city && `${this.values.city}, `}
-                    {this.values.state && `${this.values.city}, `}
-                    {this.values.country}
+                    {this.props.values.city && `${this.props.values.city}, `}
+                    {this.props.values.state && `${this.props.values.city}, `}
+                    {this.props.values.country}
                 </address>
 
                 <div>
-                    <a href={`tel:${this.values.tel}`}>{this.values.tel}</a>
-                    <a href={`mailto:${this.values.email}`}>{this.values.email}</a>
-                    <a href={this.values.linkedin}>{this.values.linkedin}</a>
-                    <a href={this.values.gitHub}>{this.values.gitHub}</a>
+                    <a href={`tel:${this.props.values.tel}`}>{this.props.values.tel}</a>
+                    <a href={`mailto:${this.props.values.email}`}>{this.props.values.email}</a>
+                    <a href={this.props.values.linkedin}>{this.props.values.linkedin}</a>
+                    <a href={this.props.values.gitHub}>{this.props.values.gitHub}</a>
                 </div>
-
-
             </>
         )
     }

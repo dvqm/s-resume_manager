@@ -6,80 +6,82 @@ export class EditProjects extends React.Component {
 
         this.fields = props.fields;
 
-        this.section = props.section;
+        this.key = props.keyName;
 
-        this.handleChange = props.handleChange;
+        this.id = props.section.id;
+
+        this.handleChange = props.helper.onChange;
     }
 
     render() {
         return (
             <>
                 <label>
-                    <span>{this.fields.name}</span>
+                    <span>{this.props.fields.name}</span>
                     <input type="text"
-                           value={this.section.title}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'title')}
+                           value={this.props.section.title}
+                           onChange={(e) => this.handleChange(this.key, 'title', e, this.id)}
                     />
                 </label>
 
 
                 <label>
-                    <span>{this.fields.currentlyWork}</span>
+                    <span>{this.props.fields.currentlyWork}</span>
                     <input type="checkbox"
-                           value={this.section.currentlyWork}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'currentlyWork')}
+                           checked={this.props.section.currentlyWork}
+                           onChange={(e) => this.handleChange(this.key, 'currentlyWork', e, this.id)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.startDate}</span>
+                    <span>{this.props.fields.startDate}</span>
                     <input type="date"
-                           value={this.section.startDate}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'startDate')}
+                           value={this.props.section.startDate}
+                           onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
                     />
                 </label>
 
-                {this.section.currentlyWork
+                {this.props.section.currentlyWork
                     ? ''
                     : <label>
-                        <span>{this.fields.endDate}</span>
+                        <span>{this.props.fields.endDate}</span>
                         <input type="date"
-                               value={this.section.endDate}
-                               onChange={(e) => this.handleChange(e, this.section.id, 'endDate')}
+                               value={this.props.section.endDate}
+                               onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
                         />
                     </label>
                 }
 
                 <label>
-                    <span>{this.fields.deployUrl}</span>
+                    <span>{this.props.fields.deployUrl}</span>
                     <input type="text"
-                           value={this.section.deployUrl}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'deployUrl')}
+                           value={this.props.section.deployUrl}
+                           onChange={(e) => this.handleChange(this.key, 'deployUrl', e, this.id)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.fields.sourceUrl}</span>
+                    <span>{this.props.fields.sourceUrl}</span>
                     <input type="text"
-                           value={this.section.sourceUrl}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'sourceUrl')}
+                           value={this.props.section.sourceUrl}
+                           onChange={(e) => this.handleChange(this.key, 'sourceUrl', e, this.id)}
                     />
                 </label>
 
 
                 <label>
-                    <span>{this.fields.technologies}</span>
+                    <span>{this.props.fields.technologies}</span>
                     <textarea cols="40" rows="3"
-                              value={this.section.technologies}
-                              onChange={(e) => this.handleChange(e, this.section.id, 'technologies')}
+                              value={this.props.section.technologies}
+                              onChange={(e) => this.handleChange(this.key, 'technologies', e, this.id)}
                     ></textarea>
                 </label>
 
                 <label>
-                    <span>{this.fields.description}</span>
+                    <span>{this.props.fields.description}</span>
                     <textarea cols="40" rows="10"
-                              value={this.section.description}
-                              onChange={(e) => this.handleChange(e, this.section.id, 'description')}
+                              value={this.props.section.description}
+                              onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
                     ></textarea>
                 </label>
 
@@ -89,56 +91,47 @@ export class EditProjects extends React.Component {
 }
 
 export class ViewProjects extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.fields = props.fields;
-
-        this.section = props.section;
-
-        this.handleEdit = props.handleEdit;
-    }
-
     render() {
         return (
             <>
-                <h1>{this.section.name}</h1>
+                <h1>{this.props.section.title}</h1>
 
-
-                {this.section.startDate || this.section.endDate || this.section.currentlyWork
+                {this.props.section.startDate
+                || this.props.section.endDate
+                || this.props.section.currentlyWork
                     ? <span>
-                        <span>{this.section.startDate}</span>
+                        <span>{this.props.section.startDate}</span>
                         <span> - </span>
-                        <span>{this.section.currentlyWork
-                            ? this.fields.currentlyWork
-                            : this.section.endDate}
+                        <span>{this.props.section.currentlyWork
+                            ? this.props.fields.currentlyWork
+                            : this.props.section.endDate}
                         </span>
                     </span>
                     : ''
                 }
 
 
-                {this.section.deployUrl || this.section.sourceUrl
+                {this.props.section.deployUrl || this.props.section.sourceUrl
                     ? <span>
-                    {this.section.deployUrl
-                        ? <a href={this.section.deployUrl}
+                    {this.props.section.deployUrl
+                        ? <a href={this.props.section.deployUrl}
                              target="_blank"
                              rel="noreferrer noopener">
-                            {this.fields.deployUrl}
+                            {this.props.fields.deployUrl}
                         </a>
                         : ''
                     }
 
-                        {this.section.deployUrl && this.section.sourceUrl
+                        {this.props.section.deployUrl && this.props.section.sourceUrl
                             ? <span> | </span>
                             : ''
                         }
 
-                        {this.section.sourceUrl
-                            ? <a href={this.section.sourceUrl}
+                        {this.props.section.sourceUrl
+                            ? <a href={this.props.section.sourceUrl}
                                  target="_blank"
                                  rel="noreferrer noopener">
-                                {this.fields.sourceUrl}
+                                {this.props.fields.sourceUrl}
                             </a>
                             : ''
                         }
@@ -146,9 +139,9 @@ export class ViewProjects extends React.Component {
                     : ''
                 }
 
-                <p>{this.section.technologies}</p>
+                <p>{this.props.section.technologies}</p>
 
-                <pre>{this.section.description}</pre>
+                <pre>{this.props.section.description}</pre>
             </>
         );
     }

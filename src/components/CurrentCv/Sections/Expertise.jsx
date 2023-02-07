@@ -4,32 +4,32 @@ export class EditExpertise extends React.Component {
     constructor(props) {
         super(props);
 
-        this.fields = props.fields;
+        this.key = props.keyName;
 
-        this.section = props.section;
+        this.id = props.section.id;
 
-        this.handleChange = props.handleChange;
+        this.handleChange = props.helper.onChange;
     }
 
     render() {
         return (
             <>
                 <label>
-                    <span>{this.fields.scope}</span>
+                    <span>{this.props.fields.scope}</span>
                     <input type="text"
-                           placeholder={this.fields.placeholder}
-                           value={this.section.scopeTitle}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'scopeTitle')}
+                           placeholder={this.props.fields.placeholder}
+                           value={this.props.section.scopeTitle}
+                           onChange={(e) => this.handleChange(this.key, 'scopeTitle', e, this.id)}
                     />
                 </label>
 
 
                 <label>
-                    <span>{this.fields.labels}</span>
+                    <span>{this.props.fields.labels}</span>
                     <textarea cols="40" rows="8"
-                              placeholder={this.fields.tip}
-                              value={this.section.labels}
-                              onChange={(e) => this.handleChange(e, this.section.id, 'labels')}
+                              placeholder={this.props.fields.tip}
+                              value={this.props.section.labels}
+                              onChange={(e) => this.handleChange(this.key, 'labels', e, this.id)}
                     ></textarea>
                 </label>
 
@@ -39,28 +39,16 @@ export class EditExpertise extends React.Component {
 }
 
 export class ViewExpertise extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.nextId = 0;
-
-        this.fields = props.fields;
-
-        this.section = props.section;
-
-        this.handleEdit = props.handleEdit;
-    }
-
     labelsParse(labelsStr) {
         return labelsStr.split(', ');
     }
 
     render() {
-        const labels = this.labelsParse(this.section.labels);
+        const labels = this.labelsParse(this.props.section.labels);
 
         return (
             <>
-                <h3>{this.section.scopeTitle}</h3>
+                <h3>{this.props.section.scopeTitle}</h3>
                 <ul>
                     {
                         labels.map((label, index) => {

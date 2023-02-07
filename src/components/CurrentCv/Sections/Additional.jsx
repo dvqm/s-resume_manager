@@ -4,30 +4,30 @@ export class EditAdditional extends React.Component {
     constructor(props) {
         super(props);
 
-        this.fields = props.fields;
+        this.key = props.keyName;
 
-        this.section = props.section;
+        this.id = props.section.id;
 
-        this.handleChange = props.handleChange;
+        this.handleChange = props.helper.onChange;
     }
 
     render() {
         return (
             <>
                 <label>
-                    <span>{this.fields.name}</span>
+                    <span>{this.props.fields.name}</span>
                     <input type="text"
-                           value={this.section.name}
-                           onChange={(e) => this.handleChange(e, this.section.id, 'name')}
+                           value={this.props.section.name}
+                           onChange={(e) => this.handleChange(this.key, 'name', e, this.id)}
                     />
                 </label>
 
 
                 <label>
-                    <span>{this.fields.description}</span>
+                    <span>{this.props.fields.description}</span>
                     <textarea cols="40" rows="8"
-                              value={this.section.description}
-                              onChange={(e) => this.handleChange(e, this.section.id, 'description')}
+                              value={this.props.section.description}
+                              onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
                     ></textarea>
                 </label>
 
@@ -37,23 +37,11 @@ export class EditAdditional extends React.Component {
 }
 
 export class ViewAdditional extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.nextId = 0;
-
-        this.fields = props.fields;
-
-        this.section = props.section;
-
-        this.handleEdit = props.handleEdit;
-    }
-
     render() {
         return (
             <>
-                <h3>{this.section.name}</h3>
-                <pre>{this.section.description}</pre>
+                <h3>{this.props.section.name}</h3>
+                <pre>{this.props.section.description}</pre>
             </>
         )
     }

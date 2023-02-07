@@ -4,56 +4,30 @@ export class EditSummary extends React.Component {
     constructor(props) {
         super(props);
 
-        this.fields = props.fields;
+        this.key = props.keyName;
 
-        this.state = {values: props.values};
+        this.handleChange = props.helper.onChange;
 
-        this.upperHandleChange = props.handleChange;
-
-        this.helper = props.helper;
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e, field) {
-        const value = this.helper.getEventValue(e);
-
-        this.helper.onChange(this, value, e, field, this.upperHandleChange)
-    }
-
-
-    componentDidUpdate(prevProps) {
-        if (prevProps.values !== this.props.values) {
-            this.setState({values: this.props.values});
-        }
     }
 
 
     render() {
         return (
             <label>
-                <span>{this.fields.summary}</span>
+                <span>{this.props.fields.summary}</span>
                 <textarea cols="30" rows="10"
-                          value={this.state.values.summary}
-                          onChange={(e) => this.handleChange(e, 'summary')}
-                ></textarea>
+                          value={this.props.values.summary}
+                          onChange={(e) => this.handleChange(this.key, 'summary', e)}>
+                </textarea>
             </label>
         )
     }
 }
 
 export class ViewSummary extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.fields = props.fields;
-
-        this.values = props.values;
-    }
-
     render() {
         return (
-            <pre>{this.values.summary}</pre>
+            <pre>{this.props.values.summary}</pre>
         )
     }
 }
