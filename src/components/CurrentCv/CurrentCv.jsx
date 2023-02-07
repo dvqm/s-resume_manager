@@ -10,64 +10,54 @@ import {EditEducations, ViewEducations} from "./Sections/Educations";
 import {EditAdditional, ViewAdditional} from "./Sections/Additional";
 
 class CurrentCv extends React.Component {
-    constructor(props) {
-        super();
-
-        this.state = props.state;
-
-        this.helper = props.helper;
-
-        this.manage = props.manage;
-    }
-
     render() {
         return (
             <div className="main-area">
-                <Article article={this.state.currentCv.about}
+                <Article state={this.props.state.currentCv.about}
                          keyName="about"
-                         helper={this.helper}
+                         helper={this.props.helper}
                          view={ViewAbout}
                          edit={EditAbout}
                 />
 
-                <Article article={this.state.currentCv.summary}
+                <Article state={this.props.state.currentCv.summary}
                          keyName="summary"
-                         helper={this.helper}
+                         helper={this.props.helper}
                          view={ViewSummary}
                          edit={EditSummary}
                 />
 
-                <Section section={this.state.currentCv.expertise}
+                <Section state={this.props.state.currentCv.expertise}
                          keyName="expertise"
-                         helper={this.helper}
+                         helper={this.props.helper}
                          view={ViewExpertise}
                          edit={EditExpertise}
                 />
 
-                <Section section={this.state.currentCv.projects}
+                <Section state={this.props.state.currentCv.projects}
                          keyName="projects"
-                         helper={this.helper}
+                         helper={this.props.helper}
                          view={ViewProjects}
                          edit={EditProjects}
                 />
 
-                <Section section={this.state.currentCv.experiences}
+                <Section state={this.props.state.currentCv.experiences}
                          keyName="experiences"
-                         helper={this.helper}
+                         helper={this.props.helper}
                          view={ViewExperiences}
                          edit={EditExperiences}
                 />
 
-                <Section section={this.state.currentCv.educations}
-                         keyName="esucation"
-                         helper={this.helper}
+                <Section state={this.props.state.currentCv.educations}
+                         keyName="educations"
+                         helper={this.props.helper}
                          view={ViewEducations}
                          edit={EditEducations}
                 />
 
-                <Section section={this.state.currentCv.additional}
+                <Section state={this.props.state.currentCv.additional}
                          keyName="additional"
-                         helper={this.helper}
+                         helper={this.props.helper}
                          view={ViewAdditional}
                          edit={EditAdditional}
                 />
