@@ -10,9 +10,8 @@ class Article extends React.Component {
 
         this.state = {
             keyName: props.keyName,
-            fields: props.article.fields,
-            values: props.article.values,
             editing: false,
+            original: props.state.values,
         }
 
         this.helper = props.helper;
@@ -23,28 +22,30 @@ class Article extends React.Component {
     handlers(context) {
         return {
             edit() {
-                context.original = {...context.state.values};
-
-                context.setState({editing: true});
+                context.setState({
+                    ...context.state,
+                    original: context.props.state.values,
+                    editing: true
+                });
             },
 
             save(e) {
                 e.preventDefault();
 
-                const {values} = {...context.state};
+                context.setState({editing: false},
+                    () => {
+                        const values = {...context.props.state.values};
 
-                context.setState({editing: false, values: values})
+                        context.helper.setState(context.state.keyName, values);
+                    });
 
-                context.helper.setState(context.state.keyName, context.state.values);
             },
 
             cancel(e) {
                 e.preventDefault();
 
-                context.setState({editing: false, values: context.original}, () => {
+                context.setState({editing: false, values: context.state.original}, () => {
                     context.helper.setState(context.state.keyName, context.state.values);
-
-                    context.original = null;
                 });
 
             },
@@ -52,25 +53,19 @@ class Article extends React.Component {
             clear(e) {
                 e.preventDefault();
 
-                const newValues = {...context.state.values};
+                context.setState({
+                    ...context.state,
+                    original: context.props.state.values,
+                });
 
-                Object.keys(newValues).forEach((key) => {
-                    if (typeof newValues[key] === 'boolean') newValues[key] = false;
-                    else newValues[key] = '';
+                const values = {...context.props.state.values};
+
+                Object.keys(values).forEach((key) => {
+                    if (typeof values[key] === 'boolean') values[key] = false;
+                    else values[key] = '';
                 })
 
-                context.setState({values: newValues},
-                    () => {
-                        context.helper.setState(context.state.keyName, context.state.values);
-                    });
-
-
-            },
-
-            change(e, field) {
-                const value = context.helper.getEventValue(e);
-
-                context.helper.onChange(context, value, e, field, context.helper.setState)
+                context.helper.setState(context.state.keyName, values);
             },
         }
     }
@@ -78,9 +73,9 @@ class Article extends React.Component {
     render() {
         return (
             <>
-                {this.state.fields.title &&
+                {this.props.state.fields.title &&
                     <>
-                        <h2>{this.state.fields.title}</h2>
+                        <h2>{this.props.state.fields.title}</h2>
                         <hr/>
                     </>
                 }
@@ -95,19 +90,17 @@ class Article extends React.Component {
 
                         {React.createElement(this.edit, {
                             keyName: this.state.keyName,
-                            fields: this.state.fields,
-                            values: this.state.values,
-                            handleChange: this.handle.change,
+                            fields: this.props.state.fields,
+                            values: this.props.state.values,
                             helper: this.helper,
                         })}
                     </form>
                     :
                     <article>
-                        <button onClick={() => this.handle.edit()}>{this.state.fields.btnName}</button>
+                        <button onClick={() => this.handle.edit()}>{this.props.state.fields.btnName}</button>
 
                         {React.createElement(this.view, {
-                            fields: this.state.fields,
-                            values: this.state.values,
+                            values: this.props.state.values,
                         })}
                     </article>
                 }

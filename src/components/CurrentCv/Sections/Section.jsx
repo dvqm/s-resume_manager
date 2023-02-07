@@ -10,10 +10,8 @@ class Section extends React.Component {
 
         this.state = {
             keyName: props.keyName,
-            nextId: 0,
-            fields: props.section.fields,
-            default: props.section.default,
-            values: props.section.values,
+            default: props.state.default,
+            originalArticles: [],
         };
 
         this.helper = props.helper;
@@ -24,56 +22,82 @@ class Section extends React.Component {
     handlers(context) {
         return {
             add() {
-                context.setState(prevState => {
-                    return {
-                        values: [...prevState.values, {
-                            ...context.state.default,
-                            id: context.helper.setId(context.state.values, context),
-                            init: true
-                        }]
-                    };
-                }, () => {
-                    context.helper.setState(context.state.keyName, context.state.values);
-                });
+                const setId = (list) => {
+                    if (list.length > 0) {
+                        return Math.max(...list.map(x => x.id)) + 1;
+                    } else {
+                        return 1;
+                    }
+                };
+
+                const newArticle = {
+                    ...context.props.state.default,
+                    id: setId(context.props.state.values),
+                    init: true,
+                }
+
+                const section = [...context.props.state.values];
+
+                section.push(newArticle);
+
+                context.helper.setState(context.state.keyName, section);
             },
 
             edit(id) {
-                let newArticles = [...context.state.values];
+                const updateOriginalArticles = (newArticles) => {
+                    const originalArticles = [...context.state.originalArticles]
 
-                const item = newArticles.find(i => i.id === id);
+                    const copyArticle = newArticles.find((article) => article.id === id);
 
-                item.editing = true;
+                    const index = originalArticles.findIndex(article => article.id === id);
+                    if (index !== -1) {
+                        return [
+                            ...originalArticles.slice(0, index),
+                            {...originalArticles[index], ...copyArticle},
+                            ...originalArticles.slice(index + 1)
+                        ];
+                    } else {
+                        return [...originalArticles, {id, ...copyArticle}];
+                    }
+                }
 
-                context.setState({
-                    values: newArticles
+                const newArticles = [...context.props.state.values];
+
+                const originalArticles = updateOriginalArticles(newArticles);
+
+                newArticles.map((article) => {
+                    if (article.id === id) {
+                        article.editing = true;
+
+                        return article;
+                    }
+
+                    return article;
                 });
 
-                context.originalArticle = {...item};
+                context.setState({...context.state, originalArticles: originalArticles},
+                    () => context.helper.setState(context.state.keyName, newArticles)
+                );
             },
 
             delete(e, id) {
                 e.preventDefault();
 
-                const newArticles = context.state.values.filter((article) => article.id !== id);
+                const newArticles = context.props.state.values.filter((article) => article.id !== id);
 
-                context.setState({
-                        values: newArticles
-                    }, () => {
-                        context.helper.setState(context.state.keyName, context.state.values);
-                    }
-                );
-
+                context.helper.setState(context.state.keyName, newArticles);
             },
 
             save(e, id) {
                 e.preventDefault();
 
-                const newArticles = context.state.values.map((article) => {
+                const newArticles = context.props.state.values.map((article) => {
                     if (article.id === id) {
                         article.editing = false;
 
                         if (article.init) delete article.init;
                     }
+
                     return article;
                 });
 
@@ -83,23 +107,17 @@ class Section extends React.Component {
                     return 0;
                 });
 
-                context.setState({
-                    values: newArticles
-                }, () => {
-                    context.helper.setState(context.state.keyName, context.state.values);
-
-                    context.originalArticle = null;
-                });
+                context.helper.setState(context.state.keyName, newArticles);
             },
 
             cancel(e, id) {
                 e.preventDefault();
 
-                let newArticles = [...context.state.values];
+                let newArticles = [...context.props.state.values];
 
                 newArticles = newArticles.map(article => {
                     if (article.id === id) {
-                        article = context.originalArticle;
+                        article = context.state.originalArticles.find((article) => article.id === id);
 
                         article.editing = false;
                     }
@@ -107,33 +125,7 @@ class Section extends React.Component {
                     return article;
                 });
 
-                context.setState({
-                    values: newArticles
-                }, () => {
-                    context.helper.setState(context.state.keyName, context.state.values);
-
-                    context.originalArticle = null;
-                });
-            },
-
-            change(e, id, field) {
-                context.setState(prevState => {
-                    const newArticles = [...context.state.values].map((article) => {
-                        if (article.id === id) {
-                            article[field] = context.helper.getEventValue(e);
-
-                            return article;
-                        } else {
-                            return article;
-                        }
-                    });
-                    return {...prevState, values: newArticles}
-                }, () => {
-                    context.helper.setState(
-                        context.state.keyName,
-                        context.state.values,
-                    );
-                });
+                context.helper.setState(context.state.keyName, newArticles);
             },
         }
     }
@@ -141,20 +133,21 @@ class Section extends React.Component {
     render() {
         return (
             <section>
-                <h2>{this.state.fields.title}</h2>
+                <h2>{this.props.state.fields.title}</h2>
                 <hr/>
-                <button onClick={this.handle.add}>{this.state.fields.btnName}</button>
+                <button onClick={this.handle.add}>{this.props.state.fields.btnName}</button>
                 {
-                    this.state.values.length > 0 &&
-                    this.state.values.map((section) => (
+                    this.props.state.values.length > 0 &&
+                    this.props.state.values.map((section) => (
                             section.editing
                                 ?
                                 <form key={section.id} onSubmit={(e) => this.handle.save(e, section.id)}>
 
                                     {React.createElement(this.edit, {
-                                        fields: this.state.fields,
+                                        keyName: this.props.keyName,
+                                        fields: this.props.state.fields,
                                         section: section,
-                                        handleChange: this.handle.change,
+                                        helper: this.props.helper,
                                     })}
 
                                     <button type="submit">Save</button>
@@ -167,7 +160,8 @@ class Section extends React.Component {
                                 :
                                 <article key={section.id}>
                                     {React.createElement(this.view, {
-                                        fields: this.state.fields,
+                                        keyName: this.props.keyName,
+                                        fields: this.props.state.fields,
                                         section: section,
                                     })}
 
