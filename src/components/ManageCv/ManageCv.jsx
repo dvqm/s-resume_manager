@@ -7,8 +7,6 @@ class ManageCv extends React.Component {
         this.state = {
             prevName: props.state.currentCv.cvName,
             save: false,
-            rename: false,
-            rewrite: false,
             warning: null,
         };
 
@@ -25,8 +23,15 @@ class ManageCv extends React.Component {
         );
     }
 
+
     handlers(context) {
         return {
+            new() {
+                const newCv = {...context.props.state.static.template};
+
+                context.helper.setState('currentCv', newCv);
+            },
+
             change(e, field) {
                 context.props.helper.setState(field, e.target.value);
             },
@@ -101,7 +106,6 @@ class ManageCv extends React.Component {
                         context.setState({
                             ...context.state,
                             save: true,
-                            rewrite: true,
                         });
 
                         break;
@@ -183,48 +187,53 @@ class ManageCv extends React.Component {
 
                 const {cvName} = {...context.props.state.currentCv};
 
+                const template = {...context.props.state.static.template};
+
                 const index = cvBase.findIndex((cv) => cv.cvName === cvName);
 
-                context.props.helper.setState('currentCv', cvBase[index]);
+                if (index === -1) context.props.helper.setState('currentCv', template);
+                else context.props.helper.setState('currentCv', cvBase[index]);
             },
 
             delete: () => {
-                try {
-                    const cvBase = [...context.props.state.cvBase];
+                const cvBase = [...context.props.state.cvBase];
 
-                    const cvName = context.props.state.currentCv.cvName;
+                const cvName = context.props.state.currentCv.cvName;
 
-                    const updatedCvBase = cvBase.filter((cv) => cv.cvName !== cvName);
+                const {template} = context.props.state.static;
 
-                    const isEqual = cvBase.length === updatedCvBase.length
-                        && cvBase.every((element, index) => element === updatedCvBase[index]);
+                const updatedCvBase = cvBase.filter((cv) => cv.cvName !== cvName);
 
-                    if (isEqual) throw new Error('This resume is not in the list. Unable to delete.')
+                cvBase.length === updatedCvBase.length
+                    && cvBase.every((element, index) => element === updatedCvBase[index]);
 
-                    context.helper.setState('cvBase', updatedCvBase);
-
-                } catch (error) {
-                    context.setState({...context.state, warning: error});
-                }
+                context.helper.setState('cvBase', updatedCvBase, 'currentCv', template);
             },
 
             duplicate: () => {
                 const currentCv = {...context.props.state.currentCv};
 
-                const cvBase = [...context.props.state.cvBase];
+                let cvBase = [...context.props.state.cvBase];
 
-                const isUnique = cvBase.some((cv) => cv.cvName === currentCv.cvName);
+                let cvName = currentCv.cvName;
 
-                if (isUnique) {
-                    currentCv.cvName = `${currentCv.cvName} _copy`;
+                const isUnique = (cvName) => !cvBase.some((cv) => cv.cvName === cvName);
 
-                    cvBase.push(currentCv);
+                const makeDuplicate = (cvName) => {
+                    if (isUnique(cvName)) {
+                        currentCv.cvName = cvName;
 
-                    context.helper.setState('cvName', currentCv.cvName, 'cvBase', cvBase);
+                        cvBase.push(currentCv);
+
+                        context.helper.setState('cvName', currentCv.cvName, 'cvBase', cvBase);
+                    } else {
+                        makeDuplicate(`${cvName} _copy`);
+                    }
                 }
 
+                makeDuplicate(cvName);
             },
-        };
+        }
     }
 
     render() {
@@ -237,11 +246,17 @@ class ManageCv extends React.Component {
                         Save / Rename
                     </button>
                 )}
-                <button onClick={this.handle.toDrive}>Save to Drive</button>
-                <button onClick={this.handle.toPdf}>Save to pdf</button>
                 <button onClick={this.handle.cancel}>Cancel</button>
-                <button onClick={this.handle.delete}>Delete</button>
-                <button onClick={this.handle.duplicate}>Duplicate</button>
+                {
+                    !this.props.state.secondary.new
+                    && <>
+                        <button onClick={this.handle.new}>New</button>
+                        <button onClick={this.handle.toDrive}>Save to Drive</button>
+                        <button onClick={this.handle.toPdf}>Save to pdf</button>
+                        <button onClick={this.handle.delete}>Delete</button>
+                        <button onClick={this.handle.duplicate}>Duplicate</button>
+                    </>
+                }
             </>
         );
     }
@@ -276,7 +291,10 @@ class EditName extends React.Component {
                     />
                 </label>
                 <button onClick={() => this.save('cvName', false)}>Save</button>
-                <button onClick={() => this.rename()}>Rename</button>
+
+                {!this.props.state.secondary.new
+                    && <button onClick={() => this.rename()}>Rename</button>}
+
                 <button onClick={() => this.cancel('save')}>Cancel</button>
             </p>
         );
