@@ -6,82 +6,71 @@ import ManageCv from "./components/ManageCv/ManageCv";
 class App extends Component {
     constructor() {
         super();
+        const cvTemplate = {
+            cvName: '',
+            about: {
+                first: '',
+                middle: '',
+                last: '',
+                photo: '',
+                position: '',
+                city: '',
+                state: '',
+                country: '',
+                tel: '',
+                email: '',
+                linkedin: '',
+                gitHub: '',
+            },
+            summary: {
+                summary: '',
+            },
+            projects: [],
+            expertise: [],
+            experiences: [],
+            educations: [],
+            additional: [],
+        };
 
         this.state = {
-            cvBase: [{cvName: 'a'}, {cvName: 'b'}, {cvName: 'c'}],
-            currentCv: {
-                cvName: '',
+            cvBase: [],
+            currentCv: {...cvTemplate},
+            secondary: {
+                new: true,
+            },
+            static: {
+                template: {...cvTemplate},
                 about: {
-                    fields: {
-                        btnName: 'Edit About',
-                        first: 'First Name: ',
-                        middle: 'Middle Name: ',
-                        last: 'Last Name: ',
-                        photo: 'Upload Photo: ',
-                        position: 'Applied Position: ',
-                        city: 'City: ',
-                        state: 'State: ',
-                        country: 'Country: ',
-                        tel: 'Phone number: ',
-                        email: 'Email: ',
-                        linkedin: 'Linkedin: ',
-                        gitHub: 'GitHub: ',
-                    },
-                    values: {
-                        first: '',
-                        middle: '',
-                        last: '',
-                        photo: '',
-                        position: '',
-                        city: '',
-                        state: '',
-                        country: '',
-                        tel: '',
-                        email: '',
-                        linkedin: '',
-                        gitHub: '',
-                    }
+                    btnName: 'Edit About',
+                    first: 'First Name: ',
+                    middle: 'Middle Name: ',
+                    last: 'Last Name: ',
+                    photo: 'Upload Photo: ',
+                    position: 'Applied Position: ',
+                    city: 'City: ',
+                    state: 'State: ',
+                    country: 'Country: ',
+                    tel: 'Phone number: ',
+                    email: 'Email: ',
+                    linkedin: 'Linkedin: ',
+                    gitHub: 'GitHub: ',
                 },
                 summary: {
-                    fields: {
-                        title: 'Summary',
-                        btnName: 'Edit Summary',
-                        summary: 'Summary',
-                    },
-                    values: {
-                        summary: '',
-                    },
-                },
-                expertise: {
-                    fields: {
-                        title: 'Area of Expertise',
-                        btnName: 'Add Area of Expertise',
-                        scope: 'Scope of expertise: ',
-                        labels: 'Labels: ',
-                        placeholder: 'Enter the scope name',
-                        tip: 'Enter your areas of expertise in the scope divided by comma and space',
-                    },
-                    default: {
-                        editing: true,
-                        scopeTitle: '',
-                        labels: '',
-                    },
-                    values: [],
+                    title: 'Summary',
+                    btnName: 'Edit Summary',
+                    summary: 'Summary',
                 },
                 projects: {
-                    fields: {
-                        title: 'My Projects',
-                        btnName: 'Add Project',
-                        name: 'Project name: ',
-                        currentlyWork: 'Currently Work',
-                        startDate: 'Start date: ',
-                        endDate: 'End date: ',
-                        deployUrl: 'View project',
-                        sourceUrl: 'Source code',
-                        technologies: 'Technologies: ',
-                        description: 'Description: ',
-
-                    },
+                    title: 'My Projects',
+                    btnName: 'Add Project',
+                    name: 'Project name: ',
+                    currentlyWork: 'Currently Work',
+                    startDate: 'Start date: ',
+                    endDate: 'End date: ',
+                    deployUrl: 'View project',
+                    sourceUrl: 'Source code',
+                    technologies: 'Technologies: ',
+                    description: 'Description: ',
                     default: {
                         editing: true,
                         title: '',
@@ -92,24 +81,33 @@ class App extends Component {
                         sourceUrl: '',
                         technologies: '',
                         description: '',
-
                     },
-                    values: [],
+                },
+                expertise: {
+                    title: 'Area of Expertise',
+                    btnName: 'Add Area of Expertise',
+                    scope: 'Scope of expertise: ',
+                    labels: 'Labels: ',
+                    placeholder: 'Enter the scope name',
+                    tip: 'Enter your areas of expertise in the scope divided by comma and space',
+                    default: {
+                        editing: true,
+                        scopeTitle: '',
+                        labels: '',
+                    },
                 },
                 experiences: {
-                    fields: {
-                        title: 'Work Experience',
-                        btnName: 'Add Experience',
-                        name: 'Position name: ',
-                        employmentType: 'Employment type :',
-                        companyName: 'Company name: ',
-                        location: 'Location:',
-                        contractType: 'Contract type: ',
-                        currentlyWork: 'Currently work: ',
-                        startDate: 'Start date: ',
-                        endDate: 'End date: ',
-                        description: 'Description: ',
-                    },
+                    title: 'Work Experience',
+                    btnName: 'Add Experience',
+                    name: 'Position name: ',
+                    employmentType: 'Employment type :',
+                    companyName: 'Company name: ',
+                    location: 'Location:',
+                    contractType: 'Contract type: ',
+                    currentlyWork: 'Currently work: ',
+                    startDate: 'Start date: ',
+                    endDate: 'End date: ',
+                    description: 'Description: ',
                     default: {
                         editing: true,
                         title: '',
@@ -122,21 +120,18 @@ class App extends Component {
                         endDate: '',
                         description: '',
                     },
-                    values: [],
                 },
                 educations: {
-                    fields: {
-                        title: 'Education',
-                        btnName: 'Add Education',
-                        institution: 'Educational institution: ',
-                        degree: 'Degree: ',
-                        studyField: 'Field of study: ',
-                        startDate: 'Start date: ',
-                        endDate: 'End date (or expected): ',
-                        grade: 'Grade: ',
-                        activities: 'Activities and societies: ',
-                        description: 'Description: ',
-                    },
+                    title: 'Education',
+                    btnName: 'Add Education',
+                    institution: 'Educational institution: ',
+                    degree: 'Degree: ',
+                    studyField: 'Field of study: ',
+                    startDate: 'Start date: ',
+                    endDate: 'End date (or expected): ',
+                    grade: 'Grade: ',
+                    activities: 'Activities and societies: ',
+                    description: 'Description: ',
                     default: {
                         editing: true,
                         institution: '',
@@ -148,21 +143,17 @@ class App extends Component {
                         activities: '',
                         description: '',
                     },
-                    values: [],
                 },
                 additional: {
-                    fields: {
-                        title: 'Additional information',
-                        btnName: 'Add Section',
-                        name: 'Title',
-                        description: 'Description: ',
-                    },
+                    title: 'Additional information',
+                    btnName: 'Add Section',
+                    name: 'Title',
+                    description: 'Description: ',
                     default: {
                         editing: true,
                         name: '',
                         description: '',
                     },
-                    values: [],
                 },
             },
         };
@@ -170,63 +161,136 @@ class App extends Component {
         this.helper.setState = this.helper.setState.bind(this);
     }
 
-    manage = {
-        save: (key, value) => {
-            this.setState({...this.state, [key]: value}
-                , () => console.log(this.state)
-            );
-        }
-    }
-
     helper = {
-        setId: (list, context = this) => {
-            if (list.length > 0) {
-                context.state.id = Math.max(...list.map(x => x.id)) + 1;
-            } else {
-                context.state.id = 1;
+        onChange: (keyName, field, e, id = false) => {
+            const getEventValue = () => {
+                if (e.target.type === 'checkbox') {
+                    return e.target.checked;
+                } else if (e.target.type === 'file') {
+                    return e.target.files[0];
+                } else {
+                    return e.target.value;
+                }
             }
-            return context.state.id;
-        },
 
-        getEventValue: (e) => {
-            if (e.target.type === 'checkbox') {
-                return e.target.checked;
-            } else if (e.target.type === 'file') {
-                return e.target.files[0];
-            } else {
-                return e.target.value;
-            }
-        },
+            switch (true) {
+                case field === 'cvName' :
+                    this.setState({
+                            currentCv: {
+                                ...this.state.currentCv,
+                                cvName: getEventValue(),
+                            }
+                        }
+                    );
 
-        onChange: (context, value, e, field, upperHandler) => {
-            if (field === 'cvName') context.setState({currentCv: {...context.state.currentCv, cvName: value}},
-                () => upperHandler(e, field));
-            else context.setState({values: {...context.state.values, [field]: value}},
-                () => {
-                    upperHandler(e, field);
-                });
-        },
+                    break;
 
-        setState: (keyName, newValues) => {
-            if (keyName === 'cvName') {
-                this.setState({
-                    currentCv: {
-                        ...this.state.currentCv,
-                        [keyName]: newValues,
-                    },
-                })
-            } else {
-                this.setState({
+                case typeof id === 'number' :
+                    const index = this.state.currentCv[keyName].findIndex((cv) => cv.id === id);
+
+                    const section = [...this.state.currentCv[keyName]];
+                    section[index][field] = getEventValue();
+
+                    this.setState({
+                        ...this.state,
+                        currentCv: {
+                            ...this.state.currentCv,
+                            [keyName]: [...section],
+                        }
+                    });
+
+                    break;
+
+                default :
+                    this.setState({
+                        ...this.state,
                         currentCv: {
                             ...this.state.currentCv,
                             [keyName]: {
                                 ...this.state.currentCv[keyName],
-                                values: newValues,
+                                [field]: getEventValue(),
                             }
-                        },
-                    }
-                )
+                        }
+                    });
+
+                    break;
             }
+        },
+
+        setState: (...extraParams) => {
+            const isNew = () => {
+                return !this.state.cvBase.some(
+                    cv => cv.cvName === this.state.currentCv.cvName
+                );
+            };
+
+            let i = 0;
+            const recursiveSetState = () => {
+                if (i >= extraParams.length) return;
+
+                const key = extraParams[i];
+                const values = extraParams[i + 1];
+                i += 2;
+
+                switch (key) {
+                    case "cvName":
+                        this.setState(
+                            {
+                                ...this.state,
+                                currentCv: {
+                                    ...this.state.currentCv,
+                                    [key]: values
+                                }
+                            },
+                                recursiveSetState
+                        );
+                        break;
+
+                    case "currentCv":
+                    case "cvBase":
+                        this.setState(
+                            {
+                                ...this.state,
+                                [key]: values
+                            },
+                            () => {
+                                this.setState({
+                                    ...this.state,
+                                    secondary: {
+                                        ...this.state.secondary,
+                                        new: isNew()
+                                    }
+                                });
+                                recursiveSetState();
+                            }
+                        );
+                        break;
+
+                    default:
+                        this.setState(
+                            {
+                                ...this.state,
+                                currentCv: {
+                                    ...this.state.currentCv,
+                                    [key]: values
+                                }
+                            },
+                            () => {
+                                this.setState({
+                                    ...this.state,
+                                    secondary: {
+                                        ...this.state.secondary,
+                                        new: isNew()
+                                    }
+                                });
+                                recursiveSetState();
+                            }
+                        );
+                        break;
+                }
+            };
+
+            recursiveSetState();
         }
     }
 
@@ -239,7 +303,6 @@ class App extends Component {
 
                 <ManageCv state={this.state}
                           helper={this.helper}
-                          manage={this.manage}
                 />
 
                 <CurrentCv state={this.state}
@@ -248,7 +311,6 @@ class App extends Component {
             </div>
         );
     }
-
 }
 
 export default App;
