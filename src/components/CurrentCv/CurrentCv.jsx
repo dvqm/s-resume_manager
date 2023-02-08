@@ -13,49 +13,56 @@ class CurrentCv extends React.Component {
     render() {
         return (
             <div className="main-area">
-                <Article state={this.props.state.currentCv.about}
+                <Article dynamic={this.props.state.currentCv.about}
+                         static={this.props.state.static.about}
                          keyName="about"
                          helper={this.props.helper}
                          view={ViewAbout}
                          edit={EditAbout}
                 />
 
-                <Article state={this.props.state.currentCv.summary}
+                <Article dynamic={this.props.state.currentCv.summary}
+                         static={this.props.state.static.summary}
                          keyName="summary"
                          helper={this.props.helper}
                          view={ViewSummary}
                          edit={EditSummary}
                 />
 
-                <Section state={this.props.state.currentCv.expertise}
+                <Section dynamic={this.props.state.currentCv.expertise}
+                         static={this.props.state.static.expertise}
                          keyName="expertise"
                          helper={this.props.helper}
                          view={ViewExpertise}
                          edit={EditExpertise}
                 />
 
-                <Section state={this.props.state.currentCv.projects}
+                <Section dynamic={this.props.state.currentCv.projects}
+                         static={this.props.state.static.projects}
                          keyName="projects"
                          helper={this.props.helper}
                          view={ViewProjects}
                          edit={EditProjects}
                 />
 
-                <Section state={this.props.state.currentCv.experiences}
+                <Section dynamic={this.props.state.currentCv.experiences}
+                         static={this.props.state.static.experiences}
                          keyName="experiences"
                          helper={this.props.helper}
                          view={ViewExperiences}
                          edit={EditExperiences}
                 />
 
-                <Section state={this.props.state.currentCv.educations}
+                <Section dynamic={this.props.state.currentCv.educations}
+                         static={this.props.state.static.educations}
                          keyName="educations"
                          helper={this.props.helper}
                          view={ViewEducations}
                          edit={EditEducations}
                 />
 
-                <Section state={this.props.state.currentCv.additional}
+                <Section dynamic={this.props.state.currentCv.additional}
+                         static={this.props.state.static.additional}
                          keyName="additional"
                          helper={this.props.helper}
                          view={ViewAdditional}
