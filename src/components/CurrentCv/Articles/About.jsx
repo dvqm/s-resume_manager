@@ -14,7 +14,7 @@ export class EditAbout extends React.Component {
     deletePhoto(e) {
         e.preventDefault();
 
-        const values = {...this.props.values};
+        const values = {...this.props.dynamic};
 
         values.photo = '';
 
@@ -25,102 +25,102 @@ export class EditAbout extends React.Component {
         return (
             <>
                 <label>
-                    <span>{this.props.fields.first}</span>
+                    <span>{this.props.static.first}</span>
                     <input type="text"
-                           value={this.props.values.first}
+                           value={this.props.dynamic.first}
                            onChange={(e) => this.handleChange(this.key, 'first', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.middle}</span>
+                    <span>{this.props.static.middle}</span>
                     <input type="text"
-                           value={this.props.values.middle}
+                           value={this.props.dynamic.middle}
                            onChange={(e) => this.handleChange(this.key, 'middle', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.last}</span>
+                    <span>{this.props.static.last}</span>
                     <input type="text"
-                           value={this.props.values.last}
+                           value={this.props.dynamic.last}
                            onChange={(e) => this.handleChange(this.key, 'last', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.photo}</span>
+                    <span>{this.props.static.photo}</span>
                     <input type="file"
                            onChange={(e) => this.handleChange(this.key, 'photo', e)}
                     />
 
-                    {this.props.values.photo &&
-                        <img src={URL.createObjectURL(this.props.values.photo)} alt="Applicant"/>}
+                    {this.props.dynamic.photo &&
+                        <img src={URL.createObjectURL(this.props.dynamic.photo)} alt="Applicant"/>}
                 </label>
 
-                {this.props.values.photo &&
+                {this.props.dynamic.photo &&
                     <button onClick={(e) => this.deletePhoto(e)}>Delete Photo</button>
                 }
 
                 <label>
-                    <span>{this.props.fields.position}</span>
+                    <span>{this.props.static.position}</span>
                     <input type="text"
-                           value={this.props.values.position}
+                           value={this.props.dynamic.position}
                            onChange={(e) => this.handleChange(this.key, 'position', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.city}</span>
+                    <span>{this.props.static.city}</span>
                     <input type="text"
-                           value={this.props.values.city}
+                           value={this.props.dynamic.city}
                            onChange={(e) => this.handleChange(this.key, 'city', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.state}</span>
+                    <span>{this.props.static.state}</span>
                     <input type="text"
-                           value={this.props.values.state}
+                           value={this.props.dynamic.state}
                            onChange={(e) => this.handleChange(this.key, 'state', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.country}</span>
+                    <span>{this.props.static.country}</span>
                     <input type="text"
-                           value={this.props.values.country}
+                           value={this.props.dynamic.country}
                            onChange={(e) => this.handleChange(this.key, 'country', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.email}</span>
+                    <span>{this.props.static.email}</span>
                     <input type="email"
-                           value={this.props.values.email}
+                           value={this.props.dynamic.email}
                            onChange={(e) => this.handleChange(this.key, 'email', e)}
                     />
                 </label>
                 <label>
-                    <span>{this.props.fields.tel}</span>
+                    <span>{this.props.static.tel}</span>
                     <input type="tel"
-                           value={this.props.values.tel}
+                           value={this.props.dynamic.tel}
                            onChange={(e) => this.handleChange(this.key, 'tel', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.linkedin}</span>
+                    <span>{this.props.static.linkedin}</span>
                     <input type="text"
-                           value={this.props.values.linkedin}
+                           value={this.props.dynamic.linkedin}
                            onChange={(e) => this.handleChange(this.key, 'linkedin', e)}
                     />
                 </label>
 
                 <label>
-                    <span>{this.props.fields.gitHub}</span>
+                    <span>{this.props.static.gitHub}</span>
                     <input type="text"
-                           value={this.props.values.gitHub}
+                           value={this.props.dynamic.gitHub}
                            onChange={(e) => this.handleChange(this.key, 'gitHub', e)}
                     />
                 </label>
@@ -133,28 +133,28 @@ export class ViewAbout extends React.Component {
     render() {
         return (<>
                 <h2>
-                    {this.props.values.first && `${this.props.values.first} `}
-                    {this.props.values.middle && `${this.props.values.middle} `}
-                    {this.props.values.last}
+                    {this.props.dynamic.first && `${this.props.dynamic.first} `}
+                    {this.props.dynamic.middle && `${this.props.dynamic.middle} `}
+                    {this.props.dynamic.last}
                 </h2>
 
-                <h2>{this.props.values.position}</h2>
+                <h2>{this.props.dynamic.position}</h2>
 
-                {this.props.values.photo &&
-                    <img src={URL.createObjectURL(this.props.values.photo)} alt="Applicant"/>
+                {this.props.dynamic.photo &&
+                    <img src={URL.createObjectURL(this.props.dynamic.photo)} alt="Applicant"/>
                 }
 
                 <address>
-                    {this.props.values.city && `${this.props.values.city}, `}
-                    {this.props.values.state && `${this.props.values.city}, `}
-                    {this.props.values.country}
+                    {this.props.dynamic.city && `${this.props.dynamic.city}, `}
+                    {this.props.dynamic.state && `${this.props.dynamic.city}, `}
+                    {this.props.dynamic.country}
                 </address>
 
                 <div>
-                    <a href={`tel:${this.props.values.tel}`}>{this.props.values.tel}</a>
-                    <a href={`mailto:${this.props.values.email}`}>{this.props.values.email}</a>
-                    <a href={this.props.values.linkedin}>{this.props.values.linkedin}</a>
-                    <a href={this.props.values.gitHub}>{this.props.values.gitHub}</a>
+                    <a href={`tel:${this.props.dynamic.tel}`}>{this.props.dynamic.tel}</a>
+                    <a href={`mailto:${this.props.dynamic.email}`}>{this.props.dynamic.email}</a>
+                    <a href={this.props.dynamic.linkedin}>{this.props.dynamic.linkedin}</a>
+                    <a href={this.props.dynamic.gitHub}>{this.props.dynamic.gitHub}</a>
                 </div>
             </>
         )

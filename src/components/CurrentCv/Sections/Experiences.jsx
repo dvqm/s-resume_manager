@@ -15,7 +15,7 @@ export class EditExperiences extends React.Component {
         return (
             <>
                 <label>
-                    <span>{this.props.fields.companyName}</span>
+                    <span>{this.props.static.companyName}</span>
                     <input type="text"
                            value={this.props.section.companyName}
                            onChange={(e) => this.handleChange(this.key, 'companyName', e, this.id)}
@@ -23,7 +23,7 @@ export class EditExperiences extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.startDate}</span>
+                    <span>{this.props.static.startDate}</span>
                     <input type="date"
                            value={this.props.section.startDate}
                            onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
@@ -31,7 +31,7 @@ export class EditExperiences extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.currentlyWork}</span>
+                    <span>{this.props.static.currentlyWork}</span>
                     <input type="checkbox"
                            checked={this.props.section.currentlyWork}
                            onChange={(e) => this.handleChange(this.key, 'currentlyWork', e, this.id)}
@@ -40,7 +40,7 @@ export class EditExperiences extends React.Component {
 
                 {!this.props.section.currentlyWork &&
                     <label>
-                        <span>{this.props.fields.endDate}</span>
+                        <span>{this.props.static.endDate}</span>
                         <input type="date"
                                value={this.props.section.endDate}
                                onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
@@ -49,7 +49,7 @@ export class EditExperiences extends React.Component {
                 }
 
                 <label>
-                    <span>{this.props.fields.name}</span>
+                    <span>{this.props.static.name}</span>
                     <input type="text"
                            value={this.props.section.title}
                            onChange={(e) => this.handleChange(this.key, 'title', e, this.id)}
@@ -57,7 +57,7 @@ export class EditExperiences extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.employmentType}</span>
+                    <span>{this.props.static.employmentType}</span>
                     <select value={this.props.section.employmentType}
                             onChange={(e) => this.handleChange(this.key, 'employmentType', e, this.id)}>
                         <option value="Full-time">Full-time</option>
@@ -67,7 +67,7 @@ export class EditExperiences extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.location}</span>
+                    <span>{this.props.static.location}</span>
                     <input type="text"
                            value={this.props.section.location}
                            onChange={(e) => this.handleChange(this.key, 'location', e, this.id)}
@@ -75,7 +75,7 @@ export class EditExperiences extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.contractType}</span>
+                    <span>{this.props.static.contractType}</span>
                     <select value={this.props.section.contractType}
                             onChange={(e) => this.handleChange(this.key, 'contractType', e, this.id)}>
                         <option value="On-site">On-site</option>
@@ -85,7 +85,7 @@ export class EditExperiences extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.description}</span>
+                    <span>{this.props.static.description}</span>
                     <textarea cols="50" rows="15"
                               value={this.props.section.description}
                               onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}>
@@ -108,15 +108,15 @@ export class ViewExperiences extends React.Component {
                 }
                 <h2>{this.props.section.title}</h2>
 
-                <span>{this.props.fields.employmentType}</span>
+                <span>{this.props.static.employmentType}</span>
                 <span>{this.props.section.employmentType}</span>
 
-                <h3>{this.props.section.location.length > 0 && this.props.fields.location}{this.props.section.location}</h3>
+                <h3>{this.props.section.location.length > 0 && this.props.static.location} {this.props.section.location}</h3>
 
-                <span>{this.props.fields.contractType}</span>
+                <span>{this.props.static.contractType}</span>
                 <span>{this.props.section.contractType}</span>
 
-                <span>{this.props.fields.description}</span>
+                <span>{this.props.static.description}</span>
                 <pre>{this.props.section.description}</pre>
             </>
         )

@@ -14,9 +14,9 @@ export class EditSummary extends React.Component {
     render() {
         return (
             <label>
-                <span>{this.props.fields.summary}</span>
+                <span>{this.props.static.summary}</span>
                 <textarea cols="30" rows="10"
-                          value={this.props.values.summary}
+                          value={this.props.dynamic.summary}
                           onChange={(e) => this.handleChange(this.key, 'summary', e)}>
                 </textarea>
             </label>
@@ -27,7 +27,7 @@ export class EditSummary extends React.Component {
 export class ViewSummary extends React.Component {
     render() {
         return (
-            <pre>{this.props.values.summary}</pre>
+            <pre>{this.props.dynamic.summary}</pre>
         )
     }
 }

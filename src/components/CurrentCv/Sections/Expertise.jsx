@@ -15,9 +15,9 @@ export class EditExpertise extends React.Component {
         return (
             <>
                 <label>
-                    <span>{this.props.fields.scope}</span>
+                    <span>{this.props.static.scope}</span>
                     <input type="text"
-                           placeholder={this.props.fields.placeholder}
+                           placeholder={this.props.static.placeholder}
                            value={this.props.section.scopeTitle}
                            onChange={(e) => this.handleChange(this.key, 'scopeTitle', e, this.id)}
                     />
@@ -25,9 +25,9 @@ export class EditExpertise extends React.Component {
 
 
                 <label>
-                    <span>{this.props.fields.labels}</span>
+                    <span>{this.props.static.labels}</span>
                     <textarea cols="40" rows="8"
-                              placeholder={this.props.fields.tip}
+                              placeholder={this.props.static.tip}
                               value={this.props.section.labels}
                               onChange={(e) => this.handleChange(this.key, 'labels', e, this.id)}
                     ></textarea>

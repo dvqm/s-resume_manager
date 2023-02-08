@@ -17,7 +17,7 @@ export class EditProjects extends React.Component {
         return (
             <>
                 <label>
-                    <span>{this.props.fields.name}</span>
+                    <span>{this.props.static.name}</span>
                     <input type="text"
                            value={this.props.section.title}
                            onChange={(e) => this.handleChange(this.key, 'title', e, this.id)}
@@ -26,7 +26,7 @@ export class EditProjects extends React.Component {
 
 
                 <label>
-                    <span>{this.props.fields.currentlyWork}</span>
+                    <span>{this.props.static.currentlyWork}</span>
                     <input type="checkbox"
                            checked={this.props.section.currentlyWork}
                            onChange={(e) => this.handleChange(this.key, 'currentlyWork', e, this.id)}
@@ -34,7 +34,7 @@ export class EditProjects extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.startDate}</span>
+                    <span>{this.props.static.startDate}</span>
                     <input type="date"
                            value={this.props.section.startDate}
                            onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
@@ -44,7 +44,7 @@ export class EditProjects extends React.Component {
                 {this.props.section.currentlyWork
                     ? ''
                     : <label>
-                        <span>{this.props.fields.endDate}</span>
+                        <span>{this.props.static.endDate}</span>
                         <input type="date"
                                value={this.props.section.endDate}
                                onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
@@ -53,7 +53,7 @@ export class EditProjects extends React.Component {
                 }
 
                 <label>
-                    <span>{this.props.fields.deployUrl}</span>
+                    <span>{this.props.static.deployUrl}</span>
                     <input type="text"
                            value={this.props.section.deployUrl}
                            onChange={(e) => this.handleChange(this.key, 'deployUrl', e, this.id)}
@@ -61,7 +61,7 @@ export class EditProjects extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.sourceUrl}</span>
+                    <span>{this.props.static.sourceUrl}</span>
                     <input type="text"
                            value={this.props.section.sourceUrl}
                            onChange={(e) => this.handleChange(this.key, 'sourceUrl', e, this.id)}
@@ -70,7 +70,7 @@ export class EditProjects extends React.Component {
 
 
                 <label>
-                    <span>{this.props.fields.technologies}</span>
+                    <span>{this.props.static.technologies}</span>
                     <textarea cols="40" rows="3"
                               value={this.props.section.technologies}
                               onChange={(e) => this.handleChange(this.key, 'technologies', e, this.id)}
@@ -78,7 +78,7 @@ export class EditProjects extends React.Component {
                 </label>
 
                 <label>
-                    <span>{this.props.fields.description}</span>
+                    <span>{this.props.static.description}</span>
                     <textarea cols="40" rows="10"
                               value={this.props.section.description}
                               onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
@@ -103,7 +103,7 @@ export class ViewProjects extends React.Component {
                         <span>{this.props.section.startDate}</span>
                         <span> - </span>
                         <span>{this.props.section.currentlyWork
-                            ? this.props.fields.currentlyWork
+                            ? this.props.static.currentlyWork
                             : this.props.section.endDate}
                         </span>
                     </span>
@@ -117,7 +117,7 @@ export class ViewProjects extends React.Component {
                         ? <a href={this.props.section.deployUrl}
                              target="_blank"
                              rel="noreferrer noopener">
-                            {this.props.fields.deployUrl}
+                            {this.props.static.deployUrl}
                         </a>
                         : ''
                     }
@@ -131,7 +131,7 @@ export class ViewProjects extends React.Component {
                             ? <a href={this.props.section.sourceUrl}
                                  target="_blank"
                                  rel="noreferrer noopener">
-                                {this.props.fields.sourceUrl}
+                                {this.props.static.sourceUrl}
                             </a>
                             : ''
                         }

@@ -15,7 +15,7 @@ export class EditAdditional extends React.Component {
         return (
             <>
                 <label>
-                    <span>{this.props.fields.name}</span>
+                    <span>{this.props.static.name}</span>
                     <input type="text"
                            value={this.props.section.name}
                            onChange={(e) => this.handleChange(this.key, 'name', e, this.id)}
@@ -24,7 +24,7 @@ export class EditAdditional extends React.Component {
 
 
                 <label>
-                    <span>{this.props.fields.description}</span>
+                    <span>{this.props.static.description}</span>
                     <textarea cols="40" rows="8"
                               value={this.props.section.description}
                               onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
