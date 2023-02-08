@@ -11,7 +11,7 @@ class Article extends React.Component {
         this.state = {
             keyName: props.keyName,
             editing: false,
-            original: props.state.values,
+            original: props.dynamic,
         }
 
         this.helper = props.helper;
@@ -24,7 +24,7 @@ class Article extends React.Component {
             edit() {
                 context.setState({
                     ...context.state,
-                    original: context.props.state.values,
+                    original: context.props.dynamic,
                     editing: true
                 });
             },
@@ -34,7 +34,7 @@ class Article extends React.Component {
 
                 context.setState({editing: false},
                     () => {
-                        const values = {...context.props.state.values};
+                        const values = {...context.props.dynamic};
 
                         context.helper.setState(context.state.keyName, values);
                     });
@@ -44,8 +44,8 @@ class Article extends React.Component {
             cancel(e) {
                 e.preventDefault();
 
-                context.setState({editing: false, values: context.state.original}, () => {
-                    context.helper.setState(context.state.keyName, context.state.values);
+                context.setState({editing: false}, () => {
+                    context.helper.setState(context.state.keyName, context.state.original);
                 });
 
             },
@@ -55,10 +55,10 @@ class Article extends React.Component {
 
                 context.setState({
                     ...context.state,
-                    original: context.props.state.values,
+                    original: context.props.dynamic,
                 });
 
-                const values = {...context.props.state.values};
+                const values = {...context.props.dynamic};
 
                 Object.keys(values).forEach((key) => {
                     if (typeof values[key] === 'boolean') values[key] = false;
@@ -73,9 +73,9 @@ class Article extends React.Component {
     render() {
         return (
             <>
-                {this.props.state.fields.title &&
+                {this.props.static.title &&
                     <>
-                        <h2>{this.props.state.fields.title}</h2>
+                        <h2>{this.props.static.title}</h2>
                         <hr/>
                     </>
                 }
@@ -90,17 +90,17 @@ class Article extends React.Component {
 
                         {React.createElement(this.edit, {
                             keyName: this.state.keyName,
-                            fields: this.props.state.fields,
-                            values: this.props.state.values,
+                            static: this.props.static,
+                            dynamic: this.props.dynamic,
                             helper: this.helper,
                         })}
                     </form>
                     :
                     <article>
-                        <button onClick={() => this.handle.edit()}>{this.props.state.fields.btnName}</button>
+                        <button onClick={() => this.handle.edit()}>{this.props.static.btnName}</button>
 
                         {React.createElement(this.view, {
-                            values: this.props.state.values,
+                            dynamic: this.props.dynamic,
                         })}
                     </article>
                 }

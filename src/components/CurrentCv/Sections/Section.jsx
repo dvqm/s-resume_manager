@@ -10,7 +10,7 @@ class Section extends React.Component {
 
         this.state = {
             keyName: props.keyName,
-            default: props.state.default,
+            default: props.static.default,
             originalArticles: [],
         };
 
@@ -31,12 +31,12 @@ class Section extends React.Component {
                 };
 
                 const newArticle = {
-                    ...context.props.state.default,
-                    id: setId(context.props.state.values),
+                    ...context.props.static.default,
+                    id: setId(context.props.dynamic),
                     init: true,
                 }
 
-                const section = [...context.props.state.values];
+                const section = [...context.props.dynamic];
 
                 section.push(newArticle);
 
@@ -61,7 +61,7 @@ class Section extends React.Component {
                     }
                 }
 
-                const newArticles = [...context.props.state.values];
+                const newArticles = [...context.props.dynamic];
 
                 const originalArticles = updateOriginalArticles(newArticles);
 
@@ -83,7 +83,7 @@ class Section extends React.Component {
             delete(e, id) {
                 e.preventDefault();
 
-                const newArticles = context.props.state.values.filter((article) => article.id !== id);
+                const newArticles = context.props.dynamic.filter((article) => article.id !== id);
 
                 context.helper.setState(context.state.keyName, newArticles);
             },
@@ -91,7 +91,7 @@ class Section extends React.Component {
             save(e, id) {
                 e.preventDefault();
 
-                const newArticles = context.props.state.values.map((article) => {
+                const newArticles = context.props.dynamic.map((article) => {
                     if (article.id === id) {
                         article.editing = false;
 
@@ -113,7 +113,7 @@ class Section extends React.Component {
             cancel(e, id) {
                 e.preventDefault();
 
-                let newArticles = [...context.props.state.values];
+                let newArticles = [...context.props.dynamic];
 
                 newArticles = newArticles.map(article => {
                     if (article.id === id) {
@@ -133,19 +133,19 @@ class Section extends React.Component {
     render() {
         return (
             <section>
-                <h2>{this.props.state.fields.title}</h2>
+                <h2>{this.props.static.title}</h2>
                 <hr/>
-                <button onClick={this.handle.add}>{this.props.state.fields.btnName}</button>
+                <button onClick={this.handle.add}>{this.props.static.btnName}</button>
                 {
-                    this.props.state.values.length > 0 &&
-                    this.props.state.values.map((section) => (
+                    this.props.dynamic.length > 0 &&
+                    this.props.dynamic.map((section) => (
                             section.editing
                                 ?
                                 <form key={section.id} onSubmit={(e) => this.handle.save(e, section.id)}>
 
                                     {React.createElement(this.edit, {
                                         keyName: this.props.keyName,
-                                        fields: this.props.state.fields,
+                                        static: this.props.static,
                                         section: section,
                                         helper: this.props.helper,
                                     })}
@@ -161,7 +161,7 @@ class Section extends React.Component {
                                 <article key={section.id}>
                                     {React.createElement(this.view, {
                                         keyName: this.props.keyName,
-                                        fields: this.props.state.fields,
+                                        static: this.props.static,
                                         section: section,
                                     })}
 
