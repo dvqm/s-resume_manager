@@ -1,15 +1,22 @@
-import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
 import {initializeApp} from 'firebase/app';
 import "firebase/database";
 import {
     GoogleAuthProvider,
     getAuth,
     signInWithPopup,
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-    sendPasswordResetEmail,
     signOut,
 } from "firebase/auth";
+
+import
+{
+    getDatabase,
+    ref,
+    child,
+    get,
+    set,
+    update,
+} from "firebase/database";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -25,99 +32,100 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-const db = firebase.database();
-
-const googleProvider = new GoogleAuthProvider();
+const db = getDatabase(app);
 
 const signInWithGoogle = async () => {
     try {
-        const response = await signInWithPopup(auth, googleProvider);
+        const googleProvider = new GoogleAuthProvider();
 
-        const user = response.user;
+        const result = await signInWithPopup(auth, googleProvider);
 
-        const usersRef = db.ref("users");
+        const user = result.user;
 
-        const userRef = usersRef.child(user.uid);
-        const userData = await userRef.once("value");
+        const snapshot = await get(child(ref(db), `users/${user.uid}`));
 
-        if (!userData.exists()) {
-            await userRef.set({
+        if (snapshot.exists()) {
+            await update(ref(db, `users/${user.uid}`), {
                 uid: user.uid,
                 name: user.displayName,
                 authProvider: "google",
                 email: user.email,
             });
+        } else {
+            console.info("No data available");
         }
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
-    }
-};
 
-const logInWithEmailAndPassword = async (email, password) => {
-    try {
-        await signInWithEmailAndPassword(auth, email, password);
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
-    }
-};
+    } catch (error) {
+        alert(error.message);
 
-const registerWithEmailAndPassword = async (name, email, password) => {
-    try {
-        const res = await createUserWithEmailAndPassword(auth, email, password);
-        const user = res.user;
-        const usersRef = db.ref("users");
-
-        const userRef = usersRef.child(user.uid);
-        await userRef.set({
-            uid: user.uid,
-            name,
-            authProvider: "local",
-            email,
-        });
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
-    }
-};
-
-const sendPasswordReset = async (email) => {
-    try {
-        await sendPasswordResetEmail(email);
-        alert("Password reset link sent!");
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
+        console.error('Error authenticating with Google:', error);
     }
 };
 
 const logout = () => {
-    signOut();
+    signOut(auth);
 };
 
-const addUser = async (user) => {
-    const newUserRef = db.ref(`users/${user.uid}`);
-    try {
-        await newUserRef.set({
-            uid: user.uid,
-            name: user.displayName,
-            authProvider: "google",
-            email: user.email,
-        });
-    } catch (err) {
-        console.error(err);
-        alert(err.message);
+const saveData = async (cvBase) => {
+    const user = await auth.currentUser;
+
+    const localTimestamp = new Date().getTime();
+
+    const setLs = () => localStorage.setItem('data', JSON.stringify({
+        cvBase,
+        localTimestamp,
+    }));
+
+    if (!user) setLs();
+    else
+        try {
+            setLs();
+
+            await set(ref(db, `users/${user.uid}/data/`), {cvBase, localTimestamp});
+        } catch (error) {
+            alert(error.message)
+
+            console.error('Error saving data to database:', error);
+        }
+}
+
+const getData = async () => {
+    const getLs = () => JSON.parse(localStorage.getItem('data'));
+
+    const user = await auth.currentUser;
+
+    if (!user) return getLs().cvBase;
+    else try {
+        const ls = getLs();
+
+        const snapshot = await get(child(ref(db), `users/${user.uid}/data/`));
+
+        if (ls.cvBase.length > 0 && snapshot.val()['cvBase'].length > 0) {
+            const lsTimestamp = ls.localTimestamp;
+
+            const snapshotTimestamp = snapshot.val()['localTimestamp'];
+
+            return snapshotTimestamp > lsTimestamp
+                ? snapshot.val()['cvBase']
+                : ls.cvBase;
+
+        } else if (snapshot.val()['cvBase'].length > 0) return snapshot.val()['cvBase'];
+        else if (ls.cvBase.length > 0) return ls.cvBase;
+        else return [];
+
+    } catch
+        (error) {
+        alert(error.message)
+
+        console.error('Something went wrong:', error);
     }
-};
+}
 
 export {
     auth,
     db,
     signInWithGoogle,
-    logInWithEmailAndPassword,
-    registerWithEmailAndPassword,
-    sendPasswordReset,
     logout,
-    addUser,
+    saveData,
+    getData,
 };
