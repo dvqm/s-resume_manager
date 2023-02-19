@@ -2,15 +2,177 @@ import {Component} from "react";
 import ContentsCv from "./components/ContentsCv/ContentsCv";
 import CurrentCv from "./components/CurrentCv/CurrentCv";
 import ManageCv from "./components/ManageCv/ManageCv";
-import {Login, Register, Reset, Dashboard} from "./components/Auxilary/Auth";
+import Auth from "./components/Auxilary/Auth";
+import {getData, saveData} from "./components/Auxilary/firebase";
 
 class App extends Component {
     constructor(props) {
         super(props);
 
+        const cvTemplate = {
+            cvName: '',
+            about: {
+                first: '',
+                middle: '',
+                last: '',
+                photo: '',
+                position: '',
+                city: '',
+                state: '',
+                country: '',
+                tel: '',
+                email: '',
+                linkedin: '',
+                gitHub: '',
+            },
+            summary: {
+                summary: '',
+            },
+            projects: [],
+            expertise: [],
+            experiences: [],
+            educations: [],
+            additional: [],
+        };
+
+        this.state = {
+            cvBase: [],
+            currentCv: {...cvTemplate},
+            secondary: {
+                new: true,
+            },
+            static: {
+                template: {...cvTemplate},
+                about: {
+                    btnName: 'Edit About',
+                    first: 'First Name: ',
+                    middle: 'Middle Name: ',
+                    last: 'Last Name: ',
+                    photo: 'Upload Photo: ',
+                    position: 'Applied Position: ',
+                    city: 'City: ',
+                    state: 'State: ',
+                    country: 'Country: ',
+                    tel: 'Phone number: ',
+                    email: 'Email: ',
+                    linkedin: 'Linkedin: ',
+                    gitHub: 'GitHub: ',
+                },
+                summary: {
+                    title: 'Summary',
+                    btnName: 'Edit Summary',
+                    summary: 'Summary',
+                },
+                projects: {
+                    title: 'My Projects',
+                    btnName: 'Add Project',
+                    name: 'Project name: ',
+                    currentlyWork: 'Currently Work',
+                    startDate: 'Start date: ',
+                    endDate: 'End date: ',
+                    deployUrl: 'View project',
+                    sourceUrl: 'Source code',
+                    technologies: 'Technologies: ',
+                    description: 'Description: ',
+                    default: {
+                        editing: true,
+                        title: '',
+                        currentlyWork: false,
+                        startDate: '',
+                        endDate: '',
+                        deployUrl: '',
+                        sourceUrl: '',
+                        technologies: '',
+                        description: '',
+                    },
+                },
+                expertise: {
+                    title: 'Area of Expertise',
+                    btnName: 'Add Area of Expertise',
+                    scope: 'Scope of expertise: ',
+                    labels: 'Labels: ',
+                    placeholder: 'Enter the scope name',
+                    tip: 'Enter your areas of expertise in the scope divided by comma and space',
+                    default: {
+                        editing: true,
+                        scopeTitle: '',
+                        labels: '',
+                    },
+                },
+                experiences: {
+                    title: 'Work Experience',
+                    btnName: 'Add Experience',
+                    name: 'Position name: ',
+                    employmentType: 'Employment type :',
+                    companyName: 'Company name: ',
+                    location: 'Location:',
+                    contractType: 'Contract type: ',
+                    currentlyWork: 'Currently work: ',
+                    startDate: 'Start date: ',
+                    endDate: 'End date: ',
+                    description: 'Description: ',
+                    default: {
+                        editing: true,
+                        title: '',
+                        employmentType: 'Full-time',
+                        companyName: '',
+                        location: '',
+                        contractType: 'On-site',
+                        currentlyWork: false,
+                        startDate: '',
+                        endDate: '',
+                        description: '',
+                    },
+                },
+                educations: {
+                    title: 'Education',
+                    btnName: 'Add Education',
+                    institution: 'Educational institution: ',
+                    degree: 'Degree: ',
+                    studyField: 'Field of study: ',
+                    startDate: 'Start date: ',
+                    endDate: 'End date (or expected): ',
+                    grade: 'Grade: ',
+                    activities: 'Activities and societies: ',
+                    description: 'Description: ',
+                    default: {
+                        editing: true,
+                        institution: '',
+                        degree: '',
+                        studyField: '',
+                        startDate: '',
+                        endDate: '',
+                        grade: '',
+                        activities: '',
+                        description: '',
+                    },
+                },
+                additional: {
+                    title: 'Additional information',
+                    btnName: 'Add Section',
+                    name: 'Title',
+                    description: 'Description: ',
+                    default: {
+                        editing: true,
+                        name: '',
+                        description: '',
+                    },
+                },
+            },
+        };
+
+        this.addMock = this.addMock.bind(this);
+
+        this.deleteMock = this.deleteMock.bind(this);
+
+        this.helper.setState = this.helper.setState.bind(this);
+    }
+
+    addMock() {
         const exampleCvBase = [
             {
                 cvName: 'John Doe Developer',
+                mock: 0,
                 about: {
                     first: 'John',
                     middle: '',
@@ -169,6 +331,7 @@ class App extends Component {
             },
             {
                 cvName: 'Bazz Lighter the Astronaut',
+                mock: 1,
                 about: {
                     first: 'Bazz',
                     middle: '',
@@ -341,6 +504,7 @@ class App extends Component {
             },
             {
                 cvName: 'Inter-Dimensional Scientist',
+                mock: 2,
                 about: {
                     first: 'Rick',
                     middle: '',
@@ -550,166 +714,30 @@ class App extends Component {
             },
         ];
 
-        // localStorage.setItem('cvBase', JSON.stringify(testCvBase));
+        const cvBase = [...this.state.cvBase];
 
-        const cvTemplate = {
-            cvName: '',
-            about: {
-                first: '',
-                middle: '',
-                last: '',
-                photo: '',
-                position: '',
-                city: '',
-                state: '',
-                country: '',
-                tel: '',
-                email: '',
-                linkedin: '',
-                gitHub: '',
-            },
-            summary: {
-                summary: '',
-            },
-            projects: [],
-            expertise: [],
-            experiences: [],
-            educations: [],
-            additional: [],
-        };
+        exampleCvBase.forEach((cv) => {
+            const index = cvBase.findIndex((resume) => resume.mock === cv.mock);
 
-        const cvBaseFromLocalStorage = JSON.parse(localStorage.getItem('cvBase'));
+            if (index !== -1) {
+                cvBase[index] = cv;
+            } else {
+                cvBase.unshift(cv);
+            }
+        });
 
-        const cvBase = cvBaseFromLocalStorage ? cvBaseFromLocalStorage : [];
+        this.helper.setState('cvBase', cvBase);
+        saveData(cvBase);
+    }
 
-        this.state = {
-            cvBase: cvBase,
-            currentCv: {...cvTemplate},
-            secondary: {
-                new: true,
-                history: [],
-            },
-            static: {
-                template: {...cvTemplate},
-                about: {
-                    btnName: 'Edit About',
-                    first: 'First Name: ',
-                    middle: 'Middle Name: ',
-                    last: 'Last Name: ',
-                    photo: 'Upload Photo: ',
-                    position: 'Applied Position: ',
-                    city: 'City: ',
-                    state: 'State: ',
-                    country: 'Country: ',
-                    tel: 'Phone number: ',
-                    email: 'Email: ',
-                    linkedin: 'Linkedin: ',
-                    gitHub: 'GitHub: ',
-                },
-                summary: {
-                    title: 'Summary',
-                    btnName: 'Edit Summary',
-                    summary: 'Summary',
-                },
-                projects: {
-                    title: 'My Projects',
-                    btnName: 'Add Project',
-                    name: 'Project name: ',
-                    currentlyWork: 'Currently Work',
-                    startDate: 'Start date: ',
-                    endDate: 'End date: ',
-                    deployUrl: 'View project',
-                    sourceUrl: 'Source code',
-                    technologies: 'Technologies: ',
-                    description: 'Description: ',
-                    default: {
-                        editing: true,
-                        title: '',
-                        currentlyWork: false,
-                        startDate: '',
-                        endDate: '',
-                        deployUrl: '',
-                        sourceUrl: '',
-                        technologies: '',
-                        description: '',
-                    },
-                },
-                expertise: {
-                    title: 'Area of Expertise',
-                    btnName: 'Add Area of Expertise',
-                    scope: 'Scope of expertise: ',
-                    labels: 'Labels: ',
-                    placeholder: 'Enter the scope name',
-                    tip: 'Enter your areas of expertise in the scope divided by comma and space',
-                    default: {
-                        editing: true,
-                        scopeTitle: '',
-                        labels: '',
-                    },
-                },
-                experiences: {
-                    title: 'Work Experience',
-                    btnName: 'Add Experience',
-                    name: 'Position name: ',
-                    employmentType: 'Employment type :',
-                    companyName: 'Company name: ',
-                    location: 'Location:',
-                    contractType: 'Contract type: ',
-                    currentlyWork: 'Currently work: ',
-                    startDate: 'Start date: ',
-                    endDate: 'End date: ',
-                    description: 'Description: ',
-                    default: {
-                        editing: true,
-                        title: '',
-                        employmentType: 'Full-time',
-                        companyName: '',
-                        location: '',
-                        contractType: 'On-site',
-                        currentlyWork: false,
-                        startDate: '',
-                        endDate: '',
-                        description: '',
-                    },
-                },
-                educations: {
-                    title: 'Education',
-                    btnName: 'Add Education',
-                    institution: 'Educational institution: ',
-                    degree: 'Degree: ',
-                    studyField: 'Field of study: ',
-                    startDate: 'Start date: ',
-                    endDate: 'End date (or expected): ',
-                    grade: 'Grade: ',
-                    activities: 'Activities and societies: ',
-                    description: 'Description: ',
-                    default: {
-                        editing: true,
-                        institution: '',
-                        degree: '',
-                        studyField: '',
-                        startDate: '',
-                        endDate: '',
-                        grade: '',
-                        activities: '',
-                        description: '',
-                    },
-                },
-                additional: {
-                    title: 'Additional information',
-                    btnName: 'Add Section',
-                    name: 'Title',
-                    description: 'Description: ',
-                    default: {
-                        editing: true,
-                        name: '',
-                        description: '',
-                    },
-                },
-            },
-        };
+    deleteMock() {
+        const cvBase = [...this.state.cvBase];
 
-        this.helper.setState = this.helper.setState.bind(this);
+        const updated = cvBase.filter((cv) => !cv.hasOwnProperty('mock'));
+
+        this.helper.setState('cvBase', updated);
+
+        saveData(updated);
     }
 
     helper = {
@@ -768,7 +796,7 @@ class App extends Component {
             }
         },
 
-        setState: (...extraParams) => {
+        setState: (...params) => {
             const isNew = () => {
                 return !this.state.cvBase.some(
                     cv => cv.cvName === this.state.currentCv.cvName
@@ -776,11 +804,14 @@ class App extends Component {
             };
 
             let i = 0;
-            const recursiveSetState = () => {
-                if (i >= extraParams.length) return;
 
-                const key = extraParams[i];
-                const values = extraParams[i + 1];
+            const recursiveSetState = () => {
+                if (i >= params.length) return;
+
+                const key = params[i];
+
+                const values = params[i + 1];
+
                 i += 2;
 
                 switch (key) {
@@ -813,10 +844,7 @@ class App extends Component {
                                     }
                                 });
 
-                                if (key === 'cvBase') localStorage.setItem(
-                                    'cvBase',
-                                    JSON.stringify(this.state.cvBase),
-                                );
+                                if (key === 'cvBase') saveData(this.state.cvBase);
 
                                 recursiveSetState();
                             }
@@ -851,22 +879,30 @@ class App extends Component {
         }
     }
 
+    componentDidMount() {
+        const retrieveData = async () => {
+            const cvBase = await getData();
+
+            this.helper.setState('cvBase', cvBase);
+        }
+
+        retrieveData();
+    }
+
     render() {
         return (
             <div className="resume">
+                <Auth helper={this.helper}/>
+
+                <button onClick={this.addMock}>Use Mock Data</button>
+
+                <button onClick={this.deleteMock}>Delete Mock Data</button>
+
                 <ContentsCv state={this.state} helper={this.helper}/>
 
                 <ManageCv state={this.state} helper={this.helper}/>
 
                 <CurrentCv state={this.state} helper={this.helper}/>
-
-                <Login history={this.state.secondary.history} helper={this.helper}/>
-
-                <Register history={this.state.secondary.history} helper={this.helper}/>
-
-                <Reset history={this.state.secondary.history} helper={this.helper}/>
-
-                <Dashboard history={this.state.secondary.history} helper={this.helper}/>
             </div>
         );
     }
