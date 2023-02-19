@@ -140,9 +140,6 @@ class ManageCv extends React.Component {
                 }
             },
 
-            toDrive: () => {
-            },
-
             rename: () => {
                 const {cvName} = {...this.props.state.currentCv};
 
@@ -205,7 +202,7 @@ class ManageCv extends React.Component {
                 const updatedCvBase = cvBase.filter((cv) => cv.cvName !== cvName);
 
                 cvBase.length === updatedCvBase.length
-                    && cvBase.every((element, index) => element === updatedCvBase[index]);
+                && cvBase.every((element, index) => element === updatedCvBase[index]);
 
                 context.helper.setState('cvBase', updatedCvBase, 'currentCv', template);
             },
@@ -251,7 +248,6 @@ class ManageCv extends React.Component {
                     !this.props.state.secondary.new
                     && <>
                         <button onClick={this.handle.new}>New</button>
-                        <button onClick={this.handle.toDrive}>Save to Drive</button>
                         <button onClick={this.handle.toPdf}>Save to pdf</button>
                         <button onClick={this.handle.delete}>Delete</button>
                         <button onClick={this.handle.duplicate}>Duplicate</button>
