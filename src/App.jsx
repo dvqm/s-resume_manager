@@ -4,6 +4,7 @@ import CurrentCv from "./components/CurrentCv";
 import ManageCv from "./components/ManageCv";
 import Auth from "./database/Auth";
 import {getData, saveData} from "./database/firebase";
+import Button from "@material-ui/core/Button";
 
 class App extends Component {
     constructor(props) {
@@ -745,7 +746,7 @@ class App extends Component {
             const getEventValue = () => {
                 if (e.target.type === 'checkbox') {
                     return e.target.checked;
-                } else if (e.target.type === 'file') {
+                } else if (field === 'photo') {
                     return e.target.files[0];
                 } else {
                     return e.target.value;
@@ -894,9 +895,9 @@ class App extends Component {
             <div className="resume">
                 <Auth helper={this.helper}/>
 
-                <button onClick={this.addMock}>Use Mock Data</button>
+                <Button variant="contained" color="primary" size="small" onClick={this.addMock}>Use Mock Data</Button>
 
-                <button onClick={this.deleteMock}>Delete Mock Data</button>
+                <Button variant="contained" color="primary" size="small" onClick={this.deleteMock}>Delete Mock Data</Button>
 
                 <ContentsCv state={this.state} helper={this.helper}/>
 
