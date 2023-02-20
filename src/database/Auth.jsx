@@ -6,6 +6,7 @@ import {
     signInWithGoogle,
     logout, getData,
 } from './firebase';
+import Button from "@material-ui/core/Button";
 
 class Auth extends React.Component {
     constructor(props) {
@@ -65,7 +66,7 @@ class Auth extends React.Component {
                                  setToState={this.setToState}
                     />
                     : <>
-                        <button onClick={this.signIn}>Connect with Google</button>
+                        <Button variant="contained" color="primary" size="small" onClick={this.signIn}>Connect with Google</Button>
                     </>
                 }
             </>
@@ -88,7 +89,7 @@ class Dashboard extends React.Component {
                         <img src={this.props.state.user.photoURL} alt='User'/>
                         <span>Hello {this.props.state.user.displayName}</span>
                         <span>{this.props.state.user.email}</span>
-                        <button onClick={this.logout}>Logout</button>
+                        <Button variant="contained" color="primary" size="small" onClick={this.logout}>Logout</Button>
                     </>
                 }
             </p>

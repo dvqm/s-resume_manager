@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import {Input} from "@material-ui/core";
 
 class ManageCv extends React.Component {
     constructor(props) {
@@ -240,18 +241,18 @@ class ManageCv extends React.Component {
                 {this.state.save ? (
                     <EditName state={this.props.state} handle={this.handle}/>
                 ) : (
-                    <Button variant="contained" color="primary" onClick={() => this.handle.save('cvName', true)}>
+                    <Button variant="contained" color="primary" size="small" onClick={() => this.handle.save('cvName', true)}>
                     Save / Rename
                     </Button>
                 )}
-                <Button variant="contained" color="primary" onClick={this.handle.cancel}>Cancel</Button>
+                <Button variant="contained" color="primary" size="small" onClick={this.handle.cancel}>Cancel</Button>
                 {
                     !this.props.state.secondary.new
                     && <>
-                        <button onClick={this.handle.new}>New</button>
-                        <button onClick={this.handle.toPdf}>Save to pdf</button>
-                        <button onClick={this.handle.delete}>Delete</button>
-                        <button onClick={this.handle.duplicate}>Duplicate</button>
+                        <Button variant="outlined" color="primary" size="small" onClick={this.handle.new}>New</Button>
+                        <Button variant="outlined" color="primary" size="small" onClick={this.handle.toPdf}>Save to pdf</Button>
+                        <Button variant="outlined" color="primary" size="small" onClick={this.handle.delete}>Delete</Button>
+                        <Button variant="outlined" color="primary" size="small" onClick={this.handle.duplicate}>Duplicate</Button>
                     </>
                 }
             </>
@@ -278,22 +279,23 @@ class EditName extends React.Component {
 
     render() {
         return (
-            <p>
+            <div>
                 <label>
                     <span>Enter The Name</span>
-                    <input
-                        type='text'
+                    <Input variant="contained" color="primary" size="small"
+
+                           type='text'
                         value={this.props.state.currentCv.cvName}
                         onChange={(e) => this.change(e, 'cvName')}
                     />
                 </label>
-                <button onClick={() => this.save('cvName', false)}>Save</button>
+                <Button variant="contained" color="primary" size="small" onClick={() => this.save('cvName', false)}>Save</Button>
 
                 {!this.props.state.secondary.new
-                    && <button onClick={() => this.rename()}>Rename</button>}
+                    && <Button variant="contained" color="primary" size="small" onClick={() => this.rename()}>Rename</Button>}
 
-                <button onClick={() => this.cancel('save')}>Cancel</button>
-            </p>
+                <Button variant="contained" color="primary" size="small" onClick={() => this.cancel('save')}>Cancel</Button>
+            </div>
         );
     }
 }
