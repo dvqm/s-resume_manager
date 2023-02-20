@@ -1,13 +1,13 @@
 import React from "react";
-import Article from "./Articles/Article";
-import {EditAbout, ViewAbout} from "./Articles/About";
-import {EditSummary, ViewSummary} from "./Articles/Summary";
-import Section from "./Sections/Section";
-import {EditExpertise, ViewExpertise} from "./Sections/Expertise";
-import {EditProjects, ViewProjects} from "./Sections/Projects";
-import {EditExperiences, ViewExperiences} from "./Sections/Experiences";
-import {EditEducations, ViewEducations} from "./Sections/Educations";
-import {EditAdditional, ViewAdditional} from "./Sections/Additional";
+import Article from "./CurrentCv/Article";
+import {EditAbout, ViewAbout} from "./CurrentCv/Articles/About";
+import {EditSummary, ViewSummary} from "./CurrentCv/Articles/Summary";
+import Section from "./CurrentCv/Section";
+import {EditExpertise, ViewExpertise} from "./CurrentCv/Sections/Expertise";
+import {EditProjects, ViewProjects} from "./CurrentCv/Sections/Projects";
+import {EditExperiences, ViewExperiences} from "./CurrentCv/Sections/Experiences";
+import {EditEducations, ViewEducations} from "./CurrentCv/Sections/Educations";
+import {EditAdditional, ViewAdditional} from "./CurrentCv/Sections/Additional";
 
 class CurrentCv extends React.Component {
     render() {

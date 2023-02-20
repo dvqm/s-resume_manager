@@ -85,7 +85,7 @@ class Dashboard extends React.Component {
             <p>
                 {this.props.state.user !== null &&
                     <>
-                        <img src={this.props.state.user.photoURL} alt='user profile picture'/>
+                        <img src={this.props.state.user.photoURL} alt='User'/>
                         <span>Hello {this.props.state.user.displayName}</span>
                         <span>{this.props.state.user.email}</span>
                         <button onClick={this.logout}>Logout</button>

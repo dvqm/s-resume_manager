@@ -1,9 +1,9 @@
 import {Component} from "react";
-import ContentsCv from "./components/ContentsCv/ContentsCv";
-import CurrentCv from "./components/CurrentCv/CurrentCv";
-import ManageCv from "./components/ManageCv/ManageCv";
-import Auth from "./components/Auxilary/Auth";
-import {getData, saveData} from "./components/Auxilary/firebase";
+import ContentsCv from "./components/ContentsCv";
+import CurrentCv from "./components/CurrentCv";
+import ManageCv from "./components/ManageCv";
+import Auth from "./database/Auth";
+import {getData, saveData} from "./database/firebase";
 
 class App extends Component {
     constructor(props) {
