@@ -1,4 +1,6 @@
 import React from 'react';
+import Button from "@material-ui/core/Button";
+import {FormGroup} from "@material-ui/core";
 
 class Section extends React.Component {
     constructor(props) {
@@ -135,7 +137,8 @@ class Section extends React.Component {
             <section>
                 <h2>{this.props.static.title}</h2>
                 <hr/>
-                <button onClick={this.handle.add}>{this.props.static.btnName}</button>
+                <Button variant="outlined" color="secondary" size="small"
+                        onClick={this.handle.add}>{this.props.static.btnName}</Button>
                 {
                     this.props.dynamic.length > 0 &&
                     this.props.dynamic.map((section) => (
@@ -143,19 +146,27 @@ class Section extends React.Component {
                                 ?
                                 <form key={section.id} onSubmit={(e) => this.handle.save(e, section.id)}>
 
-                                    {React.createElement(this.edit, {
-                                        keyName: this.props.keyName,
-                                        static: this.props.static,
-                                        section: section,
-                                        helper: this.props.helper,
-                                    })}
+                                    <FormGroup>
 
-                                    <button type="submit">Save</button>
+                                        {React.createElement(this.edit, {
+                                            keyName: this.props.keyName,
+                                            static: this.props.static,
+                                            section: section,
+                                            helper: this.props.helper,
+                                        })}
 
-                                    {!section.init &&
-                                        <button onClick={(e) => this.handle.cancel(e, section.id)}>Cancel</button>
-                                    }
-                                    <button onClick={(e) => this.handle.delete(e, section.id)}>Delete</button>
+                                        <Button variant="outlined" color="secondary" size="small"
+                                                type="submit">Save</Button>
+
+                                        {!section.init &&
+                                            <Button variant="outlined" color="secondary" size="small"
+                                                    onClick={(e) => this.handle.cancel(e, section.id)}>Cancel</Button>
+                                        }
+                                        <Button variant="outlined" color="secondary" size="small"
+                                                onClick={(e) => this.handle.delete(e, section.id)}>Delete</Button>
+
+                                    </FormGroup>
+
                                 </form>
                                 :
                                 <article key={section.id}>
@@ -165,7 +176,8 @@ class Section extends React.Component {
                                         section: section,
                                     })}
 
-                                    <button onClick={() => this.handle.edit(section.id)}>Edit</button>
+                                    <Button variant="outlined" color="secondary" size="small"
+                                            onClick={() => this.handle.edit(section.id)}>Edit</Button>
                                 </article>
                         )
                     )

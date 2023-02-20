@@ -1,4 +1,6 @@
 import React from "react";
+import Button from "@material-ui/core/Button";
+import {FormGroup} from "@material-ui/core";
 
 class Article extends React.Component {
     constructor(props) {
@@ -82,22 +84,27 @@ class Article extends React.Component {
 
                 {this.state.editing ?
                     <form onSubmit={(e) => this.handle.save(e)}>
-                        <button type="submit">Save</button>
+                        <FormGroup>
+                            <Button variant="outlined" color="secondary" size="small" type="submit">Save</Button>
 
-                        <button onClick={(e) => this.handle.cancel(e)}>Cancel</button>
+                            <Button variant="outlined" color="secondary" size="small"
+                                    onClick={(e) => this.handle.cancel(e)}>Cancel</Button>
 
-                        <button onClick={(e) => this.handle.clear(e)}>Clear</button>
+                            <Button variant="outlined" color="secondary" size="small"
+                                    onClick={(e) => this.handle.clear(e)}>Clear</Button>
 
-                        {React.createElement(this.edit, {
-                            keyName: this.state.keyName,
-                            static: this.props.static,
-                            dynamic: this.props.dynamic,
-                            helper: this.helper,
-                        })}
+                            {React.createElement(this.edit, {
+                                keyName: this.state.keyName,
+                                static: this.props.static,
+                                dynamic: this.props.dynamic,
+                                helper: this.helper,
+                            })}
+                        </FormGroup>
                     </form>
                     :
                     <article>
-                        <button onClick={() => this.handle.edit()}>{this.props.static.btnName}</button>
+                        <Button variant="outlined" color="secondary" size="small"
+                                onClick={() => this.handle.edit()}>{this.props.static.btnName}</Button>
 
                         {React.createElement(this.view, {
                             dynamic: this.props.dynamic,
