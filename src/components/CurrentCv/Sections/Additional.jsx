@@ -1,4 +1,5 @@
 import React from "react";
+import {FormControl, FormLabel, Input, TextareaAutosize, Typography} from "@material-ui/core";
 
 export class EditAdditional extends React.Component {
     constructor(props) {
@@ -14,23 +15,23 @@ export class EditAdditional extends React.Component {
     render() {
         return (
             <>
-                <label>
-                    <span>{this.props.static.name}</span>
-                    <input type="text"
-                           value={this.props.section.name}
-                           onChange={(e) => this.handleChange(this.key, 'name', e, this.id)}
+                <FormControl fullWidth>
+                    <FormLabel>{this.props.static.name}</FormLabel>
+                    <Input
+                        type="text"
+                        value={this.props.section.name}
+                        onChange={(e) => this.handleChange(this.key, 'name', e, this.id)}
                     />
-                </label>
+                </FormControl>
 
-
-                <label>
-                    <span>{this.props.static.description}</span>
-                    <textarea cols="40" rows="8"
-                              value={this.props.section.description}
-                              onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
-                    ></textarea>
-                </label>
-
+                <FormControl fullWidth>
+                    <FormLabel>{this.props.static.description}</FormLabel>
+                    <TextareaAutosize
+                        minRows={8}
+                        value={this.props.section.description}
+                        onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
+                    />
+                </FormControl>
             </>
         )
     }
@@ -40,8 +41,13 @@ export class ViewAdditional extends React.Component {
     render() {
         return (
             <>
-                <h3>{this.props.section.name}</h3>
-                <pre>{this.props.section.description}</pre>
+                <Typography variant="h5">
+                    {this.props.section.name}
+                </Typography>
+
+                <Typography variant="body1" component="pre">
+                    {this.props.section.description}
+                </Typography>
             </>
         )
     }

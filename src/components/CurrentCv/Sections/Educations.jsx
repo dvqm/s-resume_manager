@@ -1,4 +1,5 @@
 import React from "react";
+import {FormControl, Input, InputLabel, TextareaAutosize, Typography} from "@material-ui/core";
 
 
 export class EditEducations extends React.Component {
@@ -15,69 +16,69 @@ export class EditEducations extends React.Component {
     render() {
         return (
             <>
-                <label>
-                    <span>{this.props.static.institution}</span>
-                    <input type="text"
+                <FormControl fullWidth>
+                    <InputLabel>{this.props.static.institution}</InputLabel>
+                    <Input type="text"
                            value={this.props.section.institution}
                            onChange={(e) => this.handleChange(this.key, 'institution', e, this.id)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.degree}</span>
-                    <input type="text"
+                <FormControl fullWidth>
+                    <InputLabel>{this.props.static.degree}</InputLabel>
+                    <Input type="text"
                            value={this.props.section.degree}
                            onChange={(e) => this.handleChange(this.key, 'degree', e, this.id)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.studyField}</span>
-                    <input type="text"
+                <FormControl fullWidth>
+                    <InputLabel>{this.props.static.studyField}</InputLabel>
+                    <Input type="text"
                            value={this.props.section.studyField}
                            onChange={(e) => this.handleChange(this.key, 'studyField', e, this.id)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.startDate}</span>
-                    <input type="date"
+                <FormControl fullWidth>
+                    <InputLabel>{this.props.static.startDate}</InputLabel>
+                    <Input type="date"
                            value={this.props.section.startDate}
                            onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.endDate}</span>
-                    <input type="date"
+                <FormControl fullWidth>
+                    <InputLabel>{this.props.static.endDate}</InputLabel>
+                    <Input type="date"
                            value={this.props.section.endDate}
                            onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.grade}</span>
-                    <input type="text"
+                <FormControl fullWidth>
+                    <InputLabel>{this.props.static.grade}</InputLabel>
+                    <Input type="text"
                            value={this.props.section.grade}
                            onChange={(e) => this.handleChange(this.key, 'grade', e, this.id)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.activities}</span>
-                    <textarea cols="40" rows="3"
-                              value={this.props.section.activities}
-                              onChange={(e) => this.handleChange(this.key, 'activities', e, this.id)}
-                    ></textarea>
-                </label>
+                <FormControl fullWidth>
+                    <InputLabel>{this.props.static.activities}</InputLabel>
+                    <TextareaAutosize minRows="3"
+                                      value={this.props.section.activities}
+                                      onChange={(e) => this.handleChange(this.key, 'activities', e, this.id)}
+                    />
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.description}</span>
-                    <textarea cols="40" rows="3"
-                              value={this.props.section.description}
-                              onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
-                    ></textarea>
-                </label>
+                <FormControl fullWidth>
+                    <InputLabel>{this.props.static.description}</InputLabel>
+                    <TextareaAutosize minRows="3"
+                                      value={this.props.section.description}
+                                      onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
+                    />
+                </FormControl>
             </>
         )
     }
@@ -87,39 +88,35 @@ export class ViewEducations extends React.Component {
     render() {
         return (
             <>
-                <h1>{this.props.section.institution}</h1>
-                <span>
-                    <span>{this.props.section.degree}</span>
-                    <span> &#183; </span>
-                    <span>{this.props.section.studyField}</span>
-                </span>
-
-                <span>
-                    <span>{this.props.section.startDate}</span>
-                    <span> - </span>
-                    <span>{this.props.section.endDate}</span>
-                </span>
-
-                {this.props.section.grade &&
-                    <>
-                        <span>{this.props.static.grade}</span>
-                        <span>{this.props.section.grade}</span>
-                    </>
-                }
-
-                {this.props.section.activities &&
-                    <>
-                        <span>{this.props.static.activities}</span>
-                        <pre>{this.props.section.activities}</pre>
-                    </>
-                }
-
-                {this.props.section.description &&
-                    <>
-                        <span>Description: </span>
-                        <pre>{this.props.section.description}</pre>
-                    </>
-                }
+            <Typography variant="h5">{this.props.section.institution}</Typography>
+            <Typography>
+                <Typography component="span">{this.props.section.degree}</Typography>
+                <Typography component="span"> &#183; </Typography>
+                <Typography component="span">{this.props.section.studyField}</Typography>
+            </Typography>
+            <Typography>
+                <Typography component="span">{this.props.section.startDate}</Typography>
+                <Typography component="span"> - </Typography>
+                <Typography component="span">{this.props.section.endDate}</Typography>
+            </Typography>
+            {this.props.section.grade &&
+                <Typography>
+                    <Typography component="span">{this.props.static.grade}</Typography>
+                    <Typography component="span">{this.props.section.grade}</Typography>
+                </Typography>
+            }
+            {this.props.section.activities &&
+                <>
+                        <Typography component="span">{this.props.static.activities}</Typography>
+                        <Typography component="pre">{this.props.section.activities}</Typography>
+                </>
+            }
+            {this.props.section.description &&
+                <>
+                    <Typography variant="body1">Description: </Typography>
+                    <Typography variant="body1" component="pre">{this.props.section.description}</Typography>
+                </>
+            }
             </>
         )
     }
