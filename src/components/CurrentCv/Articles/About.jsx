@@ -1,4 +1,6 @@
 import React from "react";
+import {Box, CardMedia, FormControl, Input, InputLabel, Link, Typography} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
 export class EditAbout extends React.Component {
     constructor(props) {
@@ -24,106 +26,124 @@ export class EditAbout extends React.Component {
     render() {
         return (
             <>
-                <label>
-                    <span>{this.props.static.first}</span>
-                    <input type="text"
+                {}
+                <FormControl>
+                    <InputLabel>{this.props.static.first}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.first}
                            onChange={(e) => this.handleChange(this.key, 'first', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.middle}</span>
-                    <input type="text"
+                <FormControl>
+                    <InputLabel>{this.props.static.middle}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.middle}
                            onChange={(e) => this.handleChange(this.key, 'middle', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.last}</span>
-                    <input type="text"
+                <FormControl>
+                    <InputLabel>{this.props.static.last}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.last}
                            onChange={(e) => this.handleChange(this.key, 'last', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.photo}</span>
-                    <input type="file"
+                <FormControl>
+                    <input accept="image/*"
+                           style={{display: 'none'}}
+                           id="contained-button-file"
+                           type="file"
                            onChange={(e) => this.handleChange(this.key, 'photo', e)}
                     />
 
+                    <label htmlFor="contained-button-file">
+                        <Button variant="outlined" color="secondary" size="small" component="span">
+                            Pick a Photo
+                        </Button>
+                    </label>
+
                     {this.props.dynamic.photo &&
-                        <img src={URL.createObjectURL(this.props.dynamic.photo)} alt="Applicant"/>}
-                </label>
+                        <>
+                            <CardMedia
+                                component="img"
+                                image={URL.createObjectURL(this.props.dynamic.photo)}
+                                alt="Applicant"
+                            />
 
-                {this.props.dynamic.photo &&
-                    <button onClick={(e) => this.deletePhoto(e)}>Delete Photo</button>
-                }
+                            <Button variant="outlined" color="secondary" size="small"
+                                    onClick={(e) => this.deletePhoto(e)}>Delete
+                                Photo</Button>
+                        </>
+                    }
 
-                <label>
-                    <span>{this.props.static.position}</span>
-                    <input type="text"
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel>{this.props.static.position}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.position}
                            onChange={(e) => this.handleChange(this.key, 'position', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.city}</span>
-                    <input type="text"
+                <FormControl>
+                    <InputLabel>{this.props.static.city}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.city}
                            onChange={(e) => this.handleChange(this.key, 'city', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.state}</span>
-                    <input type="text"
+                <FormControl>
+                    <InputLabel>{this.props.static.state}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.state}
                            onChange={(e) => this.handleChange(this.key, 'state', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.country}</span>
-                    <input type="text"
+                <FormControl>
+                    <InputLabel>{this.props.static.country}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.country}
                            onChange={(e) => this.handleChange(this.key, 'country', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.email}</span>
-                    <input type="email"
+                <FormControl>
+                    <InputLabel>{this.props.static.email}</InputLabel>
+                    <Input type="email"
                            value={this.props.dynamic.email}
                            onChange={(e) => this.handleChange(this.key, 'email', e)}
                     />
-                </label>
-                <label>
-                    <span>{this.props.static.tel}</span>
-                    <input type="tel"
+                </FormControl>
+
+                <FormControl>
+                    <InputLabel>{this.props.static.tel}</InputLabel>
+                    <Input type="tel"
                            value={this.props.dynamic.tel}
                            onChange={(e) => this.handleChange(this.key, 'tel', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.linkedin}</span>
-                    <input type="text"
+                <FormControl>
+                    <InputLabel>{this.props.static.linkedin}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.linkedin}
                            onChange={(e) => this.handleChange(this.key, 'linkedin', e)}
                     />
-                </label>
+                </FormControl>
 
-                <label>
-                    <span>{this.props.static.gitHub}</span>
-                    <input type="text"
+                <FormControl>
+                    <InputLabel>{this.props.static.gitHub}</InputLabel>
+                    <Input type="text"
                            value={this.props.dynamic.gitHub}
                            onChange={(e) => this.handleChange(this.key, 'gitHub', e)}
                     />
-                </label>
+                </FormControl>
             </>
         )
     }
@@ -131,31 +151,36 @@ export class EditAbout extends React.Component {
 
 export class ViewAbout extends React.Component {
     render() {
-        return (<>
-                <h2>
+        return (
+            <>
+                <Typography variant="h5">
                     {this.props.dynamic.first && `${this.props.dynamic.first} `}
                     {this.props.dynamic.middle && `${this.props.dynamic.middle} `}
                     {this.props.dynamic.last}
-                </h2>
+                </Typography>
 
-                <h2>{this.props.dynamic.position}</h2>
+                <Typography variant="h5">{this.props.dynamic.position}</Typography>
 
-                {this.props.dynamic.photo &&
-                    <img src={URL.createObjectURL(this.props.dynamic.photo)} alt="Applicant"/>
-                }
+                {this.props.dynamic.photo && (
+                    <CardMedia
+                        component="img"
+                        image={URL.createObjectURL(this.props.dynamic.photo)}
+                        alt="Applicant"
+                    />
+                )}
 
                 <address>
                     {this.props.dynamic.city && `${this.props.dynamic.city}, `}
-                    {this.props.dynamic.state && `${this.props.dynamic.city}, `}
+                    {this.props.dynamic.state && `${this.props.dynamic.state}, `}
                     {this.props.dynamic.country}
                 </address>
 
-                <div>
-                    <a href={`tel:${this.props.dynamic.tel}`}>{this.props.dynamic.tel}</a>
-                    <a href={`mailto:${this.props.dynamic.email}`}>{this.props.dynamic.email}</a>
-                    <a href={this.props.dynamic.linkedin}>{this.props.dynamic.linkedin}</a>
-                    <a href={this.props.dynamic.gitHub}>{this.props.dynamic.gitHub}</a>
-                </div>
+                <Box display="flex" justifyContent="space-between">
+                    <Link href={`tel:${this.props.dynamic.tel}`}>{this.props.dynamic.tel}</Link>
+                    <Link href={`mailto:${this.props.dynamic.email}`}>{this.props.dynamic.email}</Link>
+                    <Link href={this.props.dynamic.linkedin}>{this.props.dynamic.linkedin}</Link>
+                    <Link href={this.props.dynamic.gitHub}>{this.props.dynamic.gitHub}</Link>
+                </Box>
             </>
         )
     }
