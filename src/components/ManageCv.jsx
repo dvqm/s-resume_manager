@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 
 class ManageCv extends React.Component {
     constructor(props) {
@@ -239,11 +240,11 @@ class ManageCv extends React.Component {
                 {this.state.save ? (
                     <EditName state={this.props.state} handle={this.handle}/>
                 ) : (
-                    <button onClick={() => this.handle.save('cvName', true)}>
-                        Save / Rename
-                    </button>
+                    <Button variant="contained" color="primary" onClick={() => this.handle.save('cvName', true)}>
+                    Save / Rename
+                    </Button>
                 )}
-                <button onClick={this.handle.cancel}>Cancel</button>
+                <Button variant="contained" color="primary" onClick={this.handle.cancel}>Cancel</Button>
                 {
                     !this.props.state.secondary.new
                     && <>
