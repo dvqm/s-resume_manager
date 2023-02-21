@@ -1,4 +1,5 @@
 import React from "react";
+import {List, ListItem, TextField, Typography} from "@mui/material";
 
 export class EditExpertise extends React.Component {
     constructor(props) {
@@ -14,25 +15,22 @@ export class EditExpertise extends React.Component {
     render() {
         return (
             <>
-                <label>
-                    <span>{this.props.static.scope}</span>
-                    <input type="text"
-                           placeholder={this.props.static.placeholder}
-                           value={this.props.section.scopeTitle}
-                           onChange={(e) => this.handleChange(this.key, 'scopeTitle', e, this.id)}
-                    />
-                </label>
+                <TextField
+                    type="text"
+                    size="small"
+                    placeholder={this.props.static.placeholder}
+                    value={this.props.section.scopeTitle}
+                    onChange={(e) => this.handleChange(this.key, 'scopeTitle', e, this.id)}
+                />
 
-
-                <label>
-                    <span>{this.props.static.labels}</span>
-                    <textarea cols="40" rows="8"
-                              placeholder={this.props.static.tip}
-                              value={this.props.section.labels}
-                              onChange={(e) => this.handleChange(this.key, 'labels', e, this.id)}
-                    ></textarea>
-                </label>
-
+                <TextField
+                    size="small"
+                    multiline
+                    rows={8}
+                    placeholder={this.props.static.tip}
+                    value={this.props.section.labels}
+                    onChange={(e) => this.handleChange(this.key, 'labels', e, this.id)}
+                />
             </>
         )
     }
@@ -48,14 +46,12 @@ export class ViewExpertise extends React.Component {
 
         return (
             <>
-                <h3>{this.props.section.scopeTitle}</h3>
-                <ul>
-                    {
-                        labels.map((label, index) => {
-                            return <li key={index}>{label}</li>
-                        })
-                    }
-                </ul>
+                <Typography variant="h3">{this.props.section.scopeTitle}</Typography>
+                <List>
+                    {labels.map((label, index) => (
+                        <ListItem key={index}>{label}</ListItem>
+                    ))}
+                </List>
             </>
         )
     }

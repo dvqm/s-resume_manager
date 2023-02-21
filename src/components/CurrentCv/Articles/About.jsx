@@ -1,6 +1,7 @@
 import React from "react";
-import {Box, CardMedia, FormControl, Input, InputLabel, Link, Typography} from "@mui/material";
+import {Box, CardMedia, IconButton, Link, TextField, Typography} from "@mui/material";
 import Button from "@mui/material/Button";
+import {ReactComponent as CameraIcon} from '../../../assets/CameraIcon.svg';
 
 export class EditAbout extends React.Component {
     constructor(props) {
@@ -26,124 +27,92 @@ export class EditAbout extends React.Component {
     render() {
         return (
             <>
-                {}
-                <FormControl>
-                    <InputLabel>{this.props.static.first}</InputLabel>
-                    <Input type="text"
-                           value={this.props.dynamic.first}
-                           onChange={(e) => this.handleChange(this.key, 'first', e)}
-                    />
-                </FormControl>
-
-                <FormControl>
-                    <InputLabel>{this.props.static.middle}</InputLabel>
-                    <Input type="text"
+                <TextField label={this.props.static.middle}
                            value={this.props.dynamic.middle}
                            onChange={(e) => this.handleChange(this.key, 'middle', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <InputLabel>{this.props.static.last}</InputLabel>
-                    <Input type="text"
+                <TextField label={this.props.static.last}
                            value={this.props.dynamic.last}
                            onChange={(e) => this.handleChange(this.key, 'last', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <input accept="image/*"
-                           style={{display: 'none'}}
-                           id="contained-button-file"
-                           type="file"
-                           onChange={(e) => this.handleChange(this.key, 'photo', e)}
-                    />
+                {!this.props.dynamic.photo &&
+                    <>
+                        <IconButton color="primary" aria-label="upload picture" component="label">
+                            <input hidden
+                                   onChange={(e) => this.handleChange(this.key, 'photo', e)}
+                                   accept="image/*"
+                                   type="file"/>
+                            <CameraIcon/>
+                        </IconButton>
+                    </>
+                }
 
-                    <label htmlFor="contained-button-file">
-                        <Button variant="outlined" color="secondary" size="small" component="span">
-                            Pick a Photo
-                        </Button>
-                    </label>
+                {this.props.dynamic.photo &&
+                    <>
+                        <CardMedia
+                            component="img"
+                            image={URL.createObjectURL(this.props.dynamic.photo)}
+                            alt="Applicant"
+                        />
 
-                    {this.props.dynamic.photo &&
-                        <>
-                            <CardMedia
-                                component="img"
-                                image={URL.createObjectURL(this.props.dynamic.photo)}
-                                alt="Applicant"
-                            />
+                        <Button variant="outlined" color="secondary" size="small"
+                                onClick={(e) => this.deletePhoto(e)}>Delete
+                            Photo</Button>
+                    </>
+                }
 
-                            <Button variant="outlined" color="secondary" size="small"
-                                    onClick={(e) => this.deletePhoto(e)}>Delete
-                                Photo</Button>
-                        </>
-                    }
 
-                </FormControl>
-
-                <FormControl>
-                    <InputLabel>{this.props.static.position}</InputLabel>
-                    <Input type="text"
+                <TextField label={this.props.static.position}
+                           size="small"
                            value={this.props.dynamic.position}
                            onChange={(e) => this.handleChange(this.key, 'position', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <InputLabel>{this.props.static.city}</InputLabel>
-                    <Input type="text"
+                <TextField label={this.props.static.city}
+                           size="small"
                            value={this.props.dynamic.city}
                            onChange={(e) => this.handleChange(this.key, 'city', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <InputLabel>{this.props.static.state}</InputLabel>
-                    <Input type="text"
+                <TextField label={this.props.static.state}
+                           size="small"
                            value={this.props.dynamic.state}
                            onChange={(e) => this.handleChange(this.key, 'state', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <InputLabel>{this.props.static.country}</InputLabel>
-                    <Input type="text"
+                <TextField label={this.props.static.country}
+                           size="small"
                            value={this.props.dynamic.country}
                            onChange={(e) => this.handleChange(this.key, 'country', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <InputLabel>{this.props.static.email}</InputLabel>
-                    <Input type="email"
+                <TextField label={this.props.static.email}
+                           size="small"
+                           type="email"
                            value={this.props.dynamic.email}
                            onChange={(e) => this.handleChange(this.key, 'email', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <InputLabel>{this.props.static.tel}</InputLabel>
-                    <Input type="tel"
+                <TextField label={this.props.static.tel}
+                           size="small"
+                           type="tel"
                            value={this.props.dynamic.tel}
                            onChange={(e) => this.handleChange(this.key, 'tel', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <InputLabel>{this.props.static.linkedin}</InputLabel>
-                    <Input type="text"
+                <TextField label={this.props.static.linkedin}
+                           size="small"
                            value={this.props.dynamic.linkedin}
                            onChange={(e) => this.handleChange(this.key, 'linkedin', e)}
-                    />
-                </FormControl>
+                />
 
-                <FormControl>
-                    <InputLabel>{this.props.static.gitHub}</InputLabel>
-                    <Input type="text"
+                <TextField label={this.props.static.gitHub}
+                           size="small"
                            value={this.props.dynamic.gitHub}
                            onChange={(e) => this.handleChange(this.key, 'gitHub', e)}
-                    />
-                </FormControl>
+                />
             </>
         )
     }

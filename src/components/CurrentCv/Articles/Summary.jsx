@@ -1,5 +1,5 @@
 import React from "react";
-import {FormControl, FormLabel, TextareaAutosize, Typography} from "@mui/material";
+import {TextField, Typography} from "@mui/material";
 
 export class EditSummary extends React.Component {
     constructor(props) {
@@ -14,14 +14,15 @@ export class EditSummary extends React.Component {
 
     render() {
         return (
-            <FormControl fullWidth>
-                <FormLabel>{this.props.static.summary}</FormLabel>
-                <TextareaAutosize
-                    minRows={10}
-                    value={this.props.dynamic.summary}
-                    onChange={(e) => this.handleChange(this.key, 'summary', e)}
-                />
-            </FormControl>
+            <TextField
+                label={this.props.static.summary}
+                minRows={10}
+                fullWidth
+                size="small"
+                multiline
+                value={this.props.dynamic.summary}
+                onChange={(e) => this.handleChange(this.key, 'summary', e)}
+            />
         )
     }
 }

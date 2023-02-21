@@ -1,5 +1,5 @@
 import React from "react";
-import {FormControl, FormLabel, Input, TextareaAutosize, Typography} from "@mui/material";
+import {TextField, Typography} from "@mui/material";
 
 export class EditAdditional extends React.Component {
     constructor(props) {
@@ -15,23 +15,18 @@ export class EditAdditional extends React.Component {
     render() {
         return (
             <>
-                <FormControl fullWidth>
-                    <FormLabel>{this.props.static.name}</FormLabel>
-                    <Input
-                        type="text"
-                        value={this.props.section.name}
-                        onChange={(e) => this.handleChange(this.key, 'name', e, this.id)}
-                    />
-                </FormControl>
+                <TextField fullWidth label={this.props.static.name}
+                           size="small"
+                           value={this.props.section.name}
+                           onChange={(e) => this.handleChange(this.key, 'name', e, this.id)}
+                />
 
-                <FormControl fullWidth>
-                    <FormLabel>{this.props.static.description}</FormLabel>
-                    <TextareaAutosize
-                        minRows={8}
-                        value={this.props.section.description}
-                        onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
-                    />
-                </FormControl>
+                <TextField multiline minRows={8}
+                           size="small"
+                           label={this.props.static.description}
+                           value={this.props.section.description}
+                           onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
+                />
             </>
         )
     }
