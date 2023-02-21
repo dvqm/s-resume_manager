@@ -1,7 +1,7 @@
 import React from "react";
 import {Box, CardMedia, IconButton, Link, TextField, Typography} from "@mui/material";
-import Button from "@mui/material/Button";
-import {ReactComponent as CameraIcon} from '../../../assets/CameraIcon.svg';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 export class EditAbout extends React.Component {
     constructor(props) {
@@ -44,7 +44,7 @@ export class EditAbout extends React.Component {
                                    onChange={(e) => this.handleChange(this.key, 'photo', e)}
                                    accept="image/*"
                                    type="file"/>
-                            <CameraIcon/>
+                            <AddAPhotoIcon/>
                         </IconButton>
                     </>
                 }
@@ -57,9 +57,10 @@ export class EditAbout extends React.Component {
                             alt="Applicant"
                         />
 
-                        <Button variant="outlined" color="secondary" size="small"
-                                onClick={(e) => this.deletePhoto(e)}>Delete
-                            Photo</Button>
+                        <IconButton variant="outlined" color="secondary" size="small"
+                                    onClick={(e) => this.deletePhoto(e)}>
+                            <HighlightOffIcon/>
+                        </IconButton>
                     </>
                 }
 
