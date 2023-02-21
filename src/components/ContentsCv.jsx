@@ -1,10 +1,22 @@
 import React from "react";
+import {Drawer, IconButton, List, ListItemButton} from "@mui/material";
+import { Menu as MenuIcon } from '@mui/icons-material';
 
 class ContentsCv extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            isDrawerOpen: false
+        };
+
         this.handleChooseCv = this.handleChooseCv.bind(this);
+    }
+
+    toggleDrawer = () => {
+        this.setState((prevState) => ({
+            isDrawerOpen: !prevState.isDrawerOpen
+        }));
     }
 
     handleChooseCv(cvName) {
@@ -17,13 +29,22 @@ class ContentsCv extends React.Component {
 
     render() {
         return (
-            <ul>
-                {this.props.state.cvBase.map((cv) => (
-                    <li key={cv.cvName} onClick={() => this.handleChooseCv(cv.cvName)}>
-                        {cv.cvName}
-                    </li>
-                ))}
-            </ul>
+            <div>
+                <IconButton onClick={this.toggleDrawer}>
+                    <MenuIcon />
+                </IconButton>
+                <Drawer anchor="top" open={this.state.isDrawerOpen} onClose={this.toggleDrawer}>
+                    <List>
+                        {this.props.state.cvBase.map((cv) => (
+                            <ListItemButton key={cv.cvName} onClick={() => this.handleChooseCv(cv.cvName)}>
+                                {cv.cvName}
+                            </ListItemButton>
+                        ))}
+                    </List>
+                </Drawer>
+            </div>
+
+
         )
     }
 }
