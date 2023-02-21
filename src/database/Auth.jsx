@@ -7,6 +7,7 @@ import {
     logout, getData,
 } from './firebase';
 import Button from "@mui/material/Button";
+import {Avatar, Box, Typography} from "@mui/material";
 
 class Auth extends React.Component {
     constructor(props) {
@@ -66,7 +67,8 @@ class Auth extends React.Component {
                                  setToState={this.setToState}
                     />
                     : <>
-                        <Button variant="contained" color="primary" size="small" onClick={this.signIn}>Connect with Google</Button>
+                        <Button variant="contained" color="primary" size="small" onClick={this.signIn}>Connect with
+                            Google</Button>
                     </>
                 }
             </>
@@ -82,17 +84,21 @@ class Dashboard extends React.Component {
     };
 
     render() {
+        const { photoURL, displayName, email } = this.props.state.user;
+
         return (
-            <p>
+            <>
                 {this.props.state.user !== null &&
-                    <>
-                        <img src={this.props.state.user.photoURL} alt='User'/>
-                        <span>Hello {this.props.state.user.displayName}</span>
-                        <span>{this.props.state.user.email}</span>
-                        <Button variant="contained" color="primary" size="small" onClick={this.logout}>Logout</Button>
-                    </>
+                    <Box>
+                        <Avatar alt="User" src={photoURL} />
+                        <Typography variant="subtitle1">Hello {displayName}</Typography>
+                        <Typography variant="body1">{email}</Typography>
+                        <Button variant="contained" color="primary" size="small" onClick={this.logout}>
+                            Logout
+                        </Button>
+                    </Box>
                 }
-            </p>
+            </>
         );
     }
 }
