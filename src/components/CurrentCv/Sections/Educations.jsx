@@ -1,5 +1,5 @@
 import React from "react";
-import {FormControl, Input, InputLabel, TextareaAutosize, Typography} from "@material-ui/core";
+import {FormControl, Input, InputLabel, TextareaAutosize, Typography} from "@mui/material";
 
 
 export class EditEducations extends React.Component {

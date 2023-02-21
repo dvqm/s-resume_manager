@@ -8,7 +8,7 @@ import {
     MenuItem,
     TextareaAutosize,
     Typography, Box
-} from '@material-ui/core';
+} from '@mui/material';
 
 export class EditExperiences extends React.Component {
     constructor(props) {

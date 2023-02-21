@@ -1,6 +1,6 @@
 import React from "react";
-import {Box, CardMedia, FormControl, Input, InputLabel, Link, Typography} from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import {Box, CardMedia, FormControl, Input, InputLabel, Link, Typography} from "@mui/material";
+import Button from "@mui/material/Button";
 
 export class EditAbout extends React.Component {
     constructor(props) {

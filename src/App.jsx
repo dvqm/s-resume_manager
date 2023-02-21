@@ -4,7 +4,7 @@ import CurrentCv from "./components/CurrentCv";
 import ManageCv from "./components/ManageCv";
 import Auth from "./database/Auth";
 import {getData, saveData} from "./database/firebase";
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 
 class App extends Component {
     constructor(props) {

@@ -1,5 +1,5 @@
 import React from "react";
-import {FormControl, FormLabel, Input, TextareaAutosize, Typography} from "@material-ui/core";
+import {FormControl, FormLabel, Input, TextareaAutosize, Typography} from "@mui/material";
 
 export class EditAdditional extends React.Component {
     constructor(props) {

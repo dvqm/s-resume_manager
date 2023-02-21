@@ -6,7 +6,7 @@ import {
     signInWithGoogle,
     logout, getData,
 } from './firebase';
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 
 class Auth extends React.Component {
     constructor(props) {
