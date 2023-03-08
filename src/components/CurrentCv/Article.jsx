@@ -1,119 +1,132 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import {FormGroup} from "@mui/material";
+import React from 'react';
+import Button from '@mui/material/Button';
+import { FormGroup, IconButton } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 
 class Article extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.edit = props.edit;
+    this.edit = props.edit;
 
-        this.view = props.view;
+    this.view = props.view;
 
-        this.state = {
-            keyName: props.keyName,
-            editing: false,
-            original: props.dynamic,
-        }
+    this.state = {
+      keyName: props.keyName,
+      editing: false,
+      original: props.dynamic,
+    };
 
-        this.helper = props.helper;
+    this.helper = props.helper;
 
-        this.handle = this.handlers(this);
-    }
+    this.handle = this.handlers(this);
+  }
 
-    handlers(context) {
-        return {
-            edit() {
-                context.setState({
-                    ...context.state,
-                    original: context.props.dynamic,
-                    editing: true
-                });
-            },
+  handlers(context) {
+    return {
+      edit() {
+        context.setState({
+          ...context.state,
+          original: context.props.dynamic,
+          editing: true,
+        });
+      },
 
-            save(e) {
-                e.preventDefault();
+      save(e) {
+        e.preventDefault();
 
-                context.setState({editing: false},
-                    () => {
-                        const values = {...context.props.dynamic};
+        context.setState({ editing: false }, () => {
+          const values = { ...context.props.dynamic };
 
-                        context.helper.setState(context.state.keyName, values);
-                    });
+          context.helper.setState(context.state.keyName, values);
+        });
+      },
 
-            },
+      cancel(e) {
+        e.preventDefault();
 
-            cancel(e) {
-                e.preventDefault();
+        context.setState({ editing: false }, () => {
+          context.helper.setState(
+            context.state.keyName,
+            context.state.original,
+          );
+        });
+      },
 
-                context.setState({editing: false}, () => {
-                    context.helper.setState(context.state.keyName, context.state.original);
-                });
+      clear(e) {
+        e.preventDefault();
 
-            },
+        context.setState({
+          ...context.state,
+          original: context.props.dynamic,
+        });
 
-            clear(e) {
-                e.preventDefault();
+        const values = { ...context.props.dynamic };
 
-                context.setState({
-                    ...context.state,
-                    original: context.props.dynamic,
-                });
+        Object.keys(values).forEach((key) => {
+          if (typeof values[key] === 'boolean') values[key] = false;
+          else values[key] = '';
+        });
 
-                const values = {...context.props.dynamic};
+        context.helper.setState(context.state.keyName, values);
+      },
+    };
+  }
 
-                Object.keys(values).forEach((key) => {
-                    if (typeof values[key] === 'boolean') values[key] = false;
-                    else values[key] = '';
-                })
+  render() {
+    return (
+      <>
+        {this.props.static.title && (
+          <>
+            <h2>{this.props.static.title}</h2>
+            <hr />
+          </>
+        )}
 
-                context.helper.setState(context.state.keyName, values);
-            },
-        }
-    }
+        {this.state.editing ? (
+          <form onSubmit={(e) => this.handle.save(e)}>
+            <FormGroup>
+              <IconButton color='secondary' type='submit'>
+                <CheckOutlinedIcon />
+              </IconButton>
 
-    render() {
-        return (
-            <>
-                {this.props.static.title &&
-                    <>
-                        <h2>{this.props.static.title}</h2>
-                        <hr/>
-                    </>
-                }
+              <IconButton
+                color='secondary'
+                onClick={(e) => this.handle.cancel(e)}
+              >
+                <CloseOutlinedIcon />
+              </IconButton>
 
-                {this.state.editing ?
-                    <form onSubmit={(e) => this.handle.save(e)}>
-                        <FormGroup>
-                            <Button variant="outlined" color="secondary" size="small" type="submit">Save</Button>
-
-                            <Button variant="outlined" color="secondary" size="small"
-                                    onClick={(e) => this.handle.cancel(e)}>Cancel</Button>
-
-                            <Button variant="outlined" color="secondary" size="small"
-                                    onClick={(e) => this.handle.clear(e)}>Clear</Button>
-
-                            {React.createElement(this.edit, {
-                                keyName: this.state.keyName,
-                                static: this.props.static,
-                                dynamic: this.props.dynamic,
-                                helper: this.helper,
-                            })}
-                        </FormGroup>
-                    </form>
-                    :
-                    <article>
-                        <Button variant="outlined" color="secondary" size="small"
-                                onClick={() => this.handle.edit()}>{this.props.static.btnName}</Button>
-
-                        {React.createElement(this.view, {
-                            dynamic: this.props.dynamic,
-                        })}
-                    </article>
-                }
-            </>
-        )
-    }
+              <IconButton
+                color='secondary'
+                onClick={(e) => this.handle.clear(e)}
+              >
+                <DeleteForeverOutlinedIcon />
+              </IconButton>
+              {React.createElement(this.edit, {
+                keyName: this.state.keyName,
+                static: this.props.static,
+                dynamic: this.props.dynamic,
+                helper: this.helper,
+              })}
+            </FormGroup>
+          </form>
+        ) : (
+          <article>
+            <IconButton color='secondary' onClick={() => this.handle.edit()}>
+              <EditIcon />
+            </IconButton>
+            {React.createElement(this.view, {
+              dynamic: this.props.dynamic,
+            })}
+          </article>
+        )}
+      </>
+    );
+  }
 }
 
 export default Article;
