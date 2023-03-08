@@ -1,52 +1,109 @@
-import React from "react";
-import {Drawer, IconButton, List, ListItemButton} from "@mui/material";
-import { Menu as MenuIcon } from '@mui/icons-material';
+import React from 'react';
+import { Menu } from '@mui/icons-material';
+import { contentsStyles } from '../mainTheme/localStyles';
+import Button from '@mui/material/Button';
 
 class ContentsCv extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            isDrawerOpen: false
-        };
+    this.state = {
+      isDrawerOpen: false,
+    };
 
-        this.handleChooseCv = this.handleChooseCv.bind(this);
-    }
+    this.handleChooseCv = this.handleChooseCv.bind(this);
 
-    toggleDrawer = () => {
-        this.setState((prevState) => ({
-            isDrawerOpen: !prevState.isDrawerOpen
-        }));
-    }
+    this.addMock = this.addMock.bind(this);
 
-    handleChooseCv(cvName) {
-        const cvBase = [...this.props.state.cvBase];
+    this.deleteMock = this.deleteMock.bind(this);
+  }
 
-        const chosenCv = cvBase.filter((cv) => cv.cvName === cvName)[0];
+  toggleDrawer = () => {
+    this.setState((prevState) => ({
+      isDrawerOpen: !prevState.isDrawerOpen,
+    }));
+  };
 
-        this.props.helper.setState('currentCv', chosenCv);
-    }
+  handleChooseCv(cvName) {
+    const cvBase = [...this.props.state.cvBase];
 
-    render() {
-        return (
-            <div>
-                <IconButton onClick={this.toggleDrawer}>
-                    <MenuIcon />
-                </IconButton>
-                <Drawer anchor="top" open={this.state.isDrawerOpen} onClose={this.toggleDrawer}>
-                    <List>
-                        {this.props.state.cvBase.map((cv) => (
-                            <ListItemButton key={cv.cvName} onClick={() => this.handleChooseCv(cv.cvName)}>
-                                {cv.cvName}
-                            </ListItemButton>
-                        ))}
-                    </List>
-                </Drawer>
-            </div>
+    const chosenCv = cvBase.filter((cv) => cv.cvName === cvName)[0];
 
+    this.props.helper.setState('currentCv', chosenCv);
+  }
 
-        )
-    }
+  addMock() {
+    this.props.addMock();
+  }
+
+  deleteMock() {
+    this.props.deleteMock();
+  }
+
+  render() {
+    const {
+      BoxStyled,
+      GridStyled,
+      DrawerStyled,
+      IconButtonStyled,
+      ListStyled,
+      ListButton,
+    } = contentsStyles;
+
+    const { state, helper, addMock, deleteMock, ...other } = this.props;
+
+    const resumesList = () => {
+      return (
+        <>
+          <Button
+            variant='contained'
+            color='primary'
+            size='small'
+            onClick={this.addMock}
+          >
+            Use Mock Data
+          </Button>
+
+          <Button
+            variant='contained'
+            color='primary'
+            size='small'
+            onClick={this.deleteMock}
+          >
+            Delete Mock Data
+          </Button>
+
+          <ListStyled>
+            {this.props.state.cvBase.map((cv) => (
+              <ListButton
+                key={cv.cvName}
+                onClick={() => this.handleChooseCv(cv.cvName)}
+              >
+                {cv.cvName}
+              </ListButton>
+            ))}
+          </ListStyled>
+        </>
+      );
+    };
+
+    return (
+      <GridStyled {...other}>
+        <IconButtonStyled onClick={this.toggleDrawer}>
+          <Menu sx={{ fontSize: 48 }} />
+        </IconButtonStyled>
+        <DrawerStyled
+          anchor='top'
+          open={this.state.isDrawerOpen}
+          onClose={this.toggleDrawer}
+        >
+          {resumesList()}
+        </DrawerStyled>
+
+        <BoxStyled>{resumesList()}</BoxStyled>
+      </GridStyled>
+    );
+  }
 }
 
 export default ContentsCv;
