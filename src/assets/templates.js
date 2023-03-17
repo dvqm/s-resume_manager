@@ -91,20 +91,20 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        scopeTitle: 'Technologies',
+        title: 'Technologies',
         labels: 'JavaScript, React, Vue, Angular, Node.js',
       },
       {
         id: 2,
         editing: false,
-        scopeTitle: 'Application Solutions',
+        title: 'Application Solutions',
         labels:
           'E-commerce, Content Management Systems, Single Page Applications, Progressive Web Applications, Mobile Applications',
       },
       {
         id: 3,
         editing: false,
-        scopeTitle: 'Soft Skills',
+        title: 'Soft Skills',
         labels:
           'Collaboration, Communication, Problem-Solving, Adaptability, Time Management',
       },
@@ -115,7 +115,7 @@ export const cvExamples = [
         editing: false,
         title: 'Front-end Developer',
         employmentType: 'Full-time',
-        companyName: 'Acme Inc.',
+        company: 'Acme Inc.',
         location: 'San Francisco, CA, USA',
         contractType: 'On-site',
         currentlyWork: false,
@@ -129,7 +129,7 @@ export const cvExamples = [
         editing: false,
         title: 'Lead Front-end Developer',
         employmentType: 'Full-time',
-        companyName: 'Globex Corp.',
+        company: 'Globex Corp.',
         location: 'London, UK',
         contractType: 'On-site',
         currentlyWork: false,
@@ -143,7 +143,7 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        institution: 'University of Technology',
+        title: 'University of Technology',
         degree: 'Bachelor of Science in Computer Science',
         studyField: 'Computer Science',
         startDate: '2016-09-01',
@@ -156,7 +156,7 @@ export const cvExamples = [
       {
         id: 2,
         editing: false,
-        institution: 'Udemy',
+        title: 'Udemy',
         degree: 'Certificate of Completion',
         studyField: 'React Native Development',
         startDate: '2021-01-01',
@@ -169,7 +169,7 @@ export const cvExamples = [
       {
         id: 3,
         editing: false,
-        institution: 'Coursera',
+        title: 'Coursera',
         degree: 'Certificate of Completion',
         studyField: 'Full Stack Web Development',
         startDate: '2022-03-01',
@@ -184,14 +184,14 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        name: 'Volunteer Experience',
+        title: 'Volunteer Experience',
         description:
           'Volunteered as a mentor for a local coding bootcamp, helping students develop their web development skills and providing guidance on projects and job search strategies.',
       },
       {
         id: 2,
         editing: false,
-        name: 'Personal Project',
+        title: 'Personal Project',
         description:
           'Developed and maintained a personal blog, built with Gatsby.js and hosted on Github Pages. Utilized modern web development technologies such as React, GraphQL, and CSS to create a visually appealing and user-friendly website.',
       },
@@ -268,41 +268,41 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        scopeTitle: 'Piloting',
+        title: 'Piloting',
         labels:
           'Orbital Mechanics, Spacecraft Design, Interstellar Navigation, Propulsion Systems, Extravehicular Activity, Astrobiology',
       },
       {
         id: 2,
         editing: false,
-        scopeTitle: 'Interstellar Navigation',
+        title: 'Interstellar Navigation',
         labels:
           'Star Charts, Stellar Cartography, Galaxy Mapping, Warp Drives, Hyperspace, Gravity Wells',
       },
       {
         id: 3,
         editing: false,
-        scopeTitle: 'Space Survival',
+        title: 'Space Survival',
         labels:
           'Space Suits, Oxygen Generation, Radiation Shielding, Zero-G Training, Emergency Procedures, Extra-Vehicular Activity',
       },
       {
         id: 4,
         editing: false,
-        scopeTitle: 'Alien Languages',
+        title: 'Alien Languages',
         labels: 'Klingon, Ferengi, Romulan, Cardassian, Bajoran, Vulcan',
       },
       {
         id: 5,
         editing: false,
-        scopeTitle: 'Laser Weaponry',
+        title: 'Laser Weaponry',
         labels:
           'Phasers, Disruptors, Ion Cannons, Tractor Beams, Deflector Shields, Photon Torpedoes',
       },
       {
         id: 6,
         editing: false,
-        scopeTitle: 'Space Engineering',
+        title: 'Space Engineering',
         labels:
           'Propulsion Systems, Life Support Systems, Communications Systems, Power Generation Systems, Structural Engineering, Robotics',
       },
@@ -313,7 +313,7 @@ export const cvExamples = [
         editing: false,
         title: 'Astronaut',
         employmentType: 'Full-time',
-        companyName: 'Intergalactic Space Agency',
+        company: 'Intergalactic Space Agency',
         location: 'Orbiting Earth',
         contractType: 'Hybrid',
         currentlyWork: true,
@@ -327,7 +327,7 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        institution: 'Intergalactic University',
+        title: 'Intergalactic University',
         degree: 'Bachelor of Astronautics',
         studyField: 'Astronautics',
         startDate: '2015-09-01',
@@ -341,7 +341,7 @@ export const cvExamples = [
       {
         id: 2,
         editing: false,
-        institution: 'Exoplanetary Flight School',
+        title: 'Exoplanetary Flight School',
         degree: 'Certificate in Advanced Piloting Techniques',
         studyField: 'Piloting',
         startDate: '2020-01-01',
@@ -354,7 +354,7 @@ export const cvExamples = [
       {
         id: 3,
         editing: false,
-        institution: 'Interstellar Language Institute',
+        title: 'Interstellar Language Institute',
         degree: 'Certificate in Galactic Communication',
         studyField: 'Languages',
         startDate: '2021-01-01',
@@ -369,21 +369,21 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        name: 'Certifications',
+        title: 'Certifications',
         description:
           'Certified in Warp Drive Maintenance, Hyperdrive Repair, and Interspace Navigation. Ready for any challenges the vast universe has in store!',
       },
       {
         id: 2,
         editing: false,
-        name: 'Languages',
+        title: 'Languages',
         description:
           "Fluent in English, Binary, and Klingon. Learning to speak Wookiee, but it's a bit of a grunt work.",
       },
       {
         id: 3,
         editing: false,
-        name: 'Interests',
+        title: 'Interests',
         description:
           'Enjoys stargazing, exploring strange new worlds, and seeking out new life and civilizations. Also a big fan of classic sci-fi movies and TV shows, but gets frustrated when people confuse Star Wars with Star Trek.',
       },
@@ -481,14 +481,14 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        scopeTitle: 'Interdimensional Science & Technology',
+        title: 'Interdimensional Science & Technology',
         labels:
           'Quantum Mechanics, Time Travel, Alternate Realities, Robotics, Antimatter Physics, Wormholes, Nanotechnology, Nanomachines, Particle Physics, Space-Time Distortion',
       },
       {
         id: 2,
         editing: false,
-        scopeTitle: 'Inventing & Engineering',
+        title: 'Inventing & Engineering',
         labels:
           'Rocket Science, Microbots, Meeseeks Boxes, Interdimensional Portals, Genetic Engineering, Robotic Surgery, Cyborg Construction, Neural Networking, Augmented Reality, Cryogenic Preservation',
       },
@@ -499,7 +499,7 @@ export const cvExamples = [
         editing: false,
         title: 'Chief Scientist',
         employmentType: 'Full-time',
-        companyName: 'Sanchez Labs',
+        company: 'Sanchez Labs',
         location: 'Dimension C-137',
         contractType: 'Remote',
         currentlyWork: true,
@@ -513,7 +513,7 @@ export const cvExamples = [
         editing: false,
         title: 'Chief Engineer',
         employmentType: 'Part-time',
-        companyName: 'Space Cruiser Builder, Inc.',
+        company: 'Space Cruiser Builder, Inc.',
         location: 'Dimension C-137',
         contractType: 'On-site',
         currentlyWork: false,
@@ -527,7 +527,7 @@ export const cvExamples = [
         editing: false,
         title: 'Professor of Sciences',
         employmentType: 'Part-time',
-        companyName: 'Interdimensional Community College',
+        company: 'Interdimensional Community College',
         location: 'Dimension C-137',
         contractType: 'Hybrid',
         currentlyWork: false,
@@ -541,7 +541,7 @@ export const cvExamples = [
         editing: false,
         title: 'R&D Manager',
         employmentType: 'Full-time',
-        companyName: 'Interdimensional Inc.',
+        company: 'Interdimensional Inc.',
         location: 'Dimension C-137',
         contractType: 'On-site',
         currentlyWork: false,
@@ -555,7 +555,7 @@ export const cvExamples = [
         editing: false,
         title: 'Multiverse Navigator',
         employmentType: 'Full-time',
-        companyName: 'Interdimensional Cable Inc.',
+        position: 'Interdimensional Cable Inc.',
         location: 'C-137',
         contractType: 'Hybrid',
         currentlyWork: true,
@@ -569,7 +569,7 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        institution: 'Interdimensional University',
+        title: 'Interdimensional University',
         degree: 'Doctor of Science in Multi-Dimensional Physics',
         studyField: 'Multi-Dimensional Physics',
         startDate: '1957-01-01',
@@ -583,7 +583,7 @@ export const cvExamples = [
       {
         id: 2,
         editing: false,
-        institution: 'Zigerion Community College',
+        title: 'Zigerion Community College',
         degree: 'Certificate of Attendance in Scamming',
         studyField: 'Scamming',
         startDate: '1981-01-01',
@@ -598,21 +598,21 @@ export const cvExamples = [
       {
         id: 1,
         editing: false,
-        name: 'Facts About Rick Sanchez',
+        title: 'Facts About Rick Sanchez',
         description:
           'Rick Sanchez is a mad scientist and the main protagonist of the animated television show, Rick and Morty. He is known for his love of alcohol and his carefree, reckless behavior. Here are some fun facts about Rick that fans of the show might enjoy: \n\n1. Rick is voiced by co-creator of the show, Justin Roiland. \n2. Rick is referred to as a genius, and he has a PhD in applied physics. \n3. He has an extensive knowledge of the multiverse, and has visited countless planets and dimensions. \n4. Despite his intelligence, Rick is often motivated by his own selfish desires, which often get him into trouble. \n5. Rick has a daughter named Beth, and a granddaughter named Summer, who he often takes on adventures through the multiverse.',
       },
       {
         id: 2,
         editing: false,
-        name: 'Facts About Morty',
+        title: 'Facts About Morty',
         description:
           "Morty Smith is Rick Sanchez's good-hearted but easily distressed grandson and constant companion. He is often dragged into Rick's dangerous and crazy adventures. Here are some fun facts about Morty: \n\n1. Morty is voiced by Justin Roiland. \n2. Morty is a typical 14-year-old teenager and is not as intelligent as Rick. \n3. Despite this, Morty is often the voice of reason in their adventures, and is the one who tries to keep Rick in check. \n4. Morty has a crush on a fellow student named Jessica, who he often tries to impress. \n5. Morty is known for his catchphrase, \"I don't want to go on this adventure, Rick!\"",
       },
       {
         id: 3,
         editing: false,
-        name: 'Facts About Beth',
+        title: 'Facts About Beth',
         description:
           "Beth Smith is Rick Sanchez's daughter, and Morty and Summer's mother. She is a horse surgeon and often serves as the voice of reason in the family. Here are some fun facts about Beth: \n\n1. Beth is voiced by Sarah Chalke. \n2. Beth is a successful horse surgeon, but she is often unhappy with her life and is searching for more meaning. \n3. She has a strained relationship with her father, Rick, and is constantly trying to win his approval. \n4. Beth is married to Jerry Smith, Morty and Summer's father, but their marriage is often rocky. \n5. Despite her tough exterior, Beth is a loving mother who wants the best for her children and will do anything to protect them.",
       },
@@ -623,7 +623,7 @@ export const cvExamples = [
 export const staticFields = {
   template: { ...cvTemplate },
   about: {
-    btnName: 'Edit About',
+    header: 'About',
     first: 'First Name: ',
     middle: 'Middle Name: ',
     last: 'Last Name: ',
@@ -638,14 +638,12 @@ export const staticFields = {
     gitHub: 'GitHub: ',
   },
   summary: {
-    title: 'Summary',
-    btnName: 'Edit Summary',
+    header: 'Summary',
     summary: 'Summary',
   },
   projects: {
-    title: 'My Projects',
-    btnName: 'Add Project',
-    name: 'Project name: ',
+    header: 'My Projects',
+    title: 'Project name: ',
     currentlyWork: 'Currently Work',
     startDate: 'Start date: ',
     endDate: 'End date: ',
@@ -666,24 +664,22 @@ export const staticFields = {
     },
   },
   expertise: {
-    title: 'Area of Expertise',
-    btnName: 'Add Area of Expertise',
-    scope: 'Scope of expertise: ',
+    header: 'Area of Expertise',
+    title: 'Scope of expertise: ',
     labels: 'Labels: ',
     placeholder: 'Enter the scope name',
     tip: 'Enter your areas of expertise in the scope divided by comma and space',
     default: {
       editing: true,
-      scopeTitle: '',
+      title: '',
       labels: '',
     },
   },
   experiences: {
-    title: 'Work Experience',
-    btnName: 'Add Experience',
-    name: 'Position name: ',
+    header: 'Work Experience',
+    title: 'Position name: ',
     employmentType: 'Employment type :',
-    companyName: 'Company name: ',
+    company: 'Company name: ',
     location: 'Location:',
     contractType: 'Contract type: ',
     currentlyWork: 'Currently work: ',
@@ -694,7 +690,7 @@ export const staticFields = {
       editing: true,
       title: '',
       employmentType: 'Full-time',
-      companyName: '',
+      company: '',
       location: '',
       contractType: 'On-site',
       currentlyWork: false,
@@ -704,9 +700,8 @@ export const staticFields = {
     },
   },
   educations: {
-    title: 'Education',
-    btnName: 'Add Education',
-    institution: 'Educational institution: ',
+    header: 'Education',
+    title: 'Educational institution: ',
     degree: 'Degree: ',
     studyField: 'Field of study: ',
     startDate: 'Start date: ',
@@ -716,7 +711,7 @@ export const staticFields = {
     description: 'Description: ',
     default: {
       editing: true,
-      institution: '',
+      title: '',
       degree: '',
       studyField: '',
       startDate: '',
@@ -727,13 +722,12 @@ export const staticFields = {
     },
   },
   additional: {
-    title: 'Additional information',
-    btnName: 'Add Section',
-    name: 'Title',
+    header: 'Additional information',
+    title: 'Title',
     description: 'Description: ',
     default: {
       editing: true,
-      name: '',
+      title: '',
       description: '',
     },
   },
