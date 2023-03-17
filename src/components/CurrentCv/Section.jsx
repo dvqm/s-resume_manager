@@ -1,10 +1,12 @@
 import React from 'react';
-import { FormGroup, IconButton } from '@mui/material';
+import { FormGroup, IconButton, Typography, Divider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { currentCvStyles } from '../../mainTheme/localStyles.js';
+
 class Section extends React.Component {
   constructor(props) {
     super(props);
@@ -143,14 +145,19 @@ class Section extends React.Component {
   }
 
   render() {
+    const { ArticleStyled, FormControlRowEnd, FormControlRowStart } =
+      currentCvStyles;
+
     return (
       <section>
-        <h2>{this.props.static.title}</h2>
+        <FormControlRowStart>
+          <h2>{this.props.static.header}</h2>
 
-        <IconButton color='secondary' onClick={this.handle.add}>
-          <AddIcon />
-        </IconButton>
-        <hr />
+          <IconButton color='secondary' onClick={this.handle.add}>
+            <AddIcon />
+          </IconButton>
+        </FormControlRowStart>
+        <Divider sx={{ borderBottom: '1px solid' }} />
         {this.props.dynamic.length > 0 &&
           this.props.dynamic.map((section) =>
             section.editing ? (
@@ -159,24 +166,26 @@ class Section extends React.Component {
                 onSubmit={(e) => this.handle.save(e, section.id)}
               >
                 <FormGroup>
-                  <IconButton color='secondary' type='submit'>
-                    <CheckOutlinedIcon />
-                  </IconButton>
+                  <FormControlRowEnd>
+                    <IconButton color='secondary' type='submit'>
+                      <CheckOutlinedIcon />
+                    </IconButton>
 
-                  {!section.init && (
+                    {!section.init && (
+                      <IconButton
+                        color='secondary'
+                        onClick={(e) => this.handle.cancel(e, section.id)}
+                      >
+                        <CloseOutlinedIcon />
+                      </IconButton>
+                    )}
                     <IconButton
                       color='secondary'
-                      onClick={(e) => this.handle.cancel(e, section.id)}
+                      onClick={(e) => this.handle.delete(e, section.id)}
                     >
-                      <CloseOutlinedIcon />
+                      <DeleteForeverOutlinedIcon />
                     </IconButton>
-                  )}
-                  <IconButton
-                    color='secondary'
-                    onClick={(e) => this.handle.delete(e, section.id)}
-                  >
-                    <DeleteForeverOutlinedIcon />
-                  </IconButton>
+                  </FormControlRowEnd>
 
                   {React.createElement(this.edit, {
                     keyName: this.props.keyName,
@@ -187,21 +196,26 @@ class Section extends React.Component {
                 </FormGroup>
               </form>
             ) : (
-              <article key={section.id}>
-                <IconButton
-                  color='secondary'
-                  size='medium'
-                  onClick={() => this.handle.edit(section.id)}
-                >
-                  <EditIcon />
-                </IconButton>
+              <ArticleStyled key={section.id}>
+                <FormControlRowStart>
+                  <Typography variant='h5'>{section.title}</Typography>
+
+                  <IconButton
+                    color='secondary'
+                    size='medium'
+                    onClick={() => this.handle.edit(section.id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </FormControlRowStart>
 
                 {React.createElement(this.view, {
                   keyName: this.props.keyName,
                   static: this.props.static,
                   section: section,
                 })}
-              </article>
+                <Divider light variant='inset' />
+              </ArticleStyled>
             ),
           )}
       </section>

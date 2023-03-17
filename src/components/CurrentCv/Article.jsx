@@ -1,10 +1,12 @@
 import React from 'react';
-import Button from '@mui/material/Button';
-import { FormGroup, IconButton } from '@mui/material';
+import { FormGroup, IconButton, Divider } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import { currentCvStyles } from '../../mainTheme/localStyles.js';
+
+const { ArticleStyled, StackRow, FormControlRowEnd } = currentCvStyles;
 
 class Article extends React.Component {
   constructor(props) {
@@ -79,33 +81,32 @@ class Article extends React.Component {
   render() {
     return (
       <>
-        {this.props.static.title && (
-          <>
-            <h2>{this.props.static.title}</h2>
-            <hr />
-          </>
-        )}
-
         {this.state.editing ? (
           <form onSubmit={(e) => this.handle.save(e)}>
+            <h2>{this.props.static.header}</h2>
+
+            <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
+
             <FormGroup>
-              <IconButton color='secondary' type='submit'>
-                <CheckOutlinedIcon />
-              </IconButton>
+              <FormControlRowEnd>
+                <IconButton color='secondary' type='submit'>
+                  <CheckOutlinedIcon />
+                </IconButton>
 
-              <IconButton
-                color='secondary'
-                onClick={(e) => this.handle.cancel(e)}
-              >
-                <CloseOutlinedIcon />
-              </IconButton>
+                <IconButton
+                  color='secondary'
+                  onClick={(e) => this.handle.cancel(e)}
+                >
+                  <CloseOutlinedIcon />
+                </IconButton>
 
-              <IconButton
-                color='secondary'
-                onClick={(e) => this.handle.clear(e)}
-              >
-                <DeleteForeverOutlinedIcon />
-              </IconButton>
+                <IconButton
+                  color='secondary'
+                  onClick={(e) => this.handle.clear(e)}
+                >
+                  <DeleteForeverOutlinedIcon />
+                </IconButton>
+              </FormControlRowEnd>
               {React.createElement(this.edit, {
                 keyName: this.state.keyName,
                 static: this.props.static,
@@ -116,9 +117,15 @@ class Article extends React.Component {
           </form>
         ) : (
           <article>
-            <IconButton color='secondary' onClick={() => this.handle.edit()}>
-              <EditIcon />
-            </IconButton>
+            <StackRow>
+              <h2>{this.props.static.header}</h2>
+
+              <IconButton color='secondary' onClick={() => this.handle.edit()}>
+                <EditIcon />
+              </IconButton>
+            </StackRow>
+            <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
+
             {React.createElement(this.view, {
               dynamic: this.props.dynamic,
             })}
