@@ -2,6 +2,8 @@ import React from 'react';
 import { Menu } from '@mui/icons-material';
 import { contentsStyles } from '../mainTheme/localStyles';
 import Button from '@mui/material/Button';
+import { ListItem, ListItemText } from '@mui/material';
+import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 
 class ContentsCv extends React.Component {
   constructor(props) {
@@ -9,6 +11,7 @@ class ContentsCv extends React.Component {
 
     this.state = {
       isDrawerOpen: false,
+      selectedCvName: '',
     };
 
     this.handleChooseCv = this.handleChooseCv.bind(this);
@@ -30,6 +33,8 @@ class ContentsCv extends React.Component {
     const chosenCv = cvBase.filter((cv) => cv.cvName === cvName)[0];
 
     this.props.helper.setState('currentCv', chosenCv);
+
+    this.setState({ ...this.state, selectedCvName: cvName });
   }
 
   addMock() {
@@ -43,65 +48,106 @@ class ContentsCv extends React.Component {
   render() {
     const {
       BoxStyled,
-      GridStyled,
       DrawerStyled,
       IconButtonStyled,
       ListStyled,
-      ListButton,
+      ListBtn,
+      ListBtnSelected,
     } = contentsStyles;
 
-    const { state, helper, addMock, deleteMock, ...other } = this.props;
+    const { isDrawerOpen, selectedCvName } = this.state;
 
     const resumesList = () => {
+      const mockBtns = () => {
+        const styles = {
+          btn: {
+            border: 'none',
+            fontSize: 10,
+            '&:hover': {
+              border: 'none',
+            },
+          },
+        };
+
+        return (
+          <ListItem>
+            {this.props.state.cvBase.some((cv) => cv.mock) ? (
+              <Button
+                sx={styles.btn}
+                variant='outlined'
+                color='primary'
+                size='small'
+                onClick={this.deleteMock}
+              >
+                Delete Demo
+              </Button>
+            ) : (
+              <Button
+                sx={styles.btn}
+                variant='outlined'
+                color='primary'
+                size='small'
+                onClick={this.addMock}
+              >
+                Load Demo
+              </Button>
+            )}
+          </ListItem>
+        );
+      };
+
       return (
         <>
-          <Button
-            variant='contained'
-            color='primary'
-            size='small'
-            onClick={this.addMock}
-          >
-            Use Mock Data
-          </Button>
-
-          <Button
-            variant='contained'
-            color='primary'
-            size='small'
-            onClick={this.deleteMock}
-          >
-            Delete Mock Data
-          </Button>
-
           <ListStyled>
-            {this.props.state.cvBase.map((cv) => (
-              <ListButton
-                key={cv.cvName}
-                onClick={() => this.handleChooseCv(cv.cvName)}
-              >
-                {cv.cvName}
-              </ListButton>
-            ))}
+            {this.props.state.cvBase.length > 0 ? (
+              <>
+                {mockBtns()}
+                {this.props.state.cvBase.map((cv) => (
+                  <React.Fragment key={cv.cvName}>
+                    {selectedCvName === cv.cvName ? (
+                      <ListBtnSelected
+                        onClick={() => this.handleChooseCv(cv.cvName)}
+                      >
+                        <ArticleOutlinedIcon />
+                        <ListItemText>{cv.cvName}</ListItemText>
+                      </ListBtnSelected>
+                    ) : (
+                      <ListBtn onClick={() => this.handleChooseCv(cv.cvName)}>
+                        <ArticleOutlinedIcon />
+                        <ListItemText>{cv.cvName}</ListItemText>
+                      </ListBtn>
+                    )}
+                  </React.Fragment>
+                ))}
+              </>
+            ) : (
+              <>
+                {mockBtns()}
+                <ListItemText sx={{ textAlign: 'center' }}>
+                  No saved resumes
+                </ListItemText>
+              </>
+            )}
           </ListStyled>
         </>
       );
     };
 
     return (
-      <GridStyled {...other}>
+      <>
         <IconButtonStyled onClick={this.toggleDrawer}>
           <Menu sx={{ fontSize: 48 }} />
         </IconButtonStyled>
         <DrawerStyled
           anchor='top'
-          open={this.state.isDrawerOpen}
+          open={isDrawerOpen}
           onClose={this.toggleDrawer}
         >
           {resumesList()}
         </DrawerStyled>
 
         <BoxStyled>{resumesList()}</BoxStyled>
-      </GridStyled>
+      </>
     );
   }
 }
