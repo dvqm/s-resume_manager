@@ -8,6 +8,7 @@ import Grid from '@mui/material/Grid';
 import { ThemeProvider } from '@mui/material/styles';
 import mainTheme from './mainTheme/globalTheme.js';
 import { cvExamples, cvTemplate, staticFields } from './assets/templates';
+import { cvGrid } from './mainTheme/localStyles.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -207,25 +208,26 @@ class App extends React.Component {
   }
 
   render() {
+    const { CurrentCvGrid, SidePanelGrid } = cvGrid;
     return (
       <ThemeProvider theme={mainTheme}>
-        <Grid container spacing={1}>
-          <Auth item xs={12} md={3} helper={this.helper} />
-          <ContentsCv
-            item
-            xs={12}
-            md={6}
-            justifyContent='center'
-            state={this.state}
-            helper={this.helper}
-            addMock={this.addMock}
-            deleteMock={this.deleteMock}
-          />
-
-          <Grid item xs={12} md={6}>
-            <ManageCv state={this.state} helper={this.helper} />
+        <Grid container spacing={4}>
+          <CurrentCvGrid item xs={12} md={8} order={{ xs: 2, md: 1 }}>
             <CurrentCv state={this.state} helper={this.helper} />
-          </Grid>
+          </CurrentCvGrid>
+
+          <SidePanelGrid item xs={12} md={4} order={{ xs: 1, md: 2 }}>
+            <Auth helper={this.helper} />
+
+            <ManageCv state={this.state} helper={this.helper} />
+
+            <ContentsCv
+              state={this.state}
+              helper={this.helper}
+              addMock={this.addMock}
+              deleteMock={this.deleteMock}
+            />
+          </SidePanelGrid>
         </Grid>
       </ThemeProvider>
     );
