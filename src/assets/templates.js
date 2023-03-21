@@ -1,3 +1,4 @@
+import { Rick, Bazz } from './base64Img';
 export const cvTemplate = {
   cvName: '',
   about: {
@@ -204,7 +205,7 @@ export const cvExamples = [
       first: 'Bazz',
       middle: '',
       last: 'Lighter',
-      photo: '',
+      photo: Bazz,
       position: 'Intergalactic Pilot',
       city: 'Orbiting Earth',
       state: 'Space',
@@ -396,7 +397,7 @@ export const cvExamples = [
       first: 'Rick',
       middle: '',
       last: 'Sanchez',
-      photo: '',
+      photo: Rick,
       position: 'Inter-Dimensional Scientist',
       city: 'C-137',
       state: '',
