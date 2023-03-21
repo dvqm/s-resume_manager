@@ -58,12 +58,29 @@ class App extends React.Component {
   }
 
   helper = {
-    onChange: (keyName, field, e, id = false) => {
-      const getEventValue = () => {
+    onChange: async (keyName, field, e, id = false) => {
+      const getEventValue = async () => {
         if (e.target.type === 'checkbox') {
           return e.target.checked;
         } else if (field === 'photo') {
-          return e.target.files[0];
+          const fileToBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+
+              reader.onload = (event) => {
+                resolve(event.target.result);
+              };
+
+              reader.onerror = (error) => {
+                reject(error);
+              };
+
+              reader.readAsDataURL(file);
+            });
+          };
+          const base64String = await fileToBase64(e.target.files[0]);
+
+          return base64String;
         } else {
           return e.target.value;
         }
@@ -74,7 +91,7 @@ class App extends React.Component {
           this.setState({
             currentCv: {
               ...this.state.currentCv,
-              cvName: getEventValue(),
+              cvName: await getEventValue(),
             },
           });
 
@@ -105,7 +122,7 @@ class App extends React.Component {
               ...this.state.currentCv,
               [keyName]: {
                 ...this.state.currentCv[keyName],
-                [field]: getEventValue(),
+                [field]: await getEventValue(),
               },
             },
           });
@@ -208,10 +225,10 @@ class App extends React.Component {
   }
 
   render() {
-    const { CurrentCvGrid, SidePanelGrid } = cvGrid;
+    const { RootGrid, CurrentCvGrid, SidePanelGrid } = cvGrid;
     return (
       <ThemeProvider theme={mainTheme}>
-        <Grid container spacing={4}>
+        <RootGrid container spacing={4}>
           <CurrentCvGrid item xs={12} md={8} order={{ xs: 2, md: 1 }}>
             <CurrentCv state={this.state} helper={this.helper} />
           </CurrentCvGrid>
@@ -228,7 +245,7 @@ class App extends React.Component {
               deleteMock={this.deleteMock}
             />
           </SidePanelGrid>
-        </Grid>
+        </RootGrid>
       </ThemeProvider>
     );
   }
