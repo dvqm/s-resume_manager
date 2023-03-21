@@ -80,13 +80,13 @@ class Dashboard extends React.Component {
   render() {
     const { photoURL, displayName, email } = this.props.state.user;
 
-    const { DashBox, Avatar, UserInfo, UserName, UserEmail, LogoutBtn } =
+    const { Container, Avatar, UserInfo, UserName, UserEmail, LogoutBtn } =
       authStyles;
 
     return (
       <>
         {this.props.state.user !== null && (
-          <DashBox>
+          <Container>
             <UserInfo>
               <Avatar alt='User' src={photoURL} />
               <UserName variant='subtitle1'>{displayName}</UserName>
@@ -100,7 +100,7 @@ class Dashboard extends React.Component {
             >
               Logout
             </LogoutBtn>
-          </DashBox>
+          </Container>
         )}
       </>
     );
