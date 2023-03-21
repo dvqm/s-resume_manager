@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import { currentCvStyles } from '../../mainTheme/localStyles.js';
+import { genericStyles } from './../../mainTheme/localStyles';
 
 class Section extends React.Component {
   constructor(props) {
@@ -145,18 +145,18 @@ class Section extends React.Component {
   }
 
   render() {
-    const { ArticleStyled, FormControlRowEnd, FormControlRowStart } =
-      currentCvStyles;
+    const { ArticleStyled, SectionStyled, StackRow, ManageBtnsWrapper } =
+      genericStyles;
 
     return (
-      <section>
-        <FormControlRowStart>
-          <h2>{this.props.static.header}</h2>
+      <SectionStyled>
+        <StackRow>
+          <Typography variant='h2'>{this.props.static.header}</Typography>
 
           <IconButton color='secondary' onClick={this.handle.add}>
             <AddIcon />
           </IconButton>
-        </FormControlRowStart>
+        </StackRow>
         <Divider sx={{ borderBottom: '1px solid' }} />
         {this.props.dynamic.length > 0 &&
           this.props.dynamic.map((section) =>
@@ -166,7 +166,7 @@ class Section extends React.Component {
                 onSubmit={(e) => this.handle.save(e, section.id)}
               >
                 <FormGroup>
-                  <FormControlRowEnd>
+                  <ManageBtnsWrapper>
                     <IconButton color='secondary' type='submit'>
                       <CheckOutlinedIcon />
                     </IconButton>
@@ -185,7 +185,7 @@ class Section extends React.Component {
                     >
                       <DeleteForeverOutlinedIcon />
                     </IconButton>
-                  </FormControlRowEnd>
+                  </ManageBtnsWrapper>
 
                   {React.createElement(this.edit, {
                     keyName: this.props.keyName,
@@ -197,8 +197,8 @@ class Section extends React.Component {
               </form>
             ) : (
               <ArticleStyled key={section.id}>
-                <FormControlRowStart>
-                  <Typography variant='h5'>{section.title}</Typography>
+                <StackRow>
+                  <Typography variant='h3'>{section.title}</Typography>
 
                   <IconButton
                     color='secondary'
@@ -207,7 +207,7 @@ class Section extends React.Component {
                   >
                     <EditIcon />
                   </IconButton>
-                </FormControlRowStart>
+                </StackRow>
 
                 {React.createElement(this.view, {
                   keyName: this.props.keyName,
@@ -218,7 +218,7 @@ class Section extends React.Component {
               </ArticleStyled>
             ),
           )}
-      </section>
+      </SectionStyled>
     );
   }
 }

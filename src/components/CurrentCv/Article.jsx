@@ -1,12 +1,12 @@
 import React from 'react';
-import { FormGroup, IconButton, Divider } from '@mui/material';
+import { FormGroup, IconButton, Divider, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
-import { currentCvStyles } from '../../mainTheme/localStyles.js';
+import { genericStyles } from './../../mainTheme/localStyles';
 
-const { ArticleStyled, StackRow, FormControlRowEnd } = currentCvStyles;
+const { StackRow, ManageBtnsWrapper } = genericStyles;
 
 class Article extends React.Component {
   constructor(props) {
@@ -88,7 +88,7 @@ class Article extends React.Component {
             <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
 
             <FormGroup>
-              <FormControlRowEnd>
+              <ManageBtnsWrapper>
                 <IconButton color='secondary' type='submit'>
                   <CheckOutlinedIcon />
                 </IconButton>
@@ -106,7 +106,7 @@ class Article extends React.Component {
                 >
                   <DeleteForeverOutlinedIcon />
                 </IconButton>
-              </FormControlRowEnd>
+              </ManageBtnsWrapper>
               {React.createElement(this.edit, {
                 keyName: this.state.keyName,
                 static: this.props.static,
@@ -118,7 +118,7 @@ class Article extends React.Component {
         ) : (
           <article>
             <StackRow>
-              <h2>{this.props.static.header}</h2>
+              <Typography variant='h2'>{this.props.static.header}</Typography>
 
               <IconButton color='secondary' onClick={() => this.handle.edit()}>
                 <EditIcon />
