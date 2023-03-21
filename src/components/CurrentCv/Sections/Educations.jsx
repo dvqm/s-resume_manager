@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Typography } from '@mui/material';
-import { currentCvStyles } from '../../../mainTheme/localStyles.js';
+import { genericStyles } from '../../../mainTheme/localStyles.js';
 
 export class EditEducations extends React.Component {
   constructor(props) {
@@ -100,7 +100,7 @@ export class EditEducations extends React.Component {
 
 export class ViewEducations extends React.Component {
   render() {
-    const { TextBlock } = currentCvStyles;
+    const { PreBlock } = genericStyles;
     return (
       <>
         <Typography>
@@ -128,17 +128,15 @@ export class ViewEducations extends React.Component {
             <Typography component='span'>
               {this.props.static.activities}
             </Typography>
-            <TextBlock component='pre'>
-              {this.props.section.activities}
-            </TextBlock>
+            <PreBlock component='pre'>{this.props.section.activities}</PreBlock>
           </>
         )}
         {this.props.section.description && (
           <>
             <Typography variant='body1'>Description: </Typography>
-            <TextBlock variant='body1' component='pre'>
+            <PreBlock variant='body1' component='pre'>
               {this.props.section.description}
-            </TextBlock>
+            </PreBlock>
           </>
         )}
       </>

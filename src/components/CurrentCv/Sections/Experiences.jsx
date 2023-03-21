@@ -6,7 +6,7 @@ import {
   TextField,
   FormControlLabel,
 } from '@mui/material';
-import { currentCvStyles } from '../../../mainTheme/localStyles.js';
+import { genericStyles } from '../../../mainTheme/localStyles.js';
 
 export class EditExperiences extends React.Component {
   constructor(props) {
@@ -128,7 +128,7 @@ export class EditExperiences extends React.Component {
 
 export class ViewExperiences extends React.Component {
   render() {
-    const { StackRow, TextBlock } = currentCvStyles;
+    const { StackRow, PreBlock } = genericStyles;
     return (
       <>
         <Typography variant='h5'>{this.props.section.company}</Typography>
@@ -187,9 +187,7 @@ export class ViewExperiences extends React.Component {
           <Typography variant='subtitle1'>
             {this.props.static.description}
           </Typography>
-          <TextBlock component='pre'>
-            {this.props.section.description}
-          </TextBlock>
+          <PreBlock component='pre'>{this.props.section.description}</PreBlock>
         </Box>
       </>
     );

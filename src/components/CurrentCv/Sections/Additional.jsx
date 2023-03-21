@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextField, Typography } from '@mui/material';
-import { currentCvStyles } from '../../../mainTheme/localStyles.js';
+import { genericStyles } from './../../../mainTheme/localStyles';
 
 export class EditAdditional extends React.Component {
   constructor(props) {
@@ -41,12 +41,12 @@ export class EditAdditional extends React.Component {
 
 export class ViewAdditional extends React.Component {
   render() {
-    const { TextBlock } = currentCvStyles;
+    const { PreBlock } = genericStyles;
     return (
       <>
-        <TextBlock variant='body1' component='pre'>
+        <PreBlock variant='body1' component='pre'>
           {this.props.section.description}
-        </TextBlock>
+        </PreBlock>
       </>
     );
   }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { TextField } from '@mui/material';
-import { currentCvStyles } from '../../../mainTheme/localStyles.js';
+import { genericStyles } from '../../../mainTheme/localStyles.js';
+
+const { PreBlock } = genericStyles;
 
 export class EditSummary extends React.Component {
   constructor(props) {
@@ -17,7 +19,6 @@ export class EditSummary extends React.Component {
         label={this.props.static.summary}
         minRows={10}
         fullWidth
-        size='small'
         multiline
         value={this.props.dynamic.summary}
         onChange={(e) => this.handleChange(this.key, 'summary', e)}
@@ -28,11 +29,10 @@ export class EditSummary extends React.Component {
 
 export class ViewSummary extends React.Component {
   render() {
-    const { TextBlock } = currentCvStyles;
     return (
-      <TextBlock variant='body1' component='pre'>
+      <PreBlock variant='body1' component='pre'>
         {this.props.dynamic.summary}
-      </TextBlock>
+      </PreBlock>
     );
   }
 }

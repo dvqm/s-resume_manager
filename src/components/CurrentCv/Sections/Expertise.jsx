@@ -1,6 +1,9 @@
 import React from 'react';
 import { Chip, TextField, Stack } from '@mui/material';
 import LabelImportantOutlinedIcon from '@mui/icons-material/LabelImportantOutlined';
+import { expertiseStyles } from './../../../mainTheme/localStyles';
+
+const { TextStyled } = expertiseStyles;
 
 export class EditExpertise extends React.Component {
   constructor(props) {
@@ -16,16 +19,14 @@ export class EditExpertise extends React.Component {
   render() {
     return (
       <>
-        <TextField
+        <TextStyled
           type='text'
-          size='small'
           placeholder={this.props.static.placeholder}
           value={this.props.section.title}
           onChange={(e) => this.handleChange(this.key, 'title', e, this.id)}
         />
 
-        <TextField
-          size='small'
+        <TextStyled
           multiline
           rows={8}
           placeholder={this.props.static.tip}

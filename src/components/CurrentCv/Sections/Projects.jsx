@@ -8,10 +8,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { currentCvStyles } from '../../../mainTheme/localStyles.js';
+import { genericStyles } from '../../../mainTheme/localStyles.js';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
-const { StackRow, TextBlock } = currentCvStyles;
+const { StackRow, PreBlock } = genericStyles;
 
 export class EditProjects extends React.Component {
   constructor(props) {
@@ -147,9 +147,9 @@ export class ViewProjects extends React.Component {
             {this.props.static.description}
           </Typography>
 
-          <TextBlock variant='body1' component='pre'>
+          <PreBlock variant='body1' component='pre'>
             {this.props.section.description}
-          </TextBlock>
+          </PreBlock>
         </StackRow>
         {this.props.section.deployUrl || this.props.section.sourceUrl ? (
           <StackRow>
