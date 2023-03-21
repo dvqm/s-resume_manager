@@ -16,6 +16,7 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -56,7 +57,7 @@ const logout = () => {
 };
 
 const saveData = async (cvBase) => {
-  const user = await auth.currentUser;
+  const user = auth.currentUser;
 
   const localTimestamp = new Date().getTime();
 
