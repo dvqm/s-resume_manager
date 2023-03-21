@@ -8,7 +8,7 @@ const mainTheme = createTheme({
   spacing: 4,
   palette: {
     primary: {
-      main: '#87F1FA',
+      main: '#3447F0',
     },
     secondary: {
       main: '#0051FF',
@@ -16,6 +16,9 @@ const mainTheme = createTheme({
     background: {
       primary: '#FFF700',
       secondary: '#FF0000',
+      tertiary: '#fff',
+      spBgGradient:
+        'linear-gradient(225deg, rgba(52,71,240,0.6) 0%, rgba(255,247,0,0.6) 100%)',
     },
   },
   typography: {
