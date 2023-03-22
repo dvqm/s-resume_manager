@@ -103,7 +103,7 @@ class App extends React.Component {
           );
 
           const section = [...this.state.currentCv[keyName]];
-          section[index][field] = getEventValue();
+          section[index][field] = await getEventValue();
 
           this.setState({
             ...this.state,
