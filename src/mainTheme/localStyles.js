@@ -117,7 +117,7 @@ export const genericStyles = {
 export const cvGrid = {
   RootGrid: styled(Grid)(bs.flex.items.stretch),
 
-  CurrentCvGrid: styled(Grid)(bs.flex.column.nowrap),
+  CurrentCvGrid: styled(Grid)(() => [bs.flex.column.nowrap, { paddingRight: 50 }]),
 
   SidePanelGrid: styled(Grid)(({ theme }) => [
     bs.flex.column.nowrap,
@@ -272,8 +272,9 @@ export const aboutStyles = {
   Photo: styled(Avatar)(({ theme }) => ({
     width: 150,
     height: 150,
-    [theme.breakpoints.down('md')]: {
-      margin: '0 auto',
+    marginBottom: 30,
+    [theme.breakpoints.down('sm')]: {
+      margin: '20px auto',
     },
   })),
 
@@ -327,29 +328,39 @@ export const aboutStyles = {
     },
   ]),
 
-  ViewWrap: styled(Stack)(({ theme }) => ({
-    [theme.breakpoints.up('md')]: bs.flex.row.wrap,
-  })),
+  ViewWrap: styled(Stack)(() => [bs.flex.row.wrap,
+  {
+    justifyContent: 'space-around',
+  }]),
 
   ViewMainInfo: styled(Stack)(({ theme }) => ({
     justifyContent: 'center',
-    marginLeft: 30,
+    marginLeft: 20,
+    alignItems: 'center',
 
-    [theme.breakpoints.up('md')]: bs.flex.column.nowrap,
+    [theme.breakpoints.up('md')]: [bs.flex.row.nowrap, {
+      justifyContent: 'flex-between',
+    }]
   })),
 
   ViewTitle: styled(Stack)(({ theme }) => ({
-    '&>*:last-of-type': { marginLeft: 30 },
+    '&>*:last-of-type': { marginLeft: 20 },
     [theme.breakpoints.up('md')]: bs.flex.column.wrap,
   })),
 
   ViewAddress: styled('address')(({ theme }) => ({
+    fontSize: '1.5em',
+    marginLeft: 20,
     [theme.breakpoints.up('md')]: bs.flex.row.wrap,
   })),
 
-  ViewContacts: styled(Stack)(({ theme }) => ({
-    [theme.breakpoints.up('md')]: bs.flex.row.wrap,
-  })),
+  ViewContacts: styled(Stack)(({ theme }) => ([
+    bs.flex.column.nowrap,
+    {
+      fontSize: '1.5em',
+      marginLeft: 20,
+    },
+  ])),
 
   ViewName: styled(Typography)({}),
 
