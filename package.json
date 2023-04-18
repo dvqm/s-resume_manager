@@ -49,6 +49,8 @@
     ]
   },
   "devDependencies": {
+    "arkit": "^1.6.4",
+    "dependency-cruiser": "^12.11.1",
     "dotenv": "^16.0.3",
     "gh-pages": "^5.0.0"
   }
