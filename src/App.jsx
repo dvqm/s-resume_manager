@@ -4,7 +4,6 @@ import CurrentCv from './components/CurrentCv';
 import ManageCv from './components/ManageCv';
 import Auth from './database/Auth';
 import { getData, saveData } from './database/firebase';
-import Grid from '@mui/material/Grid';
 import { ThemeProvider } from '@mui/material/styles';
 import mainTheme from './mainTheme/globalTheme.js';
 import { cvExamples, cvTemplate, staticFields } from './assets/templates';
@@ -99,7 +98,7 @@ class App extends React.Component {
 
         case typeof id === 'number':
           const index = this.state.currentCv[keyName].findIndex(
-            (cv) => cv.id === id,
+            (cv) => cv.id === id
           );
 
           const section = [...this.state.currentCv[keyName]];
@@ -134,7 +133,7 @@ class App extends React.Component {
     setState: (...params) => {
       const isNew = () => {
         return !this.state.cvBase.some(
-          (cv) => cv.cvName === this.state.currentCv.cvName,
+          (cv) => cv.cvName === this.state.currentCv.cvName
         );
       };
 
@@ -159,7 +158,7 @@ class App extends React.Component {
                   [key]: values,
                 },
               },
-              recursiveSetState,
+              recursiveSetState
             );
             break;
 
@@ -182,7 +181,7 @@ class App extends React.Component {
                 if (key === 'cvBase') saveData(this.state.cvBase);
 
                 recursiveSetState();
-              },
+              }
             );
             break;
 
@@ -204,7 +203,7 @@ class App extends React.Component {
                   },
                 });
                 recursiveSetState();
-              },
+              }
             );
             break;
         }
