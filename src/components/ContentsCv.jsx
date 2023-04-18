@@ -11,7 +11,6 @@ class ContentsCv extends React.Component {
 
     this.state = {
       isDrawerOpen: false,
-      selectedCvName: '',
     };
 
     this.handleChooseCv = this.handleChooseCv.bind(this);
@@ -27,14 +26,14 @@ class ContentsCv extends React.Component {
     }));
   };
 
-  handleChooseCv(cvName) {
+  handleChooseCv(e) {
     const cvBase = [...this.props.state.cvBase];
 
-    const chosenCv = cvBase.filter((cv) => cv.cvName === cvName)[0];
+    const chosenCv = cvBase.filter(
+      (cv) => cv.cvName === e.target.textContent,
+    )[0];
 
     this.props.helper.setState('currentCv', chosenCv);
-
-    this.setState({ ...this.state, selectedCvName: cvName });
   }
 
   addMock() {
@@ -55,7 +54,7 @@ class ContentsCv extends React.Component {
       ListBtnSelected,
     } = contentsStyles;
 
-    const { isDrawerOpen, selectedCvName } = this.state;
+    const { isDrawerOpen } = this.state;
 
     const resumesList = () => {
       const mockBtns = () => {
@@ -104,15 +103,13 @@ class ContentsCv extends React.Component {
                 {mockBtns()}
                 {this.props.state.cvBase.map((cv) => (
                   <React.Fragment key={cv.cvName}>
-                    {selectedCvName === cv.cvName ? (
-                      <ListBtnSelected
-                        onClick={() => this.handleChooseCv(cv.cvName)}
-                      >
+                    {this.props.state.currentCv.cvName === cv.cvName ? (
+                      <ListBtnSelected onClick={this.handleChooseCv}>
                         <ArticleOutlinedIcon />
                         <ListItemText>{cv.cvName}</ListItemText>
                       </ListBtnSelected>
                     ) : (
-                      <ListBtn onClick={() => this.handleChooseCv(cv.cvName)}>
+                      <ListBtn onClick={this.handleChooseCv}>
                         <ArticleOutlinedIcon />
                         <ListItemText>{cv.cvName}</ListItemText>
                       </ListBtn>
