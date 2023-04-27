@@ -156,6 +156,7 @@ export const authStyles = {
   LoginBtn: styled(Button)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.light,
+    width: 230,
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
     },
@@ -177,27 +178,10 @@ export const authStyles = {
 export const contentsStyles = {
   BoxStyled: styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
-      display: 'none',
-    },
-  })),
-
-  DrawerStyled: styled(Drawer)(({ theme }) => ({
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-    [theme.breakpoints.down('md')]: {
-      display: 'block',
-    },
-  })),
-
-  IconButtonStyled: styled(IconButton)(({ theme }) => ({
-    [theme.breakpoints.down('md')]: {
-      position: 'absolute',
-      top: 10,
-      left: 10,
-    },
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
+      position: 'fixed',
+      top: 80,
+      left: '50%',
+      transform: 'translateX(-50%)',
     },
   })),
 
@@ -232,8 +216,28 @@ export const contentsStyles = {
   ]),
 };
 
+export const pdfStyles = {
+  BoxStyled: styled(Box)(({ theme }) => ({
+    [theme.breakpoints.down('md')]: {
+      position: 'fixed',
+      top: 80,
+      width: '90%',
+      left: '20%',
+      transform: 'translateX(-20%)',
+    },
+  })),
+};
+
 export const manageCvStyles = {
   ManageCvBox: styled(Box)(bs.flex.row.nowrap),
+  IconButtonStyled: styled(IconButton)(({ theme }) => ({
+    [theme.breakpoints.down('md')]: {
+    },
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  })),
+
 };
 
 export const aboutStyles = {
@@ -328,18 +332,20 @@ export const aboutStyles = {
     },
   ]),
 
-  ViewWrap: styled(Stack)(() => [bs.flex.row.wrap,
+  ViewWrap: styled(Stack)(() => [bs.flex.row.nowrap,
   {
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    columnGap: 40,
   }]),
 
   ViewMainInfo: styled(Stack)(({ theme }) => ({
-    justifyContent: 'center',
-    marginLeft: 20,
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    columnGap: 20,
 
-    [theme.breakpoints.up('md')]: [bs.flex.row.nowrap, {
-      justifyContent: 'flex-between',
+    [theme.breakpoints.up('md')]: [bs.flex.row.wrap, {
+      justifyContent: 'flex-start',
+      alignItems: 'center',
     }]
   })),
 
