@@ -22,7 +22,7 @@ export class EditEducations extends React.Component {
           size='small'
           value={this.props.section.title}
           onChange={(e) =>
-            this.handleChange(this.key, 'institution', e, this.id)
+            this.handleChange(this.key, 'title', e, this.id)
           }
         />
 
