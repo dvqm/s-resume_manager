@@ -1,5 +1,10 @@
 import React from 'react';
-import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
+import { Page, Text, View, Link, Image, Document, PDFViewer } from '@react-pdf/renderer';
+import { s } from './PdfStyles';
+import mainTheme from '../../mainTheme/globalTheme.js';
+import { pdfStyles } from '../../mainTheme/localStyles'
+import { IconButton } from '@mui/material';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
 class PdfResume extends React.Component {
   constructor(props) {
@@ -7,70 +12,302 @@ class PdfResume extends React.Component {
 
     this.resume = props.resume;
   }
+
   render() {
+    const staticFields = this.props.state.state.static;
+    const { currentCv } = this.props.state.state;
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-    paddingHorizontal: 24,
-  },
-  section: {
-    marginBottom: 12,
-  },
-  heading: {
-    fontSize: 18,
-    marginBottom: 4,
-  },
-  subheading: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  divider: {
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
-    marginBottom: 8,
-  },
-});
+    return <Document>
+      <Page size="A4" style={s.container}>
+        <View style={s.section}>
+          <Text style={s.heading}>{staticFields.about.header}</Text>
+          <View style={s.divider}></View>
+          <View style={s.flexRow}>
+            {currentCv.about.photo ? <Image style={s.photo} src={currentCv.about.photo} /> : null}
+            <View style={s.viewMainInfo}>
 
-return <Document>
-    <Page size="A4" style={styles.container}>
-      <View style={styles.section}>
-        <Text style={styles.heading}>About</Text>
-        <View style={styles.divider}></View>
-      </View>
+              <View style={s.flexRow}>
+                <View>
+                  <Text>
+                    {currentCv.about.first && `${currentCv.about.first} `}
+                    {currentCv.about.middle && `${currentCv.about.middle} `}
+                    {currentCv.about.last}
+                  </Text>
+                  <Text>{currentCv.about.position}</Text>
+                  <Text>
+                    {currentCv.about.city && `${currentCv.about.city}, `}
+                    {currentCv.about.state && `${currentCv.about.state}, `}
+                    {currentCv.about.country}
+                  </Text>
+                </View>
+                <View>
+                  <Link src={`tel:${currentCv.about.tel}`}>
+                    {currentCv.about.tel}
+                  </Link>
+                  <Link src={`mailto:${currentCv.about.email}`}>
+                    {currentCv.about.email}
+                  </Link>
+                  <Link src={currentCv.about.linkedin}>
+                    {currentCv.about.linkedin}
+                  </Link>
+                  <Link src={currentCv.about.gitHub}>
+                    {currentCv.about.gitHub}
+                  </Link>
+                </View>
+              </View>
+            </View>
+          </View>
 
-      <View style={styles.section}>
-        <Text style={styles.heading}>Summary</Text>
-        <View style={styles.divider}></View>
-      </View>
+        </View>
 
-      <View style={styles.section}>
-        <Text style={styles.heading}>Area of Expertise</Text>
-        <View style={styles.divider}></View>
-      </View>
+        <View style={s.section}>
+          <Text style={s.heading}>{staticFields.summary.header}</Text>
+          <View style={s.divider}></View>
+          <Text>{currentCv.summary.summary}</Text>
+        </View>
 
-      <View style={styles.section}>
-        <Text style={styles.heading}>My Projects</Text>
-        <View style={styles.divider}></View>
-      </View>
+        <View style={s.section}>
+          <Text style={s.heading}>{staticFields.expertise.header}</Text>
+          <View style={s.divider}></View>
+          <View>
+            {currentCv.expertise.map((item, index) => (
+              <View style={s.flexColumn} key={index}>
+                <Text style={s.title2}>{item.title}</Text>
+                <View style={s.labels}>
+                  {item.labels.split(', ').map((label, index) => (
+                    <Text key={index}>{'·'} {label}</Text>
+                  ))}
+                </View>
+              </View>
+            ))}
+          </View>
+        </View>
 
-      <View style={styles.section}>
-        <Text style={styles.heading}>Work Experience</Text>
-        <View style={styles.divider}></View>
-      </View>
+        <View style={s.section}>
+          <Text style={s.heading}>{staticFields.projects.header}</Text>
+          <View style={s.divider}></View>
 
-      <View style={styles.section}>
-        <Text style={styles.heading}>Education</Text>
-        <View style={styles.divider}></View>
-      </View>
+          {currentCv.projects.map((item, index) => (
+            <View style={s.article} key={index}>
+              <Text style={s.title1}>{item.title}</Text>
+              {item.startDate ||
+                item.endDate ||
+                item.currentlyWork ? (
+                  <View style={s.dates}>
+                    <Text>
+                      {item.startDate}
+                    </Text>
+                    {(item.currentlyWork ||
+                      item.endDate) && (
+                        <Text>-</Text>
+                      )}
+                    <Text>
+                      {item.currentlyWork
+                        ? staticFields.projects.currentlyWork
+                        : item.endDate}
+                    </Text>
+                  </View>
+                ) : (
+                  null
+                )}
 
-      <View style={styles.section}>
-        <Text style={styles.heading}>Additional information</Text>
-        <View style={styles.divider}></View>
-      </View>
-    </Page>
-  </Document>
+              {item.technologies && (
+                <View style={s.flexRow}>
+                  <Text style={s.title2}>
+                    {staticFields.projects.technologies}
+                  </Text>
+
+                  <Text>
+                    {item.technologies}
+                  </Text>
+                </View>
+              )}
+
+              <View>
+                <Text style={s.title2}>
+                  {staticFields.projects.description}
+                </Text>
+
+                <Text>
+                  {item.description}
+                </Text>
+              </View>
+              {item.deployUrl || item.sourceUrl ? (
+                <View style={s.flexRow}>
+                  {item.deployUrl ? (
+                    <Link
+                      src={item.deployUrl}
+                    >{staticFields.projects.deployUrl}</Link>
+                  ) : (
+                      null
+                    )}
+
+                  {item.sourceUrl ? (
+                    <Link
+                      src={item.sourceUrl}
+                    > {staticFields.projects.sourceUrl}</Link>
+                  ) : (
+                      null
+                    )}
+                </View>
+              ) : (
+                  null
+                )}
+            </View>
+          ))}
+        </View>
+
+        <View style={s.section}>
+          <Text style={s.heading}>{staticFields.experiences.header}</Text>
+          <View style={s.divider}></View>
+          {currentCv.experiences.map((item, index) => (
+            <View style={s.article} key={index}>
+              <Text style={s.title1}>{item.title} at {item.company}</Text>
+
+              <View style={s.flexRow}>
+                <View style={s.flexRow}>
+                  <Text>
+                    {staticFields.experiences.employmentType}
+                  </Text>
+                  <Text>
+                    {item.employmentType}
+                  </Text>
+                </View>
+
+                <View style={s.flexRow}>
+                  <Text>
+                    {staticFields.experiences.contractType}
+                  </Text>
+                  <Text>
+                    {item.contractType}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={s.dates}>
+                <Text>
+                  {item.startDate}
+                </Text>
+                {item.currentlyWork ? (
+                  <>
+                    <Text>-</Text>
+                    <Text>Currently work</Text>
+                  </>
+                ) : (
+                    <>
+                      <Text>-</Text>
+                      <Text>
+                        {item.endDate}
+                      </Text>
+                    </>
+                  )}
+              </View>
+
+              {item.location.length > 0 && (
+                <View style={s.flexRow}>
+                  <Text>
+                    {staticFields.experiences.location}
+                  </Text>
+                  <Text>
+                    {item.location}
+                  </Text>
+                </View>
+              )}
+
+              <View>
+                <Text>
+                  {staticFields.experiences.description}
+                </Text>
+                <Text>{item.description}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+
+        <View style={s.section}>
+          <Text style={s.heading}>{staticFields.educations.header}</Text>
+          <View style={s.divider}></View>
+
+          {currentCv.educations.map((item, index) => (
+            <View style={s.article} key={index}>
+              <Text style={s.title1}>{item.title}</Text>
+              <Text>
+                <Text style={s.title2}>{item.degree}</Text>
+                <Text> &#183; </Text>
+                <Text>
+                  {item.studyField}
+                </Text>
+              </Text>
+              <Text>
+                <Text>
+                  {item.startDate}
+                </Text>
+                <Text> - </Text>
+                <Text>{item.endDate}</Text>
+              </Text>
+              {item.grade && (
+                <Text>
+                  <Text>{staticFields.educations.grade}</Text>
+                  <Text>{item.grade}</Text>
+                </Text>
+              )}
+              {item.activities && (
+                <>
+                  <Text>
+                    {staticFields.educations.activities}
+                  </Text>
+                  <Text>{item.activities}</Text>
+                </>
+              )}
+              {item.description && (
+                <>
+                  <Text>Description: </Text>
+                  <Text>
+                    {item.description}
+                  </Text>
+                </>
+              )}
+            </View>
+          ))}
+
+        </View>
+
+        <View style={s.section}>
+          <Text style={s.heading}>{staticFields.additional.header}</Text>
+          <View style={s.divider}></View>
+
+          {currentCv.additional.map((item, index) => (
+            <View style={s.article} key={index}>
+              <Text style={s.title1}>{item.title}</Text>
+              <Text>{item.description}</Text>
+            </View>
+          ))}
+        </View>
+      </Page>
+    </Document >
   }
 }
 
-export default PdfResume;
+class ResumeViewer extends React.Component {
+  render() {
+    const { BoxStyled } = pdfStyles;
+    const mdBreakpoint = mainTheme.breakpoints.values.md;
+
+    return (
+      <BoxStyled>
+        {window.innerWidth <= mdBreakpoint && this.props.state.secondary.pdfPreview &&
+          <IconButton onClick={this.props.preview().pdf}>
+            <CloseOutlinedIcon />
+          </IconButton>
+        }
+        {this.props.state.secondary.pdfPreview &&
+          <PDFViewer style={s.viewer}>
+            <PdfResume state={this.props} />
+          </PDFViewer>
+        }
+      </BoxStyled>
+    );
+  }
+}
+
+export default ResumeViewer;
