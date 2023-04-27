@@ -8,6 +8,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import mainTheme from './mainTheme/globalTheme.js';
 import { cvExamples, cvTemplate, staticFields } from './assets/templates';
 import { cvGrid } from './mainTheme/localStyles.js';
+import ResumeViewer from './components/PdfLayout/PdfMarkup';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,6 +19,8 @@ class App extends React.Component {
       currentCv: { ...cvTemplate },
       secondary: {
         new: true,
+        pdfPreview: false,
+        listPreview: false,
       },
       static: { ...staticFields },
     };
@@ -27,6 +30,8 @@ class App extends React.Component {
     this.deleteMock = this.deleteMock.bind(this);
 
     this.helper.setState = this.helper.setState.bind(this);
+
+    this.preview = this.preview.bind(this);
   }
 
   addMock() {
@@ -54,6 +59,49 @@ class App extends React.Component {
     this.helper.setState('cvBase', updated);
 
     saveData(updated);
+  }
+
+  preview() {
+    const preview = (toggler) => {
+      this.setState({
+        ...this.state,
+        secondary: {
+          ...this.state.secondary,
+          [toggler]: !this.state.secondary[toggler],
+        },
+      });
+    }
+
+    return {
+      size: () => {
+      const mdBreakpoint = mainTheme.breakpoints.values.md;
+
+      const updateState = (newValue) => {
+        this.setState({
+          ...this.state,
+          secondary: {
+            ...this.state.secondary,
+            listPreview: newValue,
+            pdfPreview: newValue,
+          },
+        })
+      };
+
+      switch (true) {
+        case window.innerWidth < mdBreakpoint:
+          updateState(false);
+          break;
+
+        default:
+          updateState(true);
+          break;
+      }
+    },
+
+      pdf: () => preview('pdfPreview'),
+
+      list: () => preview('listPreview'),
+    }
   }
 
   helper = {
@@ -221,10 +269,20 @@ class App extends React.Component {
     };
 
     retrieveData();
+
+    this.preview().size();
+
+    window.addEventListener('resize', this.preview().size);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.preview().listSize);
+    window.removeEventListener('resize', this.preview().pdfSize);
   }
 
   render() {
     const { RootGrid, CurrentCvGrid, SidePanelGrid } = cvGrid;
+
     return (
       <ThemeProvider theme={mainTheme}>
         <RootGrid container spacing={4}>
@@ -235,14 +293,17 @@ class App extends React.Component {
           <SidePanelGrid item xs={12} md={4} order={{ xs: 1, md: 2 }}>
             <Auth helper={this.helper} />
 
-            <ManageCv state={this.state} helper={this.helper} />
+            <ManageCv state={this.state} helper={this.helper} preview={this.preview} />
 
             <ContentsCv
               state={this.state}
               helper={this.helper}
+              preview={this.preview}
               addMock={this.addMock}
               deleteMock={this.deleteMock}
             />
+
+            <ResumeViewer state={this.state} preview={this.preview} />
           </SidePanelGrid>
         </RootGrid>
       </ThemeProvider>
