@@ -14,8 +14,33 @@ class PdfResume extends React.Component {
   }
 
   render() {
+    const stringToNull = (obj) => {
+      const clonedObj = JSON.parse(JSON.stringify(obj));
+
+      if (Array.isArray(clonedObj)) {
+        clonedObj.forEach((item, index) => {
+          if (typeof item === 'object') {
+            clonedObj[index] = stringToNull(item);
+          } else if (item === '') {
+            clonedObj[index] = null;
+          }
+        });
+      } else {
+        Object.entries(clonedObj).forEach(([key, value]) => {
+          if (typeof value === 'object') {
+            clonedObj[key] = stringToNull(value);
+          } else if (value === '') {
+            clonedObj[key] = null;
+          }
+        });
+      }
+
+      return clonedObj;
+    };
+
     const staticFields = this.props.state.state.static;
-    const { currentCv } = this.props.state.state;
+
+    const currentCv = stringToNull(this.props.state.state.currentCv);
 
     return <Document>
       <Page size="A4" style={s.container}>
@@ -74,7 +99,7 @@ class PdfResume extends React.Component {
               <View style={s.flexColumn} key={index}>
                 <Text style={s.title2}>{item.title}</Text>
                 <View style={s.labels}>
-                  {item.labels.split(', ').map((label, index) => (
+                  {item.labels !== null && item.labels.split(', ').map((label, index) => (
                     <Text key={index}>{'·'} {label}</Text>
                   ))}
                 </View>
@@ -186,7 +211,7 @@ class PdfResume extends React.Component {
 
               <View style={s.dates}>
                 <Text>
-                  {item.startDate}
+                  {item.startDate !== null ? item.startDate : null}
                 </Text>
                 {item.currentlyWork ? (
                   <>
@@ -197,13 +222,13 @@ class PdfResume extends React.Component {
                     <>
                       <Text>-</Text>
                       <Text>
-                        {item.endDate}
+                        {item.endDate !== null ? item.endDate : null}
                       </Text>
                     </>
                   )}
               </View>
 
-              {item.location.length > 0 && (
+              {item.location !== null && item.location.length > 0 && (
                 <View style={s.flexRow}>
                   <Text>
                     {staticFields.experiences.location}
@@ -290,20 +315,21 @@ class PdfResume extends React.Component {
 
 class ResumeViewer extends React.Component {
   render() {
-    const { BoxStyled } = pdfStyles;
+    const { BoxStyled, IconButtonStyled } = pdfStyles;
     const mdBreakpoint = mainTheme.breakpoints.values.md;
 
     return (
       <BoxStyled>
-        {window.innerWidth <= mdBreakpoint && this.props.state.secondary.pdfPreview &&
-          <IconButton onClick={this.props.preview().pdf}>
-            <CloseOutlinedIcon />
-          </IconButton>
-        }
         {this.props.state.secondary.pdfPreview &&
-          <PDFViewer style={s.viewer}>
-            <PdfResume state={this.props} />
-          </PDFViewer>
+          <>
+            <IconButtonStyled onClick={this.props.preview().pdf}>
+              <CloseOutlinedIcon />
+            </IconButtonStyled>
+
+            <PDFViewer style={s.viewer}>
+              <PdfResume state={this.props} />
+            </PDFViewer>
+          </>
         }
       </BoxStyled>
     );
