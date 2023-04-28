@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/sb-cvapp/static/js/main.7ea1927e.js",
+    "main.js": "/sb-cvapp/static/js/main.6cdd7497.js",
     "static/js/496.da0fd7f1.chunk.js": "/sb-cvapp/static/js/496.da0fd7f1.chunk.js",
     "index.html": "/sb-cvapp/index.html",
-    "main.7ea1927e.js.map": "/sb-cvapp/static/js/main.7ea1927e.js.map",
+    "main.6cdd7497.js.map": "/sb-cvapp/static/js/main.6cdd7497.js.map",
     "496.da0fd7f1.chunk.js.map": "/sb-cvapp/static/js/496.da0fd7f1.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.7ea1927e.js"
+    "static/js/main.6cdd7497.js"
   ]
 }
