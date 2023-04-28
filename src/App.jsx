@@ -74,29 +74,29 @@ class App extends React.Component {
 
     return {
       size: () => {
-      const mdBreakpoint = mainTheme.breakpoints.values.md;
+        const mdBreakpoint = mainTheme.breakpoints.values.md;
 
-      const updateState = (newValue) => {
-        this.setState({
-          ...this.state,
-          secondary: {
-            ...this.state.secondary,
-            listPreview: newValue,
-            pdfPreview: newValue,
-          },
-        })
-      };
+        const updateState = (newValue) => {
+          this.setState({
+            ...this.state,
+            secondary: {
+              ...this.state.secondary,
+              listPreview: newValue,
+              pdfPreview: newValue,
+            },
+          })
+        };
 
-      switch (true) {
-        case window.innerWidth < mdBreakpoint:
-          updateState(false);
-          break;
+        switch (true) {
+          case window.innerWidth < mdBreakpoint:
+            updateState(false);
+            break;
 
-        default:
-          updateState(true);
-          break;
-      }
-    },
+          default:
+            updateState(true);
+            break;
+        }
+      },
 
       pdf: () => preview('pdfPreview'),
 
@@ -259,6 +259,25 @@ class App extends React.Component {
 
       recursiveSetState();
     },
+
+    checkEditable: () => {
+      const checkEdit = (o) => {
+        return Object.keys(o).some((prop) => {
+          if (prop === 'editing' && o[prop] === true) {
+            return true;
+          }
+
+          if (typeof o[prop] === 'object') {
+            return checkEdit(o[prop]);
+          }
+
+          return false;
+        });
+      };
+
+      return checkEdit(this.state.currentCv);
+    },
+
   };
 
   componentDidMount() {
