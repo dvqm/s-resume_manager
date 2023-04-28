@@ -37,8 +37,12 @@ class Section extends React.Component {
           }
         };
 
+        const values = { ...context.props.static.default };
+
+        values.editing = true;
+
         const newArticle = {
-          ...context.props.static.default,
+          ...values,
           id: setId(context.props.dynamic),
           init: true,
         };
@@ -196,27 +200,27 @@ class Section extends React.Component {
                 </FormGroup>
               </form>
             ) : (
-              <ArticleStyled key={section.id}>
-                <StackRow>
-                  <Typography variant='h3'>{section.title}</Typography>
+                <ArticleStyled key={section.id}>
+                  <StackRow>
+                    <Typography variant='h3'>{section.title}</Typography>
 
-                  <IconButton
-                    color='secondary'
-                    size='medium'
-                    onClick={() => this.handle.edit(section.id)}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </StackRow>
+                    <IconButton
+                      color='secondary'
+                      size='medium'
+                      onClick={() => this.handle.edit(section.id)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </StackRow>
 
-                {React.createElement(this.view, {
-                  keyName: this.props.keyName,
-                  static: this.props.static,
-                  section: section,
-                })}
-                <Divider light variant='inset' />
-              </ArticleStyled>
-            ),
+                  {React.createElement(this.view, {
+                    keyName: this.props.keyName,
+                    static: this.props.static,
+                    section: section,
+                  })}
+                  <Divider light variant='inset' />
+                </ArticleStyled>
+              ),
           )}
       </SectionStyled>
     );
