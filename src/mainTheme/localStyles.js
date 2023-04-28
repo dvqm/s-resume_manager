@@ -3,7 +3,6 @@ import {
   Avatar,
   Button,
   Box,
-  Drawer,
   FormControl,
   IconButton,
   TextField,
@@ -220,12 +219,22 @@ export const pdfStyles = {
   BoxStyled: styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
       position: 'fixed',
-      top: 80,
+      top: 10,
       width: '90%',
       left: '20%',
       transform: 'translateX(-20%)',
     },
   })),
+  IconButtonStyled: styled(IconButton)(({ theme }) => ({
+    position: 'absolute',
+    right: -10,
+    top: -10,
+
+    [theme.breakpoints.up('md')]: {
+      dislpay: 'none',
+    }
+
+  }))
 };
 
 export const manageCvStyles = {
