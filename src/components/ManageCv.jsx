@@ -10,6 +10,7 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
+import { Menu } from '@mui/icons-material';
 
 class ManageCv extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class ManageCv extends React.Component {
         );
       },
 
-      save: (field, boolean) => {
+      save: (boolean) => {
         const currentCv = { ...context.props.state.currentCv };
 
         const cvBase = [...context.props.state.cvBase];
@@ -64,6 +65,19 @@ class ManageCv extends React.Component {
         const { cvName } = currentCv;
 
         const { prevName } = context.state;
+
+        const checkIfEmpty = () => {
+          return Object.values(currentCv.about).every(value => {
+            if (typeof value === 'boolean') {
+              return true;
+            }
+            return value === null;
+          });
+        };
+
+        if (context.helper.checkEditable()) return alert('One or more sections in edit mode, please check and save data.')
+
+        if (checkIfEmpty()) return alert('Section About can\'t be empty');
 
         let updatedCvBase;
 
@@ -85,6 +99,8 @@ class ManageCv extends React.Component {
 
           // update existed
           case !context.isUnique() && prevName === cvName:
+
+
             alert('Updated existed');
 
             updatedCvBase = cvBase.map((cv) => {
@@ -105,7 +121,7 @@ class ManageCv extends React.Component {
 
           //name can not be empty
           case currentCv.cvName.length === 0 && cvName.length === 0:
-            alert('Field can not be empty');
+            alert('Name can\'t be empty');
 
             break;
 
@@ -124,6 +140,8 @@ class ManageCv extends React.Component {
           case context.isUnique() &&
             cvName.length > 0 &&
             currentCv.cvName !== prevName:
+
+
             alert('Saved as new');
 
             updatedCvBase = [...context.props.state.cvBase];
@@ -186,8 +204,6 @@ class ManageCv extends React.Component {
         }
       },
 
-      toPdf: () => {},
-
       cancel: () => {
         const cvBase = [...context.props.state.cvBase];
 
@@ -248,21 +264,36 @@ class ManageCv extends React.Component {
   }
 
   render() {
-    const { ManageCvBox } = manageCvStyles;
+    const { ManageCvBox, IconButtonStyled } = manageCvStyles;
     return (
       <ManageCvBox>
+        <IconButtonStyled
+          title='Show Resume List'
+          color='primary'
+          onClick={() => this.props.preview().list()}>
+          <Menu />
+        </IconButtonStyled>
+
+        <IconButtonStyled
+          title='Show PDF preview'
+          color='primary'
+          onClick={() => this.props.preview().pdf()}
+        >
+          <PictureAsPdfIcon />
+        </IconButtonStyled>
+
         {this.state.save ? (
           <EditName state={this.props.state} handle={this.handle} />
         ) : (
-          <IconButton
-            title='Save or rename resume'
-            color='primary'
-            onClick={() => this.handle.save('cvName', true)}
-          >
-            <SaveIcon />
-            {!this.props.state.secondary.new && <DriveFileRenameOutlineIcon />}
-          </IconButton>
-        )}
+            <IconButton
+              title='Save or rename resume'
+              color='primary'
+              onClick={() => this.handle.save(true)}
+            >
+              <SaveIcon />
+              {!this.props.state.secondary.new && <DriveFileRenameOutlineIcon />}
+            </IconButton>
+          )}
         {!this.state.save && (
           <>
             <IconButton
@@ -280,14 +311,6 @@ class ManageCv extends React.Component {
                   onClick={this.handle.new}
                 >
                   <NoteAddIcon />
-                </IconButton>
-
-                <IconButton
-                  title='Save to pdf format'
-                  color='primary'
-                  onClick={this.handle.toPdf}
-                >
-                  <PictureAsPdfIcon />
                 </IconButton>
 
                 <IconButton
@@ -319,8 +342,8 @@ class EditName extends React.Component {
     this.props.handle.change(e, field);
   }
 
-  save(field, boolean) {
-    this.props.handle.save(field, boolean);
+  save(boolean) {
+    this.props.handle.save(boolean);
   }
 
   rename() {
@@ -346,7 +369,7 @@ class EditName extends React.Component {
         <IconButton
           title='Save resume'
           color='primary'
-          onClick={() => this.save('cvName', false)}
+          onClick={() => this.save(false)}
         >
           <SaveIcon />
         </IconButton>
