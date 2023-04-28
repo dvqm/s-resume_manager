@@ -2,6 +2,7 @@ import { Rick, Bazz } from './base64Img';
 export const cvTemplate = {
   cvName: '',
   about: {
+    editing: false,
     first: '',
     middle: '',
     last: '',
@@ -16,6 +17,7 @@ export const cvTemplate = {
     gitHub: '',
   },
   summary: {
+    editing: false,
     summary: '',
   },
   projects: [],
@@ -30,6 +32,7 @@ export const cvExamples = [
     cvName: 'John Doe Developer',
     mock: 0,
     about: {
+      editing: false,
       first: 'John',
       middle: '',
       last: 'Doe',
@@ -44,6 +47,7 @@ export const cvExamples = [
       gitHub: 'github.com/johndoe',
     },
     summary: {
+      editing: false,
       summary:
         'John Doe is a skilled Middle Front-End Developer based in San Francisco, California. With experience in HTML, CSS, and JavaScript, John has a talent for creating user-friendly and visually appealing websites. He is always seeking new challenges and opportunities to expand his skills and knowledge in the tech industry. In his free time, John enjoys coding for fun and making silly jokes about his favorite programming languages. When asked about his favorite code editor, John quips "I only use Vim, because the only thing I like to nano is my smoothie."',
     },
@@ -202,6 +206,7 @@ export const cvExamples = [
     cvName: 'Bazz Lighter the Astronaut',
     mock: 1,
     about: {
+      editing: false,
       first: 'Bazz',
       middle: '',
       last: 'Lighter',
@@ -216,6 +221,7 @@ export const cvExamples = [
       gitHub: 'github.com/johndoe',
     },
     summary: {
+      editing: false,
       summary:
         'Bazz Lighter is a seasoned intergalactic pilot with a passion for exploring the unknown reaches of space. He is a skilled navigator and has a talent for landing on planets with the most unexpected gravitational pull. In his free time, Bazz enjoys reading sci-fi novels, playing chess against extraterrestrial opponents, and cracking jokes about the lack of decent coffee in deep space. His favorite motto is "The sky is not the limit, it\'s just the beginning."',
     },
@@ -394,6 +400,7 @@ export const cvExamples = [
     cvName: 'Inter-Dimensional Scientist',
     mock: 2,
     about: {
+      editing: false,
       first: 'Rick',
       middle: '',
       last: 'Sanchez',
@@ -408,6 +415,7 @@ export const cvExamples = [
       gitHub: '',
     },
     summary: {
+      editing: false,
       summary:
         'Rick Sanchez is an inter-dimensional scientist who has a passion for science and adventure. He has a wealth of experience in traversing the multiverse and inventing complex gadgets and contraptions. He is a genius but also a bit of a wild card, often causing trouble for those around him, but always with the best of intentions. When asked about his approach to science, Rick quips "I don\'t have to outrun the monster, I just have to outrun you."',
     },
@@ -653,7 +661,7 @@ export const staticFields = {
     technologies: 'Technologies: ',
     description: 'Description: ',
     default: {
-      editing: true,
+      editing: false,
       title: '',
       currentlyWork: false,
       startDate: '',
@@ -671,7 +679,7 @@ export const staticFields = {
     placeholder: 'Enter the scope name',
     tip: 'Enter your areas of expertise in the scope divided by comma and space',
     default: {
-      editing: true,
+      editing: false,
       title: '',
       labels: '',
     },
@@ -688,7 +696,7 @@ export const staticFields = {
     endDate: 'End date: ',
     description: 'Description: ',
     default: {
-      editing: true,
+      editing: false,
       title: '',
       employmentType: 'Full-time',
       company: '',
@@ -711,7 +719,7 @@ export const staticFields = {
     activities: 'Activities and societies: ',
     description: 'Description: ',
     default: {
-      editing: true,
+      editing: false,
       title: '',
       degree: '',
       studyField: '',
@@ -727,7 +735,7 @@ export const staticFields = {
     title: 'Title',
     description: 'Description: ',
     default: {
-      editing: true,
+      editing: false,
       title: '',
       description: '',
     },

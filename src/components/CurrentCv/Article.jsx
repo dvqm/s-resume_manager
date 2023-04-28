@@ -18,7 +18,6 @@ class Article extends React.Component {
 
     this.state = {
       keyName: props.keyName,
-      editing: false,
       original: props.dynamic,
     };
 
@@ -28,34 +27,40 @@ class Article extends React.Component {
   }
 
   handlers(context) {
+    const dynamicFieldsEdit = (bool) => {
+      const values = { ...context.props.dynamic };
+
+      values.editing = bool
+
+      return values;
+    }
+
     return {
       edit() {
         context.setState({
           ...context.state,
-          original: context.props.dynamic,
-          editing: true,
-        });
+          original: dynamicFieldsEdit(false),
+        }, () => {
+
+          console.log('original: ', context.state.original);
+          context.helper.setState(context.state.keyName, dynamicFieldsEdit(true));
+        })
       },
 
       save(e) {
         e.preventDefault();
 
-        context.setState({ editing: false }, () => {
-          const values = { ...context.props.dynamic };
-
-          context.helper.setState(context.state.keyName, values);
-        });
+        context.helper.setState(context.state.keyName, dynamicFieldsEdit(false));
       },
 
       cancel(e) {
         e.preventDefault();
+        const values = { ...context.state.original };
 
-        context.setState({ editing: false }, () => {
-          context.helper.setState(
-            context.state.keyName,
-            context.state.original,
-          );
-        });
+        context.helper.setState(
+          context.state.keyName,
+          values,
+        );
       },
 
       clear(e) {
@@ -70,7 +75,7 @@ class Article extends React.Component {
 
         Object.keys(values).forEach((key) => {
           if (typeof values[key] === 'boolean') values[key] = false;
-          else values[key] = '';
+          else values[key] = null;
         });
 
         context.helper.setState(context.state.keyName, values);
@@ -79,9 +84,10 @@ class Article extends React.Component {
   }
 
   render() {
+    const { editing } = this.props.dynamic;
     return (
       <>
-        {this.state.editing ? (
+        {editing ? (
           <form onSubmit={(e) => this.handle.save(e)}>
             <h2>{this.props.static.header}</h2>
 
@@ -116,21 +122,21 @@ class Article extends React.Component {
             </FormGroup>
           </form>
         ) : (
-          <article>
-            <StackRow>
-              <Typography variant='h2'>{this.props.static.header}</Typography>
+            <article>
+              <StackRow>
+                <Typography variant='h2'>{this.props.static.header}</Typography>
 
-              <IconButton color='secondary' onClick={() => this.handle.edit()}>
-                <EditIcon />
-              </IconButton>
-            </StackRow>
-            <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
+                <IconButton color='secondary' onClick={() => this.handle.edit()}>
+                  <EditIcon />
+                </IconButton>
+              </StackRow>
+              <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
 
-            {React.createElement(this.view, {
-              dynamic: this.props.dynamic,
-            })}
-          </article>
-        )}
+              {React.createElement(this.view, {
+                dynamic: this.props.dynamic,
+              })}
+            </article>
+          )}
       </>
     );
   }
