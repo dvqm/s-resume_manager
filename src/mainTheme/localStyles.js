@@ -122,6 +122,7 @@ export const cvGrid = {
     bs.flex.column.nowrap,
     {
       backgroundImage: theme.palette.background.spBgGradient,
+      padding: 15,
     },
   ]),
 };
@@ -155,6 +156,7 @@ export const authStyles = {
   LoginBtn: styled(Button)(({ theme }) => ({
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.light,
+    alignSelf: 'flex-end',
     width: 230,
     '&:hover': {
       backgroundColor: theme.palette.primary.dark,
@@ -231,7 +233,7 @@ export const pdfStyles = {
     top: -10,
 
     [theme.breakpoints.up('md')]: {
-      dislpay: 'none',
+      display: 'none',
     }
 
   }))

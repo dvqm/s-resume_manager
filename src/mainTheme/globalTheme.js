@@ -35,6 +35,13 @@ const mainTheme = createTheme({
     },
   },
   components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          margin: '10px 0',
+        },
+      },
+    },
     MuiChip: {
       variants: [
         {
@@ -60,9 +67,6 @@ const mainTheme = createTheme({
           },
         },
       ],
-    },
-    MuiDivider: {
-      stylesOverride: {},
     },
   },
 });
