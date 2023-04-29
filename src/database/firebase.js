@@ -95,17 +95,18 @@ const getData = async () => {
       const ls = getLs();
 
       const snapshot = await get(child(ref(db), `users/${user.uid}/data/`));
+      const snapshotData = snapshot.val();
 
-      if (ls.cvBase.length > 0 && snapshot.val()['cvBase'].length > 0) {
+      if (snapshotData && (ls.cvBase.length > 0 && snapshotData['cvBase'] !== null && snapshotData['cvBase'].length > 0)) {
         const lsTimestamp = ls.localTimestamp;
 
-        const snapshotTimestamp = snapshot.val()['localTimestamp'];
+        const snapshotTimestamp = snapshotData['localTimestamp'];
 
         return snapshotTimestamp > lsTimestamp
-          ? snapshot.val()['cvBase']
+          ? snapshotData['cvBase']
           : ls.cvBase;
-      } else if (snapshot.val()['cvBase'].length > 0)
-        return snapshot.val()['cvBase'];
+      } else if (snapshotData && snapshotData['cvBase'].length > 0)
+        return snapshotData['cvBase'];
       else if (ls.cvBase.length > 0) return ls.cvBase;
       else return [];
     } catch (error) {
