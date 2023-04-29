@@ -165,7 +165,7 @@ class Section extends React.Component {
         {this.props.dynamic.length > 0 &&
           this.props.dynamic.map((section) =>
             section.editing ? (
-              <form
+             <form
                 key={section.id}
                 onSubmit={(e) => this.handle.save(e, section.id)}
               >

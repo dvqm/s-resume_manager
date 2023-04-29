@@ -8,7 +8,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import mainTheme from './mainTheme/globalTheme.js';
 import { cvExamples, cvTemplate, staticFields } from './assets/templates';
 import { cvGrid } from './mainTheme/localStyles.js';
-import ResumeViewer from './components/PdfLayout/PdfMarkup';
+import { ResumeViewer } from './components/PdfLayout/PdfMarkup';
 
 class App extends React.Component {
   constructor(props) {
