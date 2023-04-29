@@ -28,7 +28,7 @@
     "build": "react-scripts build",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d build",
-    "ghpages": "git subtree push --prefix build origin temp-gh-pages"
+    "ghpages": "git subtree push --prefix build origin gh-pages"
   },
   "eslintConfig": {
     "extends": [
