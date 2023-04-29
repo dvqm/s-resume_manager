@@ -1,12 +1,10 @@
 import React from 'react';
 import { Page, Text, View, Link, Image, Document, PDFViewer } from '@react-pdf/renderer';
 import { s } from './PdfStyles';
-import mainTheme from '../../mainTheme/globalTheme.js';
 import { pdfStyles } from '../../mainTheme/localStyles'
-import { IconButton } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
-class PdfResume extends React.Component {
+export class PdfResume extends React.Component {
   constructor(props) {
     super(props);
 
@@ -209,24 +207,24 @@ class PdfResume extends React.Component {
                 </View>
               </View>
 
-              <View style={s.dates}>
-                <Text>
-                  {item.startDate !== null ? item.startDate : null}
-                </Text>
-                {item.currentlyWork ? (
-                  <>
-                    <Text>-</Text>
-                    <Text>Currently work</Text>
-                  </>
-                ) : (
-                    <>
-                      <Text>-</Text>
-                      <Text>
-                        {item.endDate !== null ? item.endDate : null}
-                      </Text>
-                    </>
-                  )}
-              </View>
+  <View style={s.dates}>
+    <Text>
+      {item.startDate !== null ? item.startDate : null}
+    </Text>
+    {item.currentlyWork ? (
+      <>
+        <Text>-</Text>
+        <Text>Currently work</Text>
+      </>
+    ) : (
+      <>
+        <Text>-</Text>
+        <Text>
+          {item.endDate !== null ? item.endDate : null}
+        </Text>
+      </>
+    )}
+  </View>
 
               {item.location !== null && item.location.length > 0 && (
                 <View style={s.flexRow}>
@@ -313,27 +311,24 @@ class PdfResume extends React.Component {
   }
 }
 
-class ResumeViewer extends React.Component {
+export class ResumeViewer extends React.Component {
   render() {
     const { BoxStyled, IconButtonStyled } = pdfStyles;
-    const mdBreakpoint = mainTheme.breakpoints.values.md;
 
     return (
       <BoxStyled>
         {this.props.state.secondary.pdfPreview &&
           <>
-            <IconButtonStyled onClick={this.props.preview().pdf}>
-              <CloseOutlinedIcon />
-            </IconButtonStyled>
+          <IconButtonStyled onClick={this.props.preview().pdf}>
+            <CloseOutlinedIcon />
+          </IconButtonStyled>
 
-            <PDFViewer style={s.viewer}>
-              <PdfResume state={this.props} />
-            </PDFViewer>
+          <PDFViewer style={s.viewer}>
+            <PdfResume state={this.props} />
+          </PDFViewer>
           </>
         }
       </BoxStyled>
     );
   }
 }
-
-export default ResumeViewer;

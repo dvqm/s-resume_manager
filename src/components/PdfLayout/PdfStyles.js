@@ -43,7 +43,7 @@ export const s = StyleSheet.create({
   viewer: {
     marginTop: 30,
     width: '100%',
-    height: '240mm',
+    height: '180mm',
   },
   photo: {
     width: '20%',
