@@ -1,4 +1,5 @@
 import Grid from '@mui/material/Grid';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import {
   Avatar,
   Button,
@@ -242,8 +243,12 @@ export const pdfStyles = {
 export const manageCvStyles = {
   ManageCvBox: styled(Box)(bs.flex.row.nowrap),
   IconButtonStyled: styled(IconButton)(({ theme }) => ({
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
     },
+  })),
+
+  PDFDownloadLinkStyled: styled(PDFDownloadLink)(({ theme }) => ({
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },

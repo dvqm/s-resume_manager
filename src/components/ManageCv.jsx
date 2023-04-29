@@ -3,7 +3,6 @@ import { IconButton } from '@mui/material';
 import { TextField } from '@mui/material';
 import { manageCvStyles } from '../mainTheme/localStyles.js';
 import { Menu } from '@mui/icons-material';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import { PdfResume } from '../components/PdfLayout/PdfMarkup';
 import SaveIcon from '@mui/icons-material/Save';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -268,7 +267,7 @@ class ManageCv extends React.Component {
   }
 
   render() {
-    const { ManageCvBox, IconButtonStyled } = manageCvStyles;
+    const { ManageCvBox, IconButtonStyled, PDFDownloadLinkStyled } = manageCvStyles;
     return (
       <ManageCvBox>
         <IconButtonStyled
@@ -287,14 +286,14 @@ class ManageCv extends React.Component {
         </IconButtonStyled>
 
 
-        <PDFDownloadLink
+        <PDFDownloadLinkStyled
           document={<PdfResume state={this.props}/>}
           title='Download PDF'
           fileName="resume.pdf"
           style={{margin: 'auto 0'}}
         >
                 <DownloadOutlinedIcon />
-        </PDFDownloadLink>
+        </PDFDownloadLinkStyled>
 
         {this.state.save ? (
           <EditName state={this.props.state} handle={this.handle} />
