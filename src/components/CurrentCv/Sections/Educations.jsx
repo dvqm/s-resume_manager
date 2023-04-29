@@ -49,6 +49,10 @@ export class EditEducations extends React.Component {
           label={this.props.static.startDate}
           type='date'
           size='small'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          placeholder='dd/mm/yyyy'
           value={this.props.section.startDate}
           onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
         />
@@ -57,6 +61,10 @@ export class EditEducations extends React.Component {
           fullWidth
           label={this.props.static.endDate}
           type='date'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          placeholder='dd/mm/yyyy'
           size='small'
           value={this.props.section.endDate}
           onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}

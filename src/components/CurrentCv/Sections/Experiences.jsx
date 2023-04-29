@@ -26,6 +26,10 @@ export class EditExperiences extends React.Component {
           label={this.props.static.title}
           size='small'
           type='text'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          placeholder='dd/mm/yyyy'
           value={this.props.section.title}
           onChange={(e) => this.handleChange(this.key, 'title', e, this.id)}
         />
@@ -33,6 +37,10 @@ export class EditExperiences extends React.Component {
         <TextField
           label={this.props.static.startDate}
           size='small'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          placeholder='dd/mm/yyyy'
           type='date'
           value={this.props.section.startDate}
           onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
@@ -56,6 +64,10 @@ export class EditExperiences extends React.Component {
             label={this.props.static.endDate}
             size='small'
             type='date'
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder='dd/mm/yyyy'
             value={this.props.section.endDate}
             onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
           />
@@ -163,13 +175,13 @@ export class ViewExperiences extends React.Component {
               <Typography variant='body1'>Currently work</Typography>
             </>
           ) : (
-            <>
-              <Typography variant='body1'>-</Typography>
-              <Typography variant='body1'>
-                {this.props.section.endDate}
-              </Typography>
-            </>
-          )}
+              <>
+                <Typography variant='body1'>-</Typography>
+                <Typography variant='body1'>
+                  {this.props.section.endDate}
+                </Typography>
+              </>
+            )}
         </StackRow>
 
         {this.props.section.location.length > 0 && (

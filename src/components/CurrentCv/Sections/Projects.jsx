@@ -53,6 +53,10 @@ export class EditProjects extends React.Component {
           type='date'
           label={this.props.static.startDate}
           size='small'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          placeholder='dd/mm/yyyy'
           value={this.props.section.startDate}
           onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
         />
@@ -61,6 +65,10 @@ export class EditProjects extends React.Component {
           <TextField
             type='date'
             label={this.props.static.endDate}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            placeholder='dd/mm/yyyy'
             size='small'
             value={this.props.section.endDate}
             onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
@@ -110,25 +118,25 @@ export class ViewProjects extends React.Component {
     return (
       <>
         {this.props.section.startDate ||
-        this.props.section.endDate ||
-        this.props.section.currentlyWork ? (
-          <StackRow>
-            <Typography variant='body1'>
-              {this.props.section.startDate}
-            </Typography>
-            {(this.props.section.currentlyWork ||
-              this.props.section.endDate) && (
-              <Typography variant='body1'> - </Typography>
-            )}
-            <Typography variant='body1'>
-              {this.props.section.currentlyWork
-                ? this.props.static.currentlyWork
-                : this.props.section.endDate}
-            </Typography>
-          </StackRow>
-        ) : (
-          ''
-        )}
+          this.props.section.endDate ||
+          this.props.section.currentlyWork ? (
+            <StackRow>
+              <Typography variant='body1'>
+                {this.props.section.startDate}
+              </Typography>
+              {(this.props.section.currentlyWork ||
+                this.props.section.endDate) && (
+                  <Typography variant='body1'> - </Typography>
+                )}
+              <Typography variant='body1'>
+                {this.props.section.currentlyWork
+                  ? this.props.static.currentlyWork
+                  : this.props.section.endDate}
+              </Typography>
+            </StackRow>
+          ) : (
+            ''
+          )}
 
         {this.props.section.technologies && (
           <StackRow>
@@ -166,8 +174,8 @@ export class ViewProjects extends React.Component {
                 clickable
               />
             ) : (
-              ''
-            )}
+                ''
+              )}
 
             {this.props.section.sourceUrl ? (
               <Chip
@@ -182,12 +190,12 @@ export class ViewProjects extends React.Component {
                 clickable
               />
             ) : (
-              ''
-            )}
+                ''
+              )}
           </StackRow>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </>
     );
   }
