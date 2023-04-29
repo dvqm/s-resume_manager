@@ -2,6 +2,9 @@ import React from 'react';
 import { IconButton } from '@mui/material';
 import { TextField } from '@mui/material';
 import { manageCvStyles } from '../mainTheme/localStyles.js';
+import { Menu } from '@mui/icons-material';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { PdfResume } from '../components/PdfLayout/PdfMarkup';
 import SaveIcon from '@mui/icons-material/Save';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import RestoreIcon from '@mui/icons-material/Restore';
@@ -10,7 +13,7 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
-import { Menu } from '@mui/icons-material';
+import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 
 class ManageCv extends React.Component {
   constructor(props) {
@@ -20,6 +23,7 @@ class ManageCv extends React.Component {
       prevName: props.state.currentCv.cvName,
       save: false,
       warning: null,
+      blob: null,
     };
 
     this.helper = props.helper;
@@ -281,6 +285,22 @@ class ManageCv extends React.Component {
         >
           <PictureAsPdfIcon />
         </IconButtonStyled>
+
+
+        <PDFDownloadLink
+          document={<PdfResume />}
+          title='Download PDF'
+          fileName="resume.pdf"
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          {({ loading }) =>
+            loading ? (
+              'Loading document...'
+            ) : (
+                <DownloadOutlinedIcon />
+              )
+          }
+        </PDFDownloadLink>
 
         {this.state.save ? (
           <EditName state={this.props.state} handle={this.handle} />
