@@ -288,18 +288,12 @@ class ManageCv extends React.Component {
 
 
         <PDFDownloadLink
-          document={<PdfResume />}
+          document={<PdfResume state={this.props}/>}
           title='Download PDF'
           fileName="resume.pdf"
-          style={{ textDecoration: 'none', color: 'inherit' }}
+          style={{margin: 'auto 0'}}
         >
-          {({ loading }) =>
-            loading ? (
-              'Loading document...'
-            ) : (
                 <DownloadOutlinedIcon />
-              )
-          }
         </PDFDownloadLink>
 
         {this.state.save ? (
