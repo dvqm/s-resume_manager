@@ -71,7 +71,7 @@ class ManageCv extends React.Component {
             if (typeof value === 'boolean') {
               return true;
             }
-            return value === null;
+            return value === '';
           });
         };
 
