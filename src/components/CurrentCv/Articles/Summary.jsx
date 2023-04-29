@@ -1,33 +1,38 @@
-import React from "react";
+import React from 'react';
+import { TextField } from '@mui/material';
+import { genericStyles } from '../../../mainTheme/localStyles.js';
+
+const { PreBlock } = genericStyles;
 
 export class EditSummary extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.key = props.keyName;
+    this.key = props.keyName;
 
-        this.handleChange = props.helper.onChange;
+    this.handleChange = props.helper.onChange;
+  }
 
-    }
-
-
-    render() {
-        return (
-            <label>
-                <span>{this.props.static.summary}</span>
-                <textarea cols="30" rows="10"
-                          value={this.props.dynamic.summary}
-                          onChange={(e) => this.handleChange(this.key, 'summary', e)}>
-                </textarea>
-            </label>
-        )
-    }
+  render() {
+    return (
+      <TextField
+        label={this.props.static.summary}
+        minRows={10}
+        fullWidth
+        multiline
+        value={this.props.dynamic.summary}
+        onChange={(e) => this.handleChange(this.key, 'summary', e)}
+      />
+    );
+  }
 }
 
 export class ViewSummary extends React.Component {
-    render() {
-        return (
-            <pre>{this.props.dynamic.summary}</pre>
-        )
-    }
+  render() {
+    return (
+      <PreBlock variant='body1' component='pre'>
+        {this.props.dynamic.summary}
+      </PreBlock>
+    );
+  }
 }

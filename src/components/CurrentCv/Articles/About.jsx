@@ -1,162 +1,212 @@
-import React from "react";
+import React from 'react';
+import { Link, Typography } from '@mui/material';
+import { aboutStyles } from '../../../mainTheme/localStyles.js';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+
+const {
+  EditCredentials,
+  EditInfo,
+  EditAvatar,
+  Photo,
+  ManagePhotoBtn,
+  EditName,
+  EditNameInput,
+  EditPosition,
+  EditAddress,
+  AddrInput,
+  EditContacts,
+  ContactInput,
+  ViewWrap,
+  ViewMainInfo,
+  ViewTitle,
+  ViewAddress,
+  ViewContacts,
+} = aboutStyles;
 
 export class EditAbout extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.key = props.keyName;
+    this.key = props.keyName;
 
-        this.deletePhoto = this.deletePhoto.bind(this);
+    this.deletePhoto = this.deletePhoto.bind(this);
 
-        this.handleChange = props.helper.onChange;
-    }
+    this.handleChange = props.helper.onChange;
+  }
 
-    deletePhoto(e) {
-        e.preventDefault();
+  deletePhoto(e) {
+    e.preventDefault();
 
-        const values = {...this.props.dynamic};
+    const values = { ...this.props.dynamic };
 
-        values.photo = '';
+    values.photo = '';
 
-        this.props.helper.setState(this.key, values);
-    }
+    this.props.helper.setState(this.key, values);
+  }
 
-    render() {
-        return (
-            <>
-                <label>
-                    <span>{this.props.static.first}</span>
-                    <input type="text"
-                           value={this.props.dynamic.first}
-                           onChange={(e) => this.handleChange(this.key, 'first', e)}
+  render() {
+    return (
+      <>
+        <EditCredentials>
+          <EditInfo>
+            <EditAvatar>
+              {!this.props.dynamic.photo && (
+                <>
+                  <Photo variant='circular' alt='Edit' />
+
+                  <ManagePhotoBtn
+                    color='secondary'
+                    aria-label='upload picture'
+                    component='label'
+                  >
+                    <input
+                      hidden
+                      onChange={(e) => this.handleChange(this.key, 'photo', e)}
+                      accept='image/*'
+                      type='file'
                     />
-                </label>
+                    <AddAPhotoIcon sx={{ fontSize: 30 }} />
+                  </ManagePhotoBtn>
+                </>
+              )}
 
-                <label>
-                    <span>{this.props.static.middle}</span>
-                    <input type="text"
-                           value={this.props.dynamic.middle}
-                           onChange={(e) => this.handleChange(this.key, 'middle', e)}
-                    />
-                </label>
+              {this.props.dynamic.photo && (
+                <>
+                  <Photo
+                    variant='circular'
+                    src={this.props.dynamic.photo}
+                    alt='Edit'
+                  />
+                  <ManagePhotoBtn
+                    color='secondary'
+                    onClick={(e) => this.deletePhoto(e)}
+                  >
+                    <HighlightOffIcon sx={{ fontSize: 40 }} />
+                  </ManagePhotoBtn>
+                </>
+              )}
+            </EditAvatar>
 
-                <label>
-                    <span>{this.props.static.last}</span>
-                    <input type="text"
-                           value={this.props.dynamic.last}
-                           onChange={(e) => this.handleChange(this.key, 'last', e)}
-                    />
-                </label>
+            <EditName>
+              <EditNameInput
+                label={this.props.static.first}
+                value={this.props.dynamic.first}
+                onChange={(e) => this.handleChange(this.key, 'first', e)}
+              />
 
-                <label>
-                    <span>{this.props.static.photo}</span>
-                    <input type="file"
-                           onChange={(e) => this.handleChange(this.key, 'photo', e)}
-                    />
+              <EditNameInput
+                label={this.props.static.middle}
+                value={this.props.dynamic.middle}
+                onChange={(e) => this.handleChange(this.key, 'middle', e)}
+              />
 
-                    {this.props.dynamic.photo &&
-                        <img src={URL.createObjectURL(this.props.dynamic.photo)} alt="Applicant"/>}
-                </label>
+              <EditNameInput
+                label={this.props.static.last}
+                value={this.props.dynamic.last}
+                onChange={(e) => this.handleChange(this.key, 'last', e)}
+              />
+            </EditName>
+          </EditInfo>
 
-                {this.props.dynamic.photo &&
-                    <button onClick={(e) => this.deletePhoto(e)}>Delete Photo</button>
-                }
+          <EditPosition
+            label={this.props.static.position}
+            value={this.props.dynamic.position}
+            onChange={(e) => this.handleChange(this.key, 'position', e)}
+          />
+        </EditCredentials>
 
-                <label>
-                    <span>{this.props.static.position}</span>
-                    <input type="text"
-                           value={this.props.dynamic.position}
-                           onChange={(e) => this.handleChange(this.key, 'position', e)}
-                    />
-                </label>
+        <EditAddress>
+          <AddrInput
+            label={this.props.static.city}
+            value={this.props.dynamic.city}
+            onChange={(e) => this.handleChange(this.key, 'city', e)}
+          />
 
-                <label>
-                    <span>{this.props.static.city}</span>
-                    <input type="text"
-                           value={this.props.dynamic.city}
-                           onChange={(e) => this.handleChange(this.key, 'city', e)}
-                    />
-                </label>
+          <AddrInput
+            label={this.props.static.state}
+            value={this.props.dynamic.state}
+            onChange={(e) => this.handleChange(this.key, 'state', e)}
+          />
 
-                <label>
-                    <span>{this.props.static.state}</span>
-                    <input type="text"
-                           value={this.props.dynamic.state}
-                           onChange={(e) => this.handleChange(this.key, 'state', e)}
-                    />
-                </label>
+          <AddrInput
+            label={this.props.static.country}
+            value={this.props.dynamic.country}
+            onChange={(e) => this.handleChange(this.key, 'country', e)}
+          />
+        </EditAddress>
 
-                <label>
-                    <span>{this.props.static.country}</span>
-                    <input type="text"
-                           value={this.props.dynamic.country}
-                           onChange={(e) => this.handleChange(this.key, 'country', e)}
-                    />
-                </label>
+        <EditContacts>
+          <ContactInput
+            label={this.props.static.email}
+            type='email'
+            value={this.props.dynamic.email}
+            onChange={(e) => this.handleChange(this.key, 'email', e)}
+          />
 
-                <label>
-                    <span>{this.props.static.email}</span>
-                    <input type="email"
-                           value={this.props.dynamic.email}
-                           onChange={(e) => this.handleChange(this.key, 'email', e)}
-                    />
-                </label>
-                <label>
-                    <span>{this.props.static.tel}</span>
-                    <input type="tel"
-                           value={this.props.dynamic.tel}
-                           onChange={(e) => this.handleChange(this.key, 'tel', e)}
-                    />
-                </label>
+          <ContactInput
+            label={this.props.static.tel}
+            type='tel'
+            value={this.props.dynamic.tel}
+            onChange={(e) => this.handleChange(this.key, 'tel', e)}
+          />
 
-                <label>
-                    <span>{this.props.static.linkedin}</span>
-                    <input type="text"
-                           value={this.props.dynamic.linkedin}
-                           onChange={(e) => this.handleChange(this.key, 'linkedin', e)}
-                    />
-                </label>
+          <ContactInput
+            label={this.props.static.linkedin}
+            value={this.props.dynamic.linkedin}
+            onChange={(e) => this.handleChange(this.key, 'linkedin', e)}
+          />
 
-                <label>
-                    <span>{this.props.static.gitHub}</span>
-                    <input type="text"
-                           value={this.props.dynamic.gitHub}
-                           onChange={(e) => this.handleChange(this.key, 'gitHub', e)}
-                    />
-                </label>
-            </>
-        )
-    }
+          <ContactInput
+            label={this.props.static.gitHub}
+            value={this.props.dynamic.gitHub}
+            onChange={(e) => this.handleChange(this.key, 'gitHub', e)}
+          />
+        </EditContacts>
+      </>
+    );
+  }
 }
 
 export class ViewAbout extends React.Component {
-    render() {
-        return (<>
-                <h2>
-                    {this.props.dynamic.first && `${this.props.dynamic.first} `}
-                    {this.props.dynamic.middle && `${this.props.dynamic.middle} `}
-                    {this.props.dynamic.last}
-                </h2>
+  render() {
+    return (
+      <ViewWrap>
+        {this.props.dynamic.photo && (
+          <Photo variant='circular' src={this.props.dynamic.photo} alt='Edit' />
+        )}
+        <ViewMainInfo>
+          <ViewTitle>
+            <Typography variant='h3'>
+              {this.props.dynamic.first && `${this.props.dynamic.first} `}
+              {this.props.dynamic.middle && `${this.props.dynamic.middle} `}
+              {this.props.dynamic.last}
+            </Typography>
+            <Typography variant='h5'>{this.props.dynamic.position}</Typography>
+          </ViewTitle>
 
-                <h2>{this.props.dynamic.position}</h2>
+          <ViewAddress>
+            {this.props.dynamic.city && `${this.props.dynamic.city}, `}
+            {this.props.dynamic.state && `${this.props.dynamic.state}, `}
+            {this.props.dynamic.country}
+          </ViewAddress>
 
-                {this.props.dynamic.photo &&
-                    <img src={URL.createObjectURL(this.props.dynamic.photo)} alt="Applicant"/>
-                }
-
-                <address>
-                    {this.props.dynamic.city && `${this.props.dynamic.city}, `}
-                    {this.props.dynamic.state && `${this.props.dynamic.city}, `}
-                    {this.props.dynamic.country}
-                </address>
-
-                <div>
-                    <a href={`tel:${this.props.dynamic.tel}`}>{this.props.dynamic.tel}</a>
-                    <a href={`mailto:${this.props.dynamic.email}`}>{this.props.dynamic.email}</a>
-                    <a href={this.props.dynamic.linkedin}>{this.props.dynamic.linkedin}</a>
-                    <a href={this.props.dynamic.gitHub}>{this.props.dynamic.gitHub}</a>
-                </div>
-            </>
-        )
-    }
+          <ViewContacts>
+            <Link href={`tel:${this.props.dynamic.tel}`}>
+              {this.props.dynamic.tel}
+            </Link>
+            <Link href={`mailto:${this.props.dynamic.email}`}>
+              {this.props.dynamic.email}
+            </Link>
+            <Link href={this.props.dynamic.linkedin}>
+              {this.props.dynamic.linkedin}
+            </Link>
+            <Link href={this.props.dynamic.gitHub}>
+              {this.props.dynamic.gitHub}
+            </Link>
+          </ViewContacts>
+        </ViewMainInfo>
+      </ViewWrap>
+    );
+  }
 }

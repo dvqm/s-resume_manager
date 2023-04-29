@@ -1,126 +1,153 @@
-import React from "react";
-
+import React from 'react';
+import { TextField, Typography } from '@mui/material';
+import { genericStyles } from '../../../mainTheme/localStyles.js';
 
 export class EditEducations extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.key = props.keyName;
+    this.key = props.keyName;
 
-        this.id = props.section.id;
+    this.id = props.section.id;
 
-        this.handleChange = props.helper.onChange;
-    }
+    this.handleChange = props.helper.onChange;
+  }
 
-    render() {
-        return (
-            <>
-                <label>
-                    <span>{this.props.static.institution}</span>
-                    <input type="text"
-                           value={this.props.section.institution}
-                           onChange={(e) => this.handleChange(this.key, 'institution', e, this.id)}
-                    />
-                </label>
+  render() {
+    return (
+      <>
+        <TextField
+          fullWidth
+          label={this.props.static.title}
+          size='small'
+          value={this.props.section.title}
+          onChange={(e) =>
+            this.handleChange(this.key, 'title', e, this.id)
+          }
+        />
 
-                <label>
-                    <span>{this.props.static.degree}</span>
-                    <input type="text"
-                           value={this.props.section.degree}
-                           onChange={(e) => this.handleChange(this.key, 'degree', e, this.id)}
-                    />
-                </label>
+        <TextField
+          fullWidth
+          label={this.props.static.degree}
+          size='small'
+          value={this.props.section.degree}
+          onChange={(e) => this.handleChange(this.key, 'degree', e, this.id)}
+        />
 
-                <label>
-                    <span>{this.props.static.studyField}</span>
-                    <input type="text"
-                           value={this.props.section.studyField}
-                           onChange={(e) => this.handleChange(this.key, 'studyField', e, this.id)}
-                    />
-                </label>
+        <TextField
+          fullWidth
+          label={this.props.static.studyField}
+          size='small'
+          value={this.props.section.studyField}
+          onChange={(e) =>
+            this.handleChange(this.key, 'studyField', e, this.id)
+          }
+        />
 
-                <label>
-                    <span>{this.props.static.startDate}</span>
-                    <input type="date"
-                           value={this.props.section.startDate}
-                           onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
-                    />
-                </label>
+        <TextField
+          fullWidth
+          label={this.props.static.startDate}
+          type='date'
+          size='small'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          placeholder='dd/mm/yyyy'
+          value={this.props.section.startDate}
+          onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
+        />
 
-                <label>
-                    <span>{this.props.static.endDate}</span>
-                    <input type="date"
-                           value={this.props.section.endDate}
-                           onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
-                    />
-                </label>
+        <TextField
+          fullWidth
+          label={this.props.static.endDate}
+          type='date'
+          InputLabelProps={{
+            shrink: true,
+          }}
+          placeholder='dd/mm/yyyy'
+          size='small'
+          value={this.props.section.endDate}
+          onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
+        />
 
-                <label>
-                    <span>{this.props.static.grade}</span>
-                    <input type="text"
-                           value={this.props.section.grade}
-                           onChange={(e) => this.handleChange(this.key, 'grade', e, this.id)}
-                    />
-                </label>
+        <TextField
+          fullWidth
+          label={this.props.static.grade}
+          size='small'
+          value={this.props.section.grade}
+          onChange={(e) => this.handleChange(this.key, 'grade', e, this.id)}
+        />
 
-                <label>
-                    <span>{this.props.static.activities}</span>
-                    <textarea cols="40" rows="3"
-                              value={this.props.section.activities}
-                              onChange={(e) => this.handleChange(this.key, 'activities', e, this.id)}
-                    ></textarea>
-                </label>
+        <TextField
+          fullWidth
+          label={this.props.static.activities}
+          multiline
+          minRows={3}
+          size='small'
+          value={this.props.section.activities}
+          onChange={(e) =>
+            this.handleChange(this.key, 'activities', e, this.id)
+          }
+        />
 
-                <label>
-                    <span>{this.props.static.description}</span>
-                    <textarea cols="40" rows="3"
-                              value={this.props.section.description}
-                              onChange={(e) => this.handleChange(this.key, 'description', e, this.id)}
-                    ></textarea>
-                </label>
-            </>
-        )
-    }
+        <TextField
+          fullWidth
+          label={this.props.static.description}
+          multiline
+          minRows={3}
+          size='small'
+          value={this.props.section.description}
+          onChange={(e) =>
+            this.handleChange(this.key, 'description', e, this.id)
+          }
+        />
+      </>
+    );
+  }
 }
 
 export class ViewEducations extends React.Component {
-    render() {
-        return (
-            <>
-                <h1>{this.props.section.institution}</h1>
-                <span>
-                    <span>{this.props.section.degree}</span>
-                    <span> &#183; </span>
-                    <span>{this.props.section.studyField}</span>
-                </span>
-
-                <span>
-                    <span>{this.props.section.startDate}</span>
-                    <span> - </span>
-                    <span>{this.props.section.endDate}</span>
-                </span>
-
-                {this.props.section.grade &&
-                    <>
-                        <span>{this.props.static.grade}</span>
-                        <span>{this.props.section.grade}</span>
-                    </>
-                }
-
-                {this.props.section.activities &&
-                    <>
-                        <span>{this.props.static.activities}</span>
-                        <pre>{this.props.section.activities}</pre>
-                    </>
-                }
-
-                {this.props.section.description &&
-                    <>
-                        <span>Description: </span>
-                        <pre>{this.props.section.description}</pre>
-                    </>
-                }
-            </>
-        )
-    }
+  render() {
+    const { PreBlock } = genericStyles;
+    return (
+      <>
+        <Typography>
+          <Typography component='span'>{this.props.section.degree}</Typography>
+          <Typography component='span'> &#183; </Typography>
+          <Typography component='span'>
+            {this.props.section.studyField}
+          </Typography>
+        </Typography>
+        <Typography>
+          <Typography component='span'>
+            {this.props.section.startDate}
+          </Typography>
+          <Typography component='span'> - </Typography>
+          <Typography component='span'>{this.props.section.endDate}</Typography>
+        </Typography>
+        {this.props.section.grade && (
+          <Typography>
+            <Typography component='span'>{this.props.static.grade}</Typography>
+            <Typography component='span'>{this.props.section.grade}</Typography>
+          </Typography>
+        )}
+        {this.props.section.activities && (
+          <>
+            <Typography component='span'>
+              {this.props.static.activities}
+            </Typography>
+            <PreBlock component='pre'>{this.props.section.activities}</PreBlock>
+          </>
+        )}
+        {this.props.section.description && (
+          <>
+            <Typography variant='body1'>Description: </Typography>
+            <PreBlock variant='body1' component='pre'>
+              {this.props.section.description}
+            </PreBlock>
+          </>
+        )}
+      </>
+    );
+  }
 }
