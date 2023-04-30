@@ -1,9 +1,5 @@
 import { createTheme } from '@mui/material/styles';
 
-function remToPx(rem) {
-  return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-}
-
 const mainTheme = createTheme({
   spacing: 4,
   palette: {
