@@ -4,35 +4,27 @@ import { genericStyles } from '../../../mainTheme/localStyles.js';
 
 const { PreBlock } = genericStyles;
 
-export class EditSummary extends React.Component {
-  constructor(props) {
-    super(props);
+export const EditSummary = (props) => {
+    const key = props.keyName;
 
-    this.key = props.keyName;
+    const handleChange = props.helper.onChange;
 
-    this.handleChange = props.helper.onChange;
-  }
-
-  render() {
     return (
       <TextField
-        label={this.props.static.summary}
+        label={props.static.summary}
         minRows={10}
         fullWidth
         multiline
-        value={this.props.dynamic.summary}
-        onChange={(e) => this.handleChange(this.key, 'summary', e)}
+        value={props.dynamic.summary}
+        onChange={(e) => handleChange(key, 'summary', e)}
       />
     );
-  }
 }
 
-export class ViewSummary extends React.Component {
-  render() {
+export const ViewSummary = (props) => {
     return (
       <PreBlock variant='body1' component='pre'>
-        {this.props.dynamic.summary}
+        {props.dynamic.summary}
       </PreBlock>
     );
-  }
 }
