@@ -22,75 +22,73 @@ import {
   ViewAdditional,
 } from './CurrentCv/Sections/Additional';
 
-class CurrentCv extends React.Component {
-  render() {
-    return (
-      <>
-        <Article
-          dynamic={this.props.state.currentCv.about}
-          static={this.props.state.static.about}
-          keyName='about'
-          helper={this.props.helper}
-          view={ViewAbout}
-          edit={EditAbout}
-        />
+const CurrentCv = ({ state, helper }) => {
+  return (
+    <>
+      <Article
+        values={state.currentCv.about}
+        titles={state.static.about}
+        component='about'
+        helper={helper}
+        view={ViewAbout}
+        edit={EditAbout}
+      />
 
-        <Article
-          dynamic={this.props.state.currentCv.summary}
-          static={this.props.state.static.summary}
-          keyName='summary'
-          helper={this.props.helper}
-          view={ViewSummary}
-          edit={EditSummary}
-        />
+      <Article
+        values={state.currentCv.summary}
+        titles={state.static.summary}
+        component='summary'
+        helper={helper}
+        view={ViewSummary}
+        edit={EditSummary}
+      />
 
-        <Section
-          dynamic={this.props.state.currentCv.expertise}
-          static={this.props.state.static.expertise}
-          keyName='expertise'
-          helper={this.props.helper}
-          view={ViewExpertise}
-          edit={EditExpertise}
-        />
+      <Section
+        dynamic={state.currentCv.expertise}
+        static={state.static.expertise}
+        keyName='expertise'
+        helper={helper}
+        view={ViewExpertise}
+        edit={EditExpertise}
+      />
 
-        <Section
-          dynamic={this.props.state.currentCv.projects}
-          static={this.props.state.static.projects}
-          keyName='projects'
-          helper={this.props.helper}
-          view={ViewProjects}
-          edit={EditProjects}
-        />
+      <Section
+        dynamic={state.currentCv.projects}
+        static={state.static.projects}
+        keyName='projects'
+        helper={helper}
+        view={ViewProjects}
+        edit={EditProjects}
+      />
 
-        <Section
-          dynamic={this.props.state.currentCv.experiences}
-          static={this.props.state.static.experiences}
-          keyName='experiences'
-          helper={this.props.helper}
-          view={ViewExperiences}
-          edit={EditExperiences}
-        />
+      <Section
+        dynamic={state.currentCv.experiences}
+        static={state.static.experiences}
+        keyName='experiences'
+        helper={helper}
+        view={ViewExperiences}
+        edit={EditExperiences}
+      />
 
-        <Section
-          dynamic={this.props.state.currentCv.educations}
-          static={this.props.state.static.educations}
-          keyName='educations'
-          helper={this.props.helper}
-          view={ViewEducations}
-          edit={EditEducations}
-        />
+      <Section
+        dynamic={state.currentCv.educations}
+        static={state.static.educations}
+        keyName='educations'
+        helper={helper}
+        view={ViewEducations}
+        edit={EditEducations}
+      />
 
-        <Section
-          dynamic={this.props.state.currentCv.additional}
-          static={this.props.state.static.additional}
-          keyName='additional'
-          helper={this.props.helper}
-          view={ViewAdditional}
-          edit={EditAdditional}
-        />
-      </>
-    );
-  }
+      <Section
+        dynamic={state.currentCv.additional}
+        static={state.static.additional}
+        keyName='additional'
+        helper={helper}
+        view={ViewAdditional}
+        edit={EditAdditional}
+      />
+    </>
+  );
 }
 
 export default CurrentCv;
