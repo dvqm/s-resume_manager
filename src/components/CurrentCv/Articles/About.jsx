@@ -24,20 +24,18 @@ const {
   ViewContacts,
 } = aboutStyles;
 
-export const EditAbout = (props) => {
-  const key = props.keyName;
+export const EditAbout = ({ titles, values, component, helper }) => {
 
-    const handleChange = props.helper.onChange;
+    const handleChange = helper.onChange;
 
 
   const deletePhoto = (e) => {
     e.preventDefault();
 
-    const values = { ...props.dynamic };
 
     values.photo = '';
 
-    props.helper.setState(key, values);
+    helper.setState(component, values);
   }
 
   return (
@@ -45,7 +43,7 @@ export const EditAbout = (props) => {
       <EditCredentials>
         <EditInfo>
           <EditAvatar>
-            {!props.dynamic.photo && (
+            {!values.photo && (
               <>
                 <Photo variant='circular' alt='Edit' />
 
@@ -56,7 +54,7 @@ export const EditAbout = (props) => {
                 >
                   <input
                     hidden
-                    onChange={(e) => handleChange(key, 'photo', e)}
+                    onChange={(e) => handleChange(component, 'photo', e)}
                     accept='image/*'
                     type='file'
                   />
@@ -65,11 +63,11 @@ export const EditAbout = (props) => {
               </>
             )}
 
-            {props.dynamic.photo && (
+            {values.photo && (
               <>
                 <Photo
                   variant='circular'
-                  src={props.dynamic.photo}
+                  src={values.photo}
                   alt='Edit'
                 />
                 <ManagePhotoBtn
@@ -84,117 +82,117 @@ export const EditAbout = (props) => {
 
           <EditName>
             <EditNameInput
-              label={props.static.first}
-              value={props.dynamic.first}
-              onChange={(e) => handleChange(key, 'first', e)}
+              label={titles.first}
+              value={values.first}
+              onChange={(e) => handleChange(component, 'first', e)}
             />
 
             <EditNameInput
-              label={props.static.middle}
-              value={props.dynamic.middle}
-              onChange={(e) => handleChange(key, 'middle', e)}
+              label={titles.middle}
+              value={values.middle}
+              onChange={(e) => handleChange(component, 'middle', e)}
             />
 
             <EditNameInput
-              label={props.static.last}
-              value={props.dynamic.last}
-              onChange={(e) => handleChange(key, 'last', e)}
+              label={titles.last}
+              value={values.last}
+              onChange={(e) => handleChange(component, 'last', e)}
             />
           </EditName>
         </EditInfo>
 
         <EditPosition
-          label={props.static.position}
-          value={props.dynamic.position}
-          onChange={(e) => handleChange(key, 'position', e)}
+          label={titles.position}
+          value={values.position}
+          onChange={(e) => handleChange(component, 'position', e)}
         />
       </EditCredentials>
 
       <EditAddress>
         <AddrInput
-          label={props.static.city}
-          value={props.dynamic.city}
-          onChange={(e) => handleChange(key, 'city', e)}
+          label={titles.city}
+          value={values.city}
+          onChange={(e) => handleChange(component, 'city', e)}
         />
 
         <AddrInput
-          label={props.static.state}
-          value={props.dynamic.state}
-          onChange={(e) => handleChange(key, 'state', e)}
+          label={titles.state}
+          value={values.state}
+          onChange={(e) => handleChange(component, 'state', e)}
         />
 
         <AddrInput
-          label={props.static.country}
-          value={props.dynamic.country}
-          onChange={(e) => handleChange(key, 'country', e)}
+          label={titles.country}
+          value={values.country}
+          onChange={(e) => handleChange(component, 'country', e)}
         />
       </EditAddress>
 
       <EditContacts>
         <ContactInput
-          label={props.static.email}
+          label={titles.email}
           type='email'
-          value={props.dynamic.email}
-          onChange={(e) => handleChange(key, 'email', e)}
+          value={values.email}
+          onChange={(e) => handleChange(component, 'email', e)}
         />
 
         <ContactInput
-          label={props.static.tel}
+          label={titles.tel}
           type='tel'
-          value={props.dynamic.tel}
-          onChange={(e) => handleChange(key, 'tel', e)}
+          value={values.tel}
+          onChange={(e) => handleChange(component, 'tel', e)}
         />
 
         <ContactInput
-          label={props.static.linkedin}
-          value={props.dynamic.linkedin}
-          onChange={(e) => handleChange(key, 'linkedin', e)}
+          label={titles.linkedin}
+          value={values.linkedin}
+          onChange={(e) => handleChange(component, 'linkedin', e)}
         />
 
         <ContactInput
-          label={props.static.gitHub}
-          value={props.dynamic.gitHub}
-          onChange={(e) => handleChange(key, 'gitHub', e)}
+          label={titles.gitHub}
+          value={values.gitHub}
+          onChange={(e) => handleChange(component, 'gitHub', e)}
         />
       </EditContacts>
     </>
   );
 }
 
-export const ViewAbout = (props) => {
+export const ViewAbout = ({ values }) => {
   return (
     <ViewWrap>
-      {props.dynamic.photo && (
-        <Photo variant='circular' src={props.dynamic.photo} alt='Edit' />
+      {values.photo && (
+        <Photo variant='circular' src={values.photo} alt='Edit' />
       )}
       <ViewMainInfo>
         <ViewTitle>
           <Typography variant='h3'>
-            {props.dynamic.first && `${props.dynamic.first} `}
-            {props.dynamic.middle && `${props.dynamic.middle} `}
-            {props.dynamic.last}
+            {values.first && `${values.first} `}
+            {values.middle && `${values.middle} `}
+            {values.last}
           </Typography>
-          <Typography variant='h5'>{props.dynamic.position}</Typography>
+          <Typography variant='h5'>{values.position}</Typography>
         </ViewTitle>
 
         <ViewAddress>
-          {props.dynamic.city && `${props.dynamic.city}, `}
-          {props.dynamic.state && `${props.dynamic.state}, `}
-          {props.dynamic.country}
+          {values.city && `${values.city}, `}
+          {values.state && `${values.state}, `}
+          {values.country}
         </ViewAddress>
 
         <ViewContacts>
-          <Link href={`tel:${props.dynamic.tel}`}>
-            {props.dynamic.tel}
+          <Link href={`tel:${values.tel}`}>
+            {values.tel}
           </Link>
-          <Link href={`mailto:${props.dynamic.email}`}>
-            {props.dynamic.email}
+          <Link href={`mailto:${values.email}`}>
+            {values.email}
           </Link>
-          <Link href={props.dynamic.linkedin}>
-            {props.dynamic.linkedin}
+          <Link href={values.linkedin}>
+            {values.linkedin}
           </Link>
-          <Link href={props.dynamic.gitHub}>
-            {props.dynamic.gitHub}
+          <Link href={values.gitHub}>
+            {values.gitHub}
           </Link>
         </ViewContacts>
       </ViewMainInfo>

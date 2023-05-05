@@ -1,30 +1,27 @@
-import React from 'react';
 import { TextField } from '@mui/material';
 import { genericStyles } from '../../../mainTheme/localStyles.js';
 
 const { PreBlock } = genericStyles;
 
-export const EditSummary = (props) => {
-    const key = props.keyName;
-
-    const handleChange = props.helper.onChange;
+export const EditSummary = ({ component, values, titles, helper }) => {
+    const handleChange = helper.onChange;
 
     return (
       <TextField
-        label={props.static.summary}
+        label={titles.summary}
         minRows={10}
         fullWidth
         multiline
-        value={props.dynamic.summary}
-        onChange={(e) => handleChange(key, 'summary', e)}
+        value={values.summary}
+        onChange={(e) => handleChange(component, 'summary', e)}
       />
     );
 }
 
-export const ViewSummary = (props) => {
+export const ViewSummary = ({ values }) => {
     return (
       <PreBlock variant='body1' component='pre'>
-        {props.dynamic.summary}
+        {values.summary}
       </PreBlock>
     );
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormGroup, IconButton, Divider, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
@@ -8,138 +8,107 @@ import { genericStyles } from './../../mainTheme/localStyles';
 
 const { StackRow, ManageBtnsWrapper } = genericStyles;
 
-class Article extends React.Component {
-  constructor(props) {
-    super(props);
+const Article = ({ edit, view, component, helper, values, titles }) => { 
+  const { editing } = values;
 
-    this.edit = props.edit;
+  const [original, setOriginal] = useState(values);
 
-    this.view = props.view;
 
-    this.state = {
-      keyName: props.keyName,
-      original: props.dynamic,
-    };
-
-    this.helper = props.helper;
-
-    this.handle = this.handlers(this);
-  }
-
-  handlers(context) {
+  const handlers = () => {
     const dynamicFieldsEdit = (bool) => {
-      const values = { ...context.props.dynamic };
-
-      values.editing = bool
-
-      return values;
+      const dynamic = { ...values };
+      dynamic.editing = bool;
+      return dynamic;
     }
 
     return {
       edit() {
-        context.setState({
-          ...context.state,
-          original: dynamicFieldsEdit(false),
-        }, () => {
+        setOriginal(values);
 
-          console.log('original: ', context.state.original);
-          context.helper.setState(context.state.keyName, dynamicFieldsEdit(true));
-        })
+        helper.setState(component, dynamicFieldsEdit(true));
       },
 
       save(e) {
         e.preventDefault();
 
-        context.helper.setState(context.state.keyName, dynamicFieldsEdit(false));
+        helper.setState(component, dynamicFieldsEdit(false));
       },
 
       cancel(e) {
         e.preventDefault();
-        const values = { ...context.state.original };
 
-        context.helper.setState(
-          context.state.keyName,
-          values,
-        );
+        helper.setState(component, original);
       },
 
       clear(e) {
         e.preventDefault();
 
-        context.setState({
-          ...context.state,
-          original: context.props.dynamic,
+        Object.keys(original).forEach((key) => {
+          if (typeof original[key] === 'boolean') original[key] = false;
+          else original[key] = '';
         });
 
-        const values = { ...context.props.dynamic };
-
-        Object.keys(values).forEach((key) => {
-          if (typeof values[key] === 'boolean') values[key] = false;
-          else values[key] = null;
-        });
-
-        context.helper.setState(context.state.keyName, values);
+        helper.setState(component, original);
       },
     };
-  }
+  };
 
-  render() {
-    const { editing } = this.props.dynamic;
-    return (
-      <>
-        {editing ? (
-          <form onSubmit={(e) => this.handle.save(e)}>
-            <h2>{this.props.static.header}</h2>
+  const handle = handlers();
 
-            <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
+  return (
+    <>
+      {editing ? (
+        <form onSubmit={(e) => handle.save(e)}>
+          <h2>{titles.header}</h2>
 
-            <FormGroup>
-              <ManageBtnsWrapper>
-                <IconButton color='secondary' type='submit'>
-                  <CheckOutlinedIcon />
-                </IconButton>
+          <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
 
-                <IconButton
-                  color='secondary'
-                  onClick={(e) => this.handle.cancel(e)}
-                >
-                  <CloseOutlinedIcon />
-                </IconButton>
+          <FormGroup>
+            <ManageBtnsWrapper>
+              <IconButton color='secondary' type='submit'>
+                <CheckOutlinedIcon />
+              </IconButton>
 
-                <IconButton
-                  color='secondary'
-                  onClick={(e) => this.handle.clear(e)}
-                >
-                  <DeleteForeverOutlinedIcon />
-                </IconButton>
-              </ManageBtnsWrapper>
-              {React.createElement(this.edit, {
-                keyName: this.state.keyName,
-                static: this.props.static,
-                dynamic: this.props.dynamic,
-                helper: this.helper,
-              })}
-            </FormGroup>
-          </form>
-        ) : (
-            <article>
-              <StackRow>
-                <Typography variant='h2'>{this.props.static.header}</Typography>
+              <IconButton
+                color='secondary'
+                onClick={(e) => handle.cancel(e)}
+              >
+                <CloseOutlinedIcon />
+              </IconButton>
 
-                <IconButton color='secondary' onClick={() => this.handle.edit()}>
-                  <EditIcon />
-                </IconButton>
-              </StackRow>
-              <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
+              <IconButton
+                color='secondary'
+                onClick={(e) => handle.clear(e)}
+              >
+                <DeleteForeverOutlinedIcon />
+              </IconButton>
+            </ManageBtnsWrapper>
+            {React.createElement(edit, {
+              component: component,
+              titles: titles,
+              values: values,
+              helper: helper,
+            })}
+          </FormGroup>
+        </form>
+      ) : (
+        <article>
+          <StackRow>
+            <Typography variant='h2'>{titles.header}</Typography>
 
-              {React.createElement(this.view, {
-                dynamic: this.props.dynamic,
-              })}
-            </article>
-          )}
-      </>
-    );
-  }
+            <IconButton color='secondary' onClick={() => handle.edit()}>
+              <EditIcon />
+            </IconButton>
+          </StackRow>
+          <Divider sx={{ borderBottom: '1px solid', mb: 5 }} />
+
+          {React.createElement(view, {
+            values: values,
+          })}
+        </article>
+      )}
+    </>
+  );
 }
 
 export default Article;
