@@ -13,190 +13,175 @@ import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
 const { StackRow, PreBlock } = genericStyles;
 
-export class EditProjects extends React.Component {
-  constructor(props) {
-    super(props);
+export const EditProjects = ({ component, values, titles, helper }) => {
 
-    this.fields = props.fields;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <TextField
+        label={titles.title}
+        size='small'
+        value={values.title}
+        onChange={(e) => helper.onChange(component, 'title', e, values.id)}
+      />
 
-    this.key = props.keyName;
+      <FormControlLabel
+        control={
+          <Checkbox
+            size='small'
+            checked={values.currentlyWork}
+            onChange={(e) =>
+              helper.onChange(component, 'currentlyWork', e, values.id)
+            }
+          />
+        }
+        label={titles.currentlyWork}
+      />
 
-    this.id = props.section.id;
+      <TextField
+        type='date'
+        label={titles.startDate}
+        size='small'
+        InputLabelProps={{
+          shrink: true,
+        }}
+        placeholder='dd/mm/yyyy'
+        value={values.startDate}
+        onChange={(e) => helper.onChange(component, 'startDate', e, values.id)}
+      />
 
-    this.handleChange = props.helper.onChange;
-  }
-
-  render() {
-    return (
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <TextField
-          label={this.props.static.title}
-          size='small'
-          value={this.props.section.title}
-          onChange={(e) => this.handleChange(this.key, 'title', e, this.id)}
-        />
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              size='small'
-              checked={this.props.section.currentlyWork}
-              onChange={(e) =>
-                this.handleChange(this.key, 'currentlyWork', e, this.id)
-              }
-            />
-          }
-          label={this.props.static.currentlyWork}
-        />
-
+      {!values.currentlyWork && (
         <TextField
           type='date'
-          label={this.props.static.startDate}
-          size='small'
+          label={titles.endDate}
           InputLabelProps={{
             shrink: true,
           }}
           placeholder='dd/mm/yyyy'
-          value={this.props.section.startDate}
-          onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
-        />
-
-        {!this.props.section.currentlyWork && (
-          <TextField
-            type='date'
-            label={this.props.static.endDate}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            placeholder='dd/mm/yyyy'
-            size='small'
-            value={this.props.section.endDate}
-            onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
-          />
-        )}
-
-        <TextField
-          label={this.props.static.deployUrl}
           size='small'
-          value={this.props.section.deployUrl}
-          onChange={(e) => this.handleChange(this.key, 'deployUrl', e, this.id)}
+          value={values.endDate}
+          onChange={(e) => helper.onChange(component, 'endDate', e, values.id)}
         />
+      )}
 
-        <TextField
-          label={this.props.static.sourceUrl}
-          size='small'
-          value={this.props.section.sourceUrl}
-          onChange={(e) => this.handleChange(this.key, 'sourceUrl', e, this.id)}
-        />
+      <TextField
+        label={titles.deployUrl}
+        size='small'
+        value={values.deployUrl}
+        onChange={(e) => helper.onChange(component, 'deployUrl', e, values.id)}
+      />
 
-        <TextareaAutosize
-          minRows={4}
-          label={this.props.static.technologies}
-          size='small'
-          value={this.props.section.technologies}
-          onChange={(e) =>
-            this.handleChange(this.key, 'technologies', e, this.id)
-          }
-        />
+      <TextField
+        label={titles.sourceUrl}
+        size='small'
+        value={values.sourceUrl}
+        onChange={(e) => helper.onChange(component, 'sourceUrl', e, values.id)}
+      />
 
-        <TextareaAutosize
-          minRows={8}
-          label={this.props.static.description}
-          size='small'
-          value={this.props.section.description}
-          onChange={(e) =>
-            this.handleChange(this.key, 'description', e, this.id)
-          }
-        />
-      </Box>
-    );
-  }
+      <TextareaAutosize
+        minRows={4}
+        label={titles.technologies}
+        size='small'
+        value={values.technologies}
+        onChange={(e) =>
+          helper.onChange(component, 'technologies', e, values.id)
+        }
+      />
+
+      <TextareaAutosize
+        minRows={8}
+        label={titles.description}
+        size='small'
+        value={values.description}
+        onChange={(e) =>
+          helper.onChange(component, 'description', e, values.id)
+        }
+      />
+    </Box>
+  );
 }
 
-export class ViewProjects extends React.Component {
-  render() {
+export const ViewProjects = ({ values, titles}) => {
     return (
       <>
-        {this.props.section.startDate ||
-          this.props.section.endDate ||
-          this.props.section.currentlyWork ? (
-            <StackRow>
-              <Typography variant='body1'>
-                {this.props.section.startDate}
-              </Typography>
-              {(this.props.section.currentlyWork ||
-                this.props.section.endDate) && (
-                  <Typography variant='body1'> - </Typography>
-                )}
-              <Typography variant='body1'>
-                {this.props.section.currentlyWork
-                  ? this.props.static.currentlyWork
-                  : this.props.section.endDate}
-              </Typography>
-            </StackRow>
-          ) : (
-            ''
-          )}
+        {values.startDate ||
+          values.endDate ||
+          values.currentlyWork ? (
+          <StackRow>
+            <Typography variant='body1'>
+              {values.startDate}
+            </Typography>
+            {(values.currentlyWork ||
+              values.endDate) && (
+                <Typography variant='body1'> - </Typography>
+              )}
+            <Typography variant='body1'>
+              {values.currentlyWork
+                ? titles.currentlyWork
+                : values.endDate}
+            </Typography>
+          </StackRow>
+        ) : (
+          ''
+        )}
 
-        {this.props.section.technologies && (
+        {values.technologies && (
           <StackRow>
             <Typography variant='subtitle1'>
-              {this.props.static.technologies}
+              {titles.technologies}
             </Typography>
 
             <Typography variant='body1'>
-              {this.props.section.technologies}
+              {values.technologies}
             </Typography>
           </StackRow>
         )}
 
         <StackRow>
           <Typography variant='subtitle1'>
-            {this.props.static.description}
+            {titles.description}
           </Typography>
 
           <PreBlock variant='body1' component='pre'>
-            {this.props.section.description}
+            {values.description}
           </PreBlock>
         </StackRow>
-        {this.props.section.deployUrl || this.props.section.sourceUrl ? (
+        {values.deployUrl || values.sourceUrl ? (
           <StackRow>
-            {this.props.section.deployUrl ? (
+            {values.deployUrl ? (
               <Chip
                 variant='link'
                 color='info'
-                label={this.props.static.deployUrl}
+                label={titles.deployUrl}
                 component='a'
-                href={this.props.section.deployUrl}
+                href={values.deployUrl}
                 target='_blank'
                 rel='noreferrer noopener'
                 icon={<OpenInNewOutlinedIcon sx={{ fontSize: 15 }} />}
                 clickable
               />
             ) : (
-                ''
-              )}
+              ''
+            )}
 
-            {this.props.section.sourceUrl ? (
+            {values.sourceUrl ? (
               <Chip
                 variant='link'
                 color='info'
-                label={this.props.static.sourceUrl}
+                label={titles.sourceUrl}
                 component='a'
-                href={this.props.section.sourceUrl}
+                href={values.sourceUrl}
                 target='_blank'
                 rel='noreferrer noopener'
                 icon={<OpenInNewOutlinedIcon sx={{ fontSize: 15 }} />}
                 clickable
               />
             ) : (
-                ''
-              )}
+              ''
+            )}
           </StackRow>
         ) : (
-            ''
-          )}
+          ''
+        )}
       </>
     );
   }
-}
