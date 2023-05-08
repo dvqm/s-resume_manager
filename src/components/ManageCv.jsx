@@ -19,10 +19,6 @@ const ManageCv = ({ state, helper, preview }) => {
 
   const [save, setSave] = useState(false);
 
-  const [warning, setWarning] = useState(null);
-
-  const [blob, setBlob] = useState(null);
-
   const isUnique = () => {
     return state.cvBase.every(
       (cv) => cv.cvName !== state.currentCv.cvName,
