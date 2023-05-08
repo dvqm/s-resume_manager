@@ -3,8 +3,10 @@ import { s } from './PdfStyles';
 import { pdfStyles } from '../../mainTheme/localStyles'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
-export const PdfResume = (props) => { 
+export const PdfResume = (props) => {
   const stringToNull = (obj) => {
+    if (obj === undefined) return <> </>;
+
     const clonedObj = JSON.parse(JSON.stringify(obj));
 
     if (Array.isArray(clonedObj)) {
@@ -19,7 +21,7 @@ export const PdfResume = (props) => {
       Object.entries(clonedObj).forEach(([key, value]) => {
         if (typeof value === 'object') {
           clonedObj[key] = stringToNull(value);
-} else if (value === '') {
+        } else if (value === '') {
           clonedObj[key] = null;
         }
       });
@@ -28,9 +30,9 @@ export const PdfResume = (props) => {
     return clonedObj;
   };
 
-  const staticFields = props.state.state.static;
+  const staticFields = props.state.titles;
 
-  const currentCv = stringToNull(props.state.state.currentCv);
+  const cv = stringToNull(props.state.currentCv);
 
   return <Document>
     <Page size="A4" style={s.container}>
@@ -38,35 +40,35 @@ export const PdfResume = (props) => {
         <Text style={s.heading}>{staticFields.about.header}</Text>
         <View style={s.divider}></View>
         <View style={s.flexRow}>
-          {currentCv.about.photo ? <Image style={s.photo} src={currentCv.about.photo} /> : null}
+          {cv.about.photo ? <Image style={s.photo} src={cv.about.photo} /> : null}
           <View style={s.viewMainInfo}>
 
             <View style={s.flexRow}>
               <View>
                 <Text>
-                  {currentCv.about.first && `${currentCv.about.first} `}
-                  {currentCv.about.middle && `${currentCv.about.middle} `}
-                  {currentCv.about.last}
+                  {cv.about.first && `${cv.about.first} `}
+                  {cv.about.middle && `${cv.about.middle} `}
+                  {cv.about.last}
                 </Text>
-                <Text>{currentCv.about.position}</Text>
+                <Text>{cv.about.position}</Text>
                 <Text>
-                  {currentCv.about.city && `${currentCv.about.city}, `}
-                  {currentCv.about.state && `${currentCv.about.state}, `}
-                  {currentCv.about.country}
+                  {cv.about.city && `${cv.about.city}, `}
+                  {cv.about.state && `${cv.about.state}, `}
+                  {cv.about.country}
                 </Text>
               </View>
               <View>
-                <Link src={`tel:${currentCv.about.tel}`}>
-                  {currentCv.about.tel}
+                <Link src={`tel:${cv.about.tel}`}>
+                  {cv.about.tel}
                 </Link>
-                <Link src={`mailto:${currentCv.about.email}`}>
-                  {currentCv.about.email}
+                <Link src={`mailto:${cv.about.email}`}>
+                  {cv.about.email}
                 </Link>
-                <Link src={currentCv.about.linkedin}>
-                  {currentCv.about.linkedin}
+                <Link src={cv.about.linkedin}>
+                  {cv.about.linkedin}
                 </Link>
-                <Link src={currentCv.about.gitHub}>
-                  {currentCv.about.gitHub}
+                <Link src={cv.about.gitHub}>
+                  {cv.about.gitHub}
                 </Link>
               </View>
             </View>
@@ -78,14 +80,14 @@ export const PdfResume = (props) => {
       <View style={s.section}>
         <Text style={s.heading}>{staticFields.summary.header}</Text>
         <View style={s.divider}></View>
-        <Text>{currentCv.summary.summary}</Text>
+        <Text>{cv.summary.summary}</Text>
       </View>
 
       <View style={s.section}>
         <Text style={s.heading}>{staticFields.expertise.header}</Text>
         <View style={s.divider}></View>
         <View>
-          {currentCv.expertise.map((item, index) => (
+          {cv.expertise.map((item, index) => (
             <View style={s.flexColumn} key={index}>
               <Text style={s.title2}>{item.title}</Text>
               <View style={s.labels}>
@@ -102,29 +104,29 @@ export const PdfResume = (props) => {
         <Text style={s.heading}>{staticFields.projects.header}</Text>
         <View style={s.divider}></View>
 
-        {currentCv.projects.map((item, index) => (
+        {cv.projects.map((item, index) => (
           <View style={s.article} key={index}>
             <Text style={s.title1}>{item.title}</Text>
             {item.startDate ||
               item.endDate ||
               item.currentlyWork ? (
-                <View style={s.dates}>
-                  <Text>
-                    {item.startDate}
-                  </Text>
-                  {(item.currentlyWork ||
-  item.endDate) && (
-                      <Text>-</Text>
-                    )}
-                  <Text>
-  {item.currentlyWork
-                      ? staticFields.projects.currentlyWork
-: item.endDate}
-                  </Text>
-                </View>
-              ) : (
-                null
-              )}
+              <View style={s.dates}>
+                <Text>
+                  {item.startDate}
+                </Text>
+                {(item.currentlyWork ||
+                  item.endDate) && (
+                    <Text>-</Text>
+                  )}
+                <Text>
+                  {item.currentlyWork
+                    ? staticFields.projects.currentlyWork
+                    : item.endDate}
+                </Text>
+              </View>
+            ) : (
+              null
+            )}
 
             {item.technologies && (
               <View style={s.flexRow}>
@@ -154,20 +156,20 @@ export const PdfResume = (props) => {
                     src={item.deployUrl}
                   >{staticFields.projects.deployUrl}</Link>
                 ) : (
-                    null
-                  )}
+                  null
+                )}
 
                 {item.sourceUrl ? (
                   <Link
                     src={item.sourceUrl}
                   > {staticFields.projects.sourceUrl}</Link>
                 ) : (
-                    null
-                  )}
+                  null
+                )}
               </View>
             ) : (
-                null
-              )}
+              null
+            )}
           </View>
         ))}
       </View>
@@ -175,7 +177,7 @@ export const PdfResume = (props) => {
       <View style={s.section}>
         <Text style={s.heading}>{staticFields.experiences.header}</Text>
         <View style={s.divider}></View>
-        {currentCv.experiences.map((item, index) => (
+        {cv.experiences.map((item, index) => (
           <View style={s.article} key={index}>
             <Text style={s.title1}>{item.title} at {item.company}</Text>
 
@@ -209,13 +211,13 @@ export const PdfResume = (props) => {
                   <Text>Currently work</Text>
                 </>
               ) : (
-                  <>
-                    <Text>-</Text>
-                    <Text>
-                      {item.endDate !== null ? item.endDate : null}
-                    </Text>
-                  </>
-                )}
+                <>
+                  <Text>-</Text>
+                  <Text>
+                    {item.endDate !== null ? item.endDate : null}
+                  </Text>
+                </>
+              )}
             </View>
 
             {item.location !== null && item.location.length > 0 && (
@@ -243,7 +245,7 @@ export const PdfResume = (props) => {
         <Text style={s.heading}>{staticFields.educations.header}</Text>
         <View style={s.divider}></View>
 
-        {currentCv.educations.map((item, index) => (
+        {cv.educations.map((item, index) => (
           <View style={s.article} key={index}>
             <Text style={s.title1}>{item.title}</Text>
             <Text>
@@ -291,7 +293,7 @@ export const PdfResume = (props) => {
         <Text style={s.heading}>{staticFields.additional.header}</Text>
         <View style={s.divider}></View>
 
-        {currentCv.additional.map((item, index) => (
+        {cv.additional.map((item, index) => (
           <View style={s.article} key={index}>
             <Text style={s.title1}>{item.title}</Text>
             <Text>{item.description}</Text>
@@ -304,21 +306,18 @@ export const PdfResume = (props) => {
 }
 
 export const ResumeViewer = (props) => {
-    const { BoxStyled, IconButtonStyled } = pdfStyles;
+  const { BoxStyled, IconButtonStyled } = pdfStyles;
 
-    return (
-      <BoxStyled>
-        {props.state.secondary.pdfPreview &&
-          <>
+  return (
+    <BoxStyled>
+        <>
           <IconButtonStyled onClick={props.preview().pdf}>
             <CloseOutlinedIcon />
           </IconButtonStyled>
-
           <PDFViewer style={s.viewer}>
-            <PdfResume state={props} />
+            <PdfResume state={props.state} />
           </PDFViewer>
-          </>
-        }
-      </BoxStyled>
-    );
-}
+        </>
+    </BoxStyled>
+  );
+};
