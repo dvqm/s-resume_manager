@@ -8,7 +8,6 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import { genericStyles } from './../../mainTheme/localStyles';
 
 const Section = ({ titles, values, component, helper, edit, view }) => {
-  console.log('titles: ', titles);
   const [original, setOriginal] = useState([]);
 
   const handlers = () => {
