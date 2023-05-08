@@ -2,152 +2,140 @@ import React from 'react';
 import { TextField, Typography } from '@mui/material';
 import { genericStyles } from '../../../mainTheme/localStyles.js';
 
-export class EditEducations extends React.Component {
-  constructor(props) {
-    super(props);
+export const EditEducations = ({ component, values, titles, helper}) => {
 
-    this.key = props.keyName;
-
-    this.id = props.section.id;
-
-    this.handleChange = props.helper.onChange;
-  }
-
-  render() {
     return (
       <>
         <TextField
           fullWidth
-          label={this.props.static.title}
+          label={titles.title}
           size='small'
-          value={this.props.section.title}
+          value={values.title}
           onChange={(e) =>
-            this.handleChange(this.key, 'title', e, this.id)
+            helper.onChange(component, 'title', e, values.id)
           }
         />
 
         <TextField
           fullWidth
-          label={this.props.static.degree}
+          label={titles.degree}
           size='small'
-          value={this.props.section.degree}
-          onChange={(e) => this.handleChange(this.key, 'degree', e, this.id)}
+          value={values.degree}
+          onChange={(e) => helper.onChange(component, 'degree', e, values.id)}
         />
 
         <TextField
           fullWidth
-          label={this.props.static.studyField}
+          label={titles.studyField}
           size='small'
-          value={this.props.section.studyField}
+          value={values.studyField}
           onChange={(e) =>
-            this.handleChange(this.key, 'studyField', e, this.id)
+            helper.onChange(component, 'studyField', e, values.id)
           }
         />
 
         <TextField
           fullWidth
-          label={this.props.static.startDate}
+          label={titles.startDate}
           type='date'
           size='small'
           InputLabelProps={{
             shrink: true,
           }}
           placeholder='dd/mm/yyyy'
-          value={this.props.section.startDate}
-          onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
+          value={values.startDate}
+          onChange={(e) => helper.onChange(component, 'startDate', e, values.id)}
         />
 
         <TextField
           fullWidth
-          label={this.props.static.endDate}
+          label={titles.endDate}
           type='date'
           InputLabelProps={{
             shrink: true,
           }}
           placeholder='dd/mm/yyyy'
           size='small'
-          value={this.props.section.endDate}
-          onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
+          value={values.endDate}
+          onChange={(e) => helper.onChange(component, 'endDate', e, values.id)}
         />
 
         <TextField
           fullWidth
-          label={this.props.static.grade}
+          label={titles.grade}
           size='small'
-          value={this.props.section.grade}
-          onChange={(e) => this.handleChange(this.key, 'grade', e, this.id)}
+          value={values.grade}
+          onChange={(e) => helper.onChange(component, 'grade', e, values.id)}
         />
 
         <TextField
           fullWidth
-          label={this.props.static.activities}
+          label={titles.activities}
           multiline
           minRows={3}
           size='small'
-          value={this.props.section.activities}
+          value={values.activities}
           onChange={(e) =>
-            this.handleChange(this.key, 'activities', e, this.id)
+            helper.onChange(component, 'activities', e, values.id)
           }
         />
 
         <TextField
           fullWidth
-          label={this.props.static.description}
+          label={titles.description}
           multiline
           minRows={3}
           size='small'
-          value={this.props.section.description}
+          value={values.description}
           onChange={(e) =>
-            this.handleChange(this.key, 'description', e, this.id)
+            helper.onChange(component, 'description', e, values.id)
           }
         />
       </>
     );
-  }
 }
 
-export class ViewEducations extends React.Component {
-  render() {
+export const ViewEducations = ({values, titles}) => {
     const { PreBlock } = genericStyles;
+
     return (
       <>
         <Typography>
-          <Typography component='span'>{this.props.section.degree}</Typography>
+          <Typography component='span'>{values.degree}</Typography>
           <Typography component='span'> &#183; </Typography>
           <Typography component='span'>
-            {this.props.section.studyField}
+            {values.studyField}
           </Typography>
         </Typography>
         <Typography>
           <Typography component='span'>
-            {this.props.section.startDate}
+            {values.startDate}
           </Typography>
           <Typography component='span'> - </Typography>
-          <Typography component='span'>{this.props.section.endDate}</Typography>
+          <Typography component='span'>{values.endDate}</Typography>
         </Typography>
-        {this.props.section.grade && (
+        {values.grade && (
           <Typography>
-            <Typography component='span'>{this.props.static.grade}</Typography>
-            <Typography component='span'>{this.props.section.grade}</Typography>
+            <Typography component='span'>{titles.grade}</Typography>
+            <Typography component='span'>{values.grade}</Typography>
           </Typography>
         )}
-        {this.props.section.activities && (
+        {values.activities && (
           <>
             <Typography component='span'>
-              {this.props.static.activities}
+              {titles.activities}
             </Typography>
-            <PreBlock component='pre'>{this.props.section.activities}</PreBlock>
+            <PreBlock component='pre'>{values.activities}</PreBlock>
           </>
         )}
-        {this.props.section.description && (
+        {values.description && (
           <>
             <Typography variant='body1'>Description: </Typography>
             <PreBlock variant='body1' component='pre'>
-              {this.props.section.description}
+              {values.description}
             </PreBlock>
           </>
         )}
       </>
     );
   }
-}
