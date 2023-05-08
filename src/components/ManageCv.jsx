@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IconButton } from '@mui/material';
 import { TextField } from '@mui/material';
 import { manageCvStyles } from '../mainTheme/localStyles.js';
@@ -14,60 +14,45 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 
-class ManageCv extends React.Component {
-  constructor(props) {
-    super(props);
+const ManageCv = ({ state, helper, preview }) => {
+  const [prevName, setPrevName] = useState(state.currentCv.cvName);
 
-    this.state = {
-      prevName: props.state.currentCv.cvName,
-      save: false,
-      warning: null,
-      blob: null,
-    };
+  const [save, setSave] = useState(false);
 
-    this.helper = props.helper;
+  const [warning, setWarning] = useState(null);
 
-    this.handle = this.handlers(this);
+  const [blob, setBlob] = useState(null);
 
-    this.isUnique = this.isUnique.bind(this);
-  }
-
-  isUnique() {
-    return this.props.state.cvBase.every(
-      (cv) => cv.cvName !== this.props.state.currentCv.cvName,
+  const isUnique = () => {
+    return state.cvBase.every(
+      (cv) => cv.cvName !== state.currentCv.cvName,
     );
   }
 
-  handlers(context) {
+  const handlers = () => {
     return {
       new() {
-        const newCv = { ...context.props.state.static.template };
-
-        context.helper.setState('currentCv', newCv);
+        helper.setState('currentCv', state.titles.template);
       },
 
       change(e, field) {
-        context.props.helper.setState(field, e.target.value);
+        helper.setState(field, e.target.value);
       },
 
-      cancelBtn: (operation) => {
-        this.setState(
-          {
-            ...this.state,
-            [operation]: false,
-          },
-          () => this.helper.setState('cvName', this.state.prevName),
-        );
+      cancelBtn: () => {
+        setSave(false);
+
+        helper.setState('cvName', prevName);
       },
 
       save: (boolean) => {
-        const currentCv = { ...context.props.state.currentCv };
+        const currentCv = { ...state.currentCv };
 
-        const cvBase = [...context.props.state.cvBase];
+        const cvBase = [...state.cvBase];
 
         const { cvName } = currentCv;
 
-        const { prevName } = context.state;
+        const { prevName } = state;
 
         const checkIfEmpty = () => {
           return Object.values(currentCv.about).every(value => {
@@ -78,167 +63,159 @@ class ManageCv extends React.Component {
           });
         };
 
-        if (context.helper.checkEditable()) return alert('One or more sections in edit mode, please check and save data.')
+        if (helper.checkEditable()) return alert('One or more sections in edit mode, please check and save data.')
 
         if (checkIfEmpty()) return alert('Section About can\'t be empty');
 
         let updatedCvBase;
 
-        context.setState({
-          ...context.state,
-          save: true,
-        });
+        setSave(true);
 
-        switch (true) {
-          // first open
-          case boolean:
-            context.setState({
-              ...context.state,
-              prevName: cvName,
-              save: boolean,
-            });
+        const actions = [
+          {// first open
 
-            break;
+            condition: () => boolean,
 
-          // update existed
-          case !context.isUnique() && prevName === cvName:
+            action: () => {
+              setPrevName(cvName);
 
+              setSave(boolean);
+            },
+          },
+          {// update existed
+            condition: () => !isUnique() && prevName === cvName,
 
-            alert('Updated existed');
+            action: () => {
+              alert('Updated existed');
 
-            updatedCvBase = cvBase.map((cv) => {
-              if (cv.cvName === cvName) {
-                return currentCv;
-              }
+              updatedCvBase = cvBase.map((cv) => {
+                if (cv.cvName === cvName) {
+                  return currentCv;
+                }
 
-              return cv;
-            });
+                return cv;
+              });
 
-            context.setState({
-              ...context.state,
-              save: boolean,
-            });
+              setSave(boolean);
 
-            context.props.helper.setState('cvBase', updatedCvBase);
-            break;
+              helper.setState('cvBase', updatedCvBase);
+            },
+          },
+          {// name can not be empty
+            condition: () => currentCv.cvName.length === 0 && cvName.length === 0,
 
-          //name can not be empty
-          case currentCv.cvName.length === 0 && cvName.length === 0:
-            alert('Name can\'t be empty');
+            action: () => {
+              alert('Name can\'t be empty');
+            }
+          },
+          {// this name already exists
+            condition: () => !isUnique() && cvName !== prevName,
 
-            break;
+            action: () => {
+              alert('this name already exist');
 
-          //this name already exists
-          case !context.isUnique() && cvName !== prevName:
-            alert('this name already exist');
+              setSave(true);
+            },
+          },
+          {// save as new
+            condition: () => isUnique() && cvName.length > 0 && currentCv.cvName !== prevName,
 
-            context.setState({
-              ...context.state,
-              save: true,
-            });
+            action: () => {
+              alert('Saved as new');
 
-            break;
+              updatedCvBase = [...state.cvBase];
 
-          //save as new
-          case context.isUnique() &&
-            cvName.length > 0 &&
-            currentCv.cvName !== prevName:
+              updatedCvBase.push(currentCv);
 
+              setSave(false);
 
-            alert('Saved as new');
+              helper.setState('cvBase', updatedCvBase);
+            },
+          },
+        ];
 
-            updatedCvBase = [...context.props.state.cvBase];
+        const action = actions.find(({ condition }) => condition());
 
-            updatedCvBase.push(currentCv);
-
-            context.setState(
-              {
-                ...context.state,
-                save: false,
-              },
-              () => {
-                context.props.helper.setState('cvBase', updatedCvBase);
-              },
-            );
-
-            break;
-
-          // something went wrong
-          default:
-            console.warn('Ooops');
-
-            break;
+        if (action) {
+          action.action();
+        } else {
+          console.warn('no action found');
         }
       },
 
       rename: () => {
-        const { cvName } = { ...this.props.state.currentCv };
+        const { cvName } = { ...state.currentCv };
 
-        switch (true) {
-          // Can be renamed
-          case context.isUnique() && context.state.prevName !== cvName:
-            const cvBase = [...context.props.state.cvBase];
+        const actions = [
+          {// Can be renamed
+            condition: () => isUnique() && prevName !== cvName,
+            action: () => {
+              const cvBase = [...state.cvBase];
 
-            const index = cvBase.findIndex(
-              (cv) => cv.cvName === context.state.prevName,
-            );
+              const index = cvBase.findIndex(
+                (cv) => cv.cvName === prevName,
+              );
 
-            cvBase[index].cvName = cvName;
+              cvBase[index].cvName = cvName;
 
-            context.setState({ ...context.state, save: false });
+              setSave(false);
 
-            context.helper.setState('cvBase', cvBase);
+              helper.setState('cvBase', cvBase);
+            },
+          },
+          {// can't be renamed, new name exists in the array.
+            condition: () => !isUnique() && prevName !== cvName,
+            action: () => {
+              alert(
+                'There is a resume with such name. Please, choose other name.',
+              );
 
-            break;
+              return;
+            },
+          },
+        ];
 
-          // can't be renamed, new name exists in the array.
-          case !context.isUnique() && context.state.prevName !== cvName:
-            alert(
-              'There is a resume with such name. Please, choose other name.',
-            );
+        const action = actions.find(({ condition }) => condition());
 
-            break;
-
-          // If nothing to change (default) context.state.prevName === cvName :
-          default:
-            context.setState({ ...context.state, save: true });
-
-            break;
+        if (action) {
+          action.action();
+        } else {
+          setSave(true);
         }
       },
 
       cancel: () => {
-        const cvBase = [...context.props.state.cvBase];
+        const cvBase = [...state.cvBase];
 
-        const { cvName } = { ...context.props.state.currentCv };
+        const { cvName } = { ...state.currentCv };
 
-        const template = { ...context.props.state.static.template };
+        const template = { ...state.titles.template };
 
         const index = cvBase.findIndex((cv) => cv.cvName === cvName);
 
-        if (index === -1) context.props.helper.setState('currentCv', template);
-        else context.props.helper.setState('currentCv', cvBase[index]);
+        if (index === -1) helper.setState('currentCv', template);
+        else helper.setState('currentCv', cvBase[index]);
       },
 
       delete: () => {
-        const cvBase = [...context.props.state.cvBase];
+        const cvBase = [...state.cvBase];
 
-        const cvName = context.props.state.currentCv.cvName;
+        const cvName = state.currentCv.cvName;
 
-        const { template } = context.props.state.static;
+        const { template } = state.titles;
 
         const updatedCvBase = cvBase.filter((cv) => cv.cvName !== cvName);
 
         cvBase.length === updatedCvBase.length &&
           cvBase.every((element, index) => element === updatedCvBase[index]);
 
-        context.helper.setState('cvBase', updatedCvBase, 'currentCv', template);
+        helper.setState('cvBase', updatedCvBase, 'currentCv', template);
       },
 
       duplicate: () => {
-        const currentCv = { ...context.props.state.currentCv };
+        const currentCv = { ...state.currentCv };
 
-        let cvBase = [...context.props.state.cvBase];
+        let cvBase = [...state.cvBase];
 
         let cvName = currentCv.cvName;
 
@@ -250,7 +227,7 @@ class ManageCv extends React.Component {
 
             cvBase.push(currentCv);
 
-            context.helper.setState(
+            helper.setState(
               'cvName',
               currentCv.cvName,
               'cvBase',
@@ -266,88 +243,88 @@ class ManageCv extends React.Component {
     };
   }
 
-  render() {
-    const { ManageCvBox, IconButtonStyled, PDFDownloadLinkStyled } = manageCvStyles;
-    return (
-      <ManageCvBox>
-        <IconButtonStyled
-          title='Show Resume List'
+  const handle = handlers();
+
+  const { ManageCvBox, IconButtonStyled, PDFDownloadLinkStyled } = manageCvStyles;
+
+  return (
+    <ManageCvBox>
+      <IconButtonStyled
+        title='Show Resume List'
+        color='primary'
+        onClick={() => preview().list()}>
+        <Menu />
+      </IconButtonStyled>
+
+      <IconButtonStyled
+        title='Show PDF preview'
+        color='primary'
+        onClick={() => preview().pdf()}
+      >
+        <PictureAsPdfIcon />
+      </IconButtonStyled>
+
+      <PDFDownloadLinkStyled
+        document={<PdfResume state={state} />}
+        title='Download PDF'
+        fileName="resume.pdf"
+        style={{ margin: 'auto 0' }}
+      >
+        <DownloadOutlinedIcon />
+      </PDFDownloadLinkStyled>
+
+      {save ? (
+        <EditName state={state} handle={handle} />
+      ) : (
+        <IconButton
+          title='Save or rename resume'
           color='primary'
-          onClick={() => this.props.preview().list()}>
-          <Menu />
-        </IconButtonStyled>
-
-        <IconButtonStyled
-          title='Show PDF preview'
-          color='primary'
-          onClick={() => this.props.preview().pdf()}
+          onClick={() => handle.save(true)}
         >
-          <PictureAsPdfIcon />
-        </IconButtonStyled>
+          <SaveIcon />
+          {!state.secondary.new && <DriveFileRenameOutlineIcon />}
+        </IconButton>
+      )}
+      {!save && (
+        <>
+          <IconButton
+            title='Restore previous version or clear all if unsaved'
+            color='primary'
+            onClick={handle.cancel}
+          >
+            <RestoreIcon />
+          </IconButton>
+          {!state.secondary.new && (
+            <>
+              <IconButton
+                title='Create new resume'
+                color='primary'
+                onClick={handle.new}
+              >
+                <NoteAddIcon />
+              </IconButton>
 
+              <IconButton
+                title='Delete resume'
+                color='primary'
+                onClick={handle.delete}
+              >
+                <DeleteIcon />
+              </IconButton>
 
-        <PDFDownloadLinkStyled
-          document={<PdfResume state={this.props}/>}
-          title='Download PDF'
-          fileName="resume.pdf"
-          style={{margin: 'auto 0'}}
-        >
-                <DownloadOutlinedIcon />
-        </PDFDownloadLinkStyled>
-
-        {this.state.save ? (
-          <EditName state={this.props.state} handle={this.handle} />
-        ) : (
-            <IconButton
-              title='Save or rename resume'
-              color='primary'
-              onClick={() => this.handle.save(true)}
-            >
-              <SaveIcon />
-              {!this.props.state.secondary.new && <DriveFileRenameOutlineIcon />}
-            </IconButton>
+              <IconButton
+                title='Duplicate resume'
+                color='primary'
+                onClick={handle.duplicate}
+              >
+                <ControlPointDuplicateIcon />
+              </IconButton>
+            </>
           )}
-        {!this.state.save && (
-          <>
-            <IconButton
-              title='Restore previous version or clear all if unsaved'
-              color='primary'
-              onClick={this.handle.cancel}
-            >
-              <RestoreIcon />
-            </IconButton>
-            {!this.props.state.secondary.new && (
-              <>
-                <IconButton
-                  title='Create new resume'
-                  color='primary'
-                  onClick={this.handle.new}
-                >
-                  <NoteAddIcon />
-                </IconButton>
-
-                <IconButton
-                  title='Delete resume'
-                  color='primary'
-                  onClick={this.handle.delete}
-                >
-                  <DeleteIcon />
-                </IconButton>
-
-                <IconButton
-                  title='Duplicate resume'
-                  color='primary'
-                  onClick={this.handle.duplicate}
-                >
-                  <ControlPointDuplicateIcon />
-                </IconButton>
-              </>
-            )}
-          </>
-        )}
-      </ManageCvBox>
-    );
-  }
+        </>
+      )}
+    </ManageCvBox>
+  );
 }
 
 class EditName extends React.Component {
