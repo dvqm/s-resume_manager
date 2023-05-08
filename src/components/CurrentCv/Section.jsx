@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormGroup, IconButton, Typography, Divider } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,28 +7,13 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { genericStyles } from './../../mainTheme/localStyles';
 
-class Section extends React.Component {
-  constructor(props) {
-    super(props);
+const Section = ({ titles, values, component, helper, edit, view }) => {
+  console.log('titles: ', titles);
+  const [original, setOriginal] = useState([]);
 
-    this.edit = props.edit;
-
-    this.view = props.view;
-
-    this.state = {
-      keyName: props.keyName,
-      default: props.static.default,
-      originalArticles: [],
-    };
-
-    this.helper = props.helper;
-
-    this.handle = this.handlers(this);
-  }
-
-  handlers(context) {
+  const handlers = () => {
     return {
-      add() {
+      add() { 
         const setId = (list) => {
           if (list.length > 0) {
             return Math.max(...list.map((x) => x.id)) + 1;
@@ -37,46 +22,43 @@ class Section extends React.Component {
           }
         };
 
-        const values = { ...context.props.static.default };
-
-        values.editing = true;
+        const defaults = {...titles.default};
+        defaults.editing = true;
 
         const newArticle = {
-          ...values,
-          id: setId(context.props.dynamic),
+          ...defaults,
+          id: setId(values),
           init: true,
         };
 
-        const section = [...context.props.dynamic];
+        const section = [...values];
 
         section.push(newArticle);
 
-        context.helper.setState(context.state.keyName, section);
+        helper.setState(component, section);
       },
 
       edit(id) {
-        const updateOriginalArticles = (newArticles) => {
-          const originalArticles = [...context.state.originalArticles];
-
+        const updateOriginal = (newArticles) => {
           const copyArticle = newArticles.find((article) => article.id === id);
 
-          const index = originalArticles.findIndex(
+          const index = original.findIndex(
             (article) => article.id === id,
           );
           if (index !== -1) {
             return [
-              ...originalArticles.slice(0, index),
-              { ...originalArticles[index], ...copyArticle },
-              ...originalArticles.slice(index + 1),
+              ...original.slice(0, index),
+              { ...original[index], ...copyArticle },
+              ...original.slice(index + 1),
             ];
           } else {
-            return [...originalArticles, { id, ...copyArticle }];
+            return [...original, { id, ...copyArticle }];
           }
         };
 
-        const newArticles = [...context.props.dynamic];
+        const newArticles = [...values];
 
-        const originalArticles = updateOriginalArticles(newArticles);
+        const originalArticle = updateOriginal(newArticles);
 
         newArticles.map((article) => {
           if (article.id === id) {
@@ -88,26 +70,25 @@ class Section extends React.Component {
           return article;
         });
 
-        context.setState(
-          { ...context.state, originalArticles: originalArticles },
-          () => context.helper.setState(context.state.keyName, newArticles),
-        );
+        setOriginal(originalArticle);
+
+        helper.setState(component, newArticles);
       },
 
       delete(e, id) {
         e.preventDefault();
 
-        const newArticles = context.props.dynamic.filter(
+        const newArticles = values.filter(
           (article) => article.id !== id,
         );
 
-        context.helper.setState(context.state.keyName, newArticles);
+        helper.setState(component, newArticles);
       },
 
       save(e, id) {
         e.preventDefault();
 
-        const newArticles = context.props.dynamic.map((article) => {
+        const newArticles = values.map((article) => {
           if (article.id === id) {
             article.editing = false;
 
@@ -123,17 +104,17 @@ class Section extends React.Component {
           return 0;
         });
 
-        context.helper.setState(context.state.keyName, newArticles);
+        helper.setState(component, newArticles);
       },
 
       cancel(e, id) {
         e.preventDefault();
 
-        let newArticles = [...context.props.dynamic];
+        let newArticles = [...values];
 
         newArticles = newArticles.map((article) => {
           if (article.id === id) {
-            article = context.state.originalArticles.find(
+            article = original.find(
               (article) => article.id === id,
             );
 
@@ -143,88 +124,88 @@ class Section extends React.Component {
           return article;
         });
 
-        context.helper.setState(context.state.keyName, newArticles);
+        helper.setState(component, newArticles);
       },
     };
   }
 
-  render() {
-    const { ArticleStyled, SectionStyled, StackRow, ManageBtnsWrapper } =
-      genericStyles;
+  const { ArticleStyled, SectionStyled, StackRow, ManageBtnsWrapper } =
+    genericStyles;
 
-    return (
-      <SectionStyled>
-        <StackRow>
-          <Typography variant='h2'>{this.props.static.header}</Typography>
+  const handle = handlers();
 
-          <IconButton color='secondary' onClick={this.handle.add}>
-            <AddIcon />
-          </IconButton>
-        </StackRow>
-        <Divider sx={{ borderBottom: '1px solid' }} />
-        {this.props.dynamic.length > 0 &&
-          this.props.dynamic.map((section) =>
-            section.editing ? (
-             <form
-                key={section.id}
-                onSubmit={(e) => this.handle.save(e, section.id)}
-              >
-                <FormGroup>
-                  <ManageBtnsWrapper>
-                    <IconButton color='secondary' type='submit'>
-                      <CheckOutlinedIcon />
-                    </IconButton>
+  return (
+    <SectionStyled>
+      <StackRow>
+        <Typography variant='h2'>{titles.header}</Typography>
 
-                    {!section.init && (
-                      <IconButton
-                        color='secondary'
-                        onClick={(e) => this.handle.cancel(e, section.id)}
-                      >
-                        <CloseOutlinedIcon />
-                      </IconButton>
-                    )}
+        <IconButton color='secondary' onClick={handle.add}>
+          <AddIcon />
+        </IconButton>
+      </StackRow>
+      <Divider sx={{ borderBottom: '1px solid' }} />
+      {values.length > 0 &&
+        values.map((value) =>
+          value.editing ? (
+            <form
+              key={value.id}
+              onSubmit={(e) => handle.save(e, value.id)}
+            >
+              <FormGroup>
+                <ManageBtnsWrapper>
+                  <IconButton color='secondary' type='submit'>
+                    <CheckOutlinedIcon />
+                  </IconButton>
+
+                  {!value.init && (
                     <IconButton
                       color='secondary'
-                      onClick={(e) => this.handle.delete(e, section.id)}
+                      onClick={(e) => handle.cancel(e, value.id)}
                     >
-                      <DeleteForeverOutlinedIcon />
+                      <CloseOutlinedIcon />
                     </IconButton>
-                  </ManageBtnsWrapper>
+                  )}
+                  <IconButton
+                    color='secondary'
+                    onClick={(e) => handle.delete(e, value.id)}
+                  >
+                    <DeleteForeverOutlinedIcon />
+                  </IconButton>
+                </ManageBtnsWrapper>
 
-                  {React.createElement(this.edit, {
-                    keyName: this.props.keyName,
-                    static: this.props.static,
-                    section: section,
-                    helper: this.props.helper,
-                  })}
-                </FormGroup>
-              </form>
-            ) : (
-                <ArticleStyled key={section.id}>
-                  <StackRow>
-                    <Typography variant='h3'>{section.title}</Typography>
+                {React.createElement(edit, {
+                  component: component,
+                  titles: titles,
+                  values: value,
+                  helper: helper,
+                })}
+              </FormGroup>
+            </form>
+          ) : (
+            <ArticleStyled key={value.id}>
+              <StackRow>
+                <Typography variant='h3'>{value.title}</Typography>
 
-                    <IconButton
-                      color='secondary'
-                      size='medium'
-                      onClick={() => this.handle.edit(section.id)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </StackRow>
+                <IconButton
+                  color='secondary'
+                  size='medium'
+                  onClick={() => handle.edit(value.id)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </StackRow>
 
-                  {React.createElement(this.view, {
-                    keyName: this.props.keyName,
-                    static: this.props.static,
-                    section: section,
-                  })}
-                  <Divider light variant='inset' />
-                </ArticleStyled>
-              ),
-          )}
-      </SectionStyled>
-    );
-  }
+              {React.createElement(view, {
+                component: component,
+                titles: titles,
+                values: value,
+              })}
+              <Divider light variant='inset' />
+            </ArticleStyled>
+          ),
+        )}
+    </SectionStyled>
+  );
 }
 
 export default Section;
