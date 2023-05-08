@@ -307,9 +307,11 @@ export const PdfResume = (props) => {
 
 export const ResumeViewer = (props) => {
   const { BoxStyled, IconButtonStyled } = pdfStyles;
+  const { pdfPreview } = props.state.secondary;
 
   return (
     <BoxStyled>
+      {pdfPreview &&
         <>
           <IconButtonStyled onClick={props.preview().pdf}>
             <CloseOutlinedIcon />
@@ -318,6 +320,7 @@ export const ResumeViewer = (props) => {
             <PdfResume state={props.state} />
           </PDFViewer>
         </>
+      }
     </BoxStyled>
   );
 };
