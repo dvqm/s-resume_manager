@@ -1,142 +1,125 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import mainTheme from '../mainTheme/globalTheme.js';
 import { contentsStyles } from '../mainTheme/localStyles';
 import { Button, ListItem, ListItemText, IconButton } from '@mui/material';
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
-class ContentsCv extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.handleChooseCv = this.handleChooseCv.bind(this);
-
-    this.addMock = this.addMock.bind(this);
-
-    this.deleteMock = this.deleteMock.bind(this);
-  }
-
-  toggleDrawer = () => {
-    this.setState((prevState) => ({
-      isDrawerOpen: !prevState.isDrawerOpen,
-    }));
-  };
-
-  handleChooseCv(e) {
-    const cvBase = [...this.props.state.cvBase];
+const ContentsCv = (props) => {
+  const handleChooseCv = useCallback((e) => {
+    const cvBase = [...props.state.cvBase];
 
     const chosenCv = cvBase.filter(
       (cv) => cv.cvName === e.target.textContent,
     )[0];
 
-    this.props.helper.setState('currentCv', chosenCv);
-  }
+    props.helper.setState('currentCv', chosenCv);
+  }, [props]);
 
-  addMock() {
-    this.props.addMock();
-  }
+  const addMock = useCallback(() => {
+    props.addMock();
+  }, [props]);
 
-  deleteMock() {
-    this.props.deleteMock();
-  }
+  const deleteMock = useCallback(() => {
+    props.deleteMock();
+  }, [props]);
 
-  render() {
-    const { BoxStyled, ListStyled, ListBtn, ListBtnSelected } = contentsStyles;
+  const { BoxStyled, ListStyled, ListBtn, ListBtnSelected } = contentsStyles;
 
-    const resumesList = () => {
-      const mdBreakpoint = mainTheme.breakpoints.values.md;
-      const mockBtns = () => {
-        const styles = {
-          btn: {
+  const resumesList = () => {
+    const mdBreakpoint = mainTheme.breakpoints.values.md;
+    const mockBtns = () => {
+      const styles = {
+        btn: {
+          border: 'none',
+          fontSize: 10,
+          '&:hover': {
             border: 'none',
-            fontSize: 10,
-            '&:hover': {
-              border: 'none',
-            },
           },
-          listItem: {
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'nowrap',
-            justifyContent: 'space-between',
-          },
-        };
-
-        return (
-          <ListItem sx={styles.listItem}>
-            {this.props.state.cvBase.some((cv) => cv.mock) ? (
-              <Button
-                sx={styles.btn}
-                variant='outlined'
-                color='primary'
-                size='small'
-                onClick={this.deleteMock}
-              >
-                Delete Demo
-              </Button>
-            ) : (
-                <Button
-                  sx={styles.btn}
-                  variant='outlined'
-                  color='primary'
-                  size='small'
-                  onClick={this.addMock}
-                >
-                  Load Demo
-                </Button>
-              )}
-            {window.innerWidth <= mdBreakpoint &&
-              <IconButton onClick={this.props.preview().list}>
-                <CloseOutlinedIcon />
-              </IconButton>
-            }
-          </ListItem>
-        );
+        },
+        listItem: {
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'nowrap',
+          justifyContent: 'space-between',
+        },
       };
 
       return (
-        <>
-          <ListStyled>
-            {this.props.state.cvBase.length > 0 ? (
-              <>
-                {mockBtns()}
-                {this.props.state.cvBase.map((cv) => (
-                  <React.Fragment key={cv.cvName}>
-                    {this.props.state.currentCv.cvName === cv.cvName ? (
-                      <ListBtnSelected onClick={this.handleChooseCv}>
-                        <ArticleOutlinedIcon />
-                        <ListItemText>{cv.cvName}</ListItemText>
-                      </ListBtnSelected>
-                    ) : (
-                        <ListBtn onClick={this.handleChooseCv}>
-                          <ArticleOutlinedIcon />
-                          <ListItemText>{cv.cvName}</ListItemText>
-                        </ListBtn>
-                      )}
-                  </React.Fragment>
-                ))}
-              </>
-            ) : (
-                <>
-                  {mockBtns()}
-                  <ListItemText sx={{ textAlign: 'center' }}>
-                    No saved resumes
-                </ListItemText>
-                </>
-              )}
-          </ListStyled>
-        </>
+        <ListItem sx={styles.listItem}>
+          {props.state.cvBase.some((cv) => cv.mock) ? (
+            <Button
+              sx={styles.btn}
+              variant='outlined'
+              color='primary'
+              size='small'
+              onClick={deleteMock}
+            >
+              Delete Demo
+            </Button>
+          ) : (
+            <Button
+              sx={styles.btn}
+              variant='outlined'
+              color='primary'
+              size='small'
+              onClick={addMock}
+            >
+              Load Demo
+            </Button>
+          )}
+          {window.innerWidth <= mdBreakpoint &&
+            <IconButton onClick={props.preview().list}>
+              <CloseOutlinedIcon />
+            </IconButton>
+          }
+        </ListItem>
       );
     };
 
     return (
       <>
-        {this.props.state.secondary.listPreview && (
-          <BoxStyled>{resumesList()}</BoxStyled>
-        )}
+        <ListStyled>
+          {props.state.cvBase.length > 0 ? (
+            <>
+              {mockBtns()}
+              {props.state.cvBase.map((cv) => (
+                <React.Fragment key={cv.cvName}>
+                  {props.state.currentCv.cvName === cv.cvName ? (
+                    <ListBtnSelected onClick={handleChooseCv}>
+                      <ArticleOutlinedIcon />
+                      <ListItemText>{cv.cvName}</ListItemText>
+                    </ListBtnSelected>
+                  ) : (
+                    <ListBtn onClick={handleChooseCv}>
+                      <ArticleOutlinedIcon />
+                      <ListItemText>{cv.cvName}</ListItemText>
+                    </ListBtn>
+                  )}
+                </React.Fragment>
+              ))}
+            </>
+          ) : (
+            <>
+              {mockBtns()}
+              <ListItemText sx={{ textAlign: 'center' }}>
+                No saved resumes
+              </ListItemText>
+            </>
+          )}
+        </ListStyled>
       </>
     );
-  }
+  };
+
+  return (
+    <>
+      {props.state.secondary.listPreview && (
+        <BoxStyled>{resumesList()}</BoxStyled>
+      )}
+    </>
+  );
 }
 
 export default ContentsCv;
