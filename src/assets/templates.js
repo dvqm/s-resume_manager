@@ -629,7 +629,7 @@ export const cvExamples = [
   },
 ];
 
-export const staticFields = {
+export const titles = {
   template: { ...cvTemplate },
   about: {
     header: 'About',
