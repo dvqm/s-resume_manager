@@ -27,7 +27,7 @@ const CurrentCv = ({ state, helper }) => {
     <>
       <Article
         values={state.currentCv.about}
-        titles={state.static.about}
+        titles={state.titles.about}
         component='about'
         helper={helper}
         view={ViewAbout}
@@ -36,7 +36,7 @@ const CurrentCv = ({ state, helper }) => {
 
       <Article
         values={state.currentCv.summary}
-        titles={state.static.summary}
+        titles={state.titles.summary}
         component='summary'
         helper={helper}
         view={ViewSummary}
@@ -44,45 +44,45 @@ const CurrentCv = ({ state, helper }) => {
       />
 
       <Section
-        dynamic={state.currentCv.expertise}
-        static={state.static.expertise}
-        keyName='expertise'
+        values={state.currentCv.expertise}
+        titles={state.titles.expertise}
+        component='expertise'
         helper={helper}
         view={ViewExpertise}
         edit={EditExpertise}
       />
 
       <Section
-        dynamic={state.currentCv.projects}
-        static={state.static.projects}
-        keyName='projects'
+        values={state.currentCv.projects}
+        titles={state.titles.projects}
+        component='projects'
         helper={helper}
         view={ViewProjects}
         edit={EditProjects}
       />
 
       <Section
-        dynamic={state.currentCv.experiences}
-        static={state.static.experiences}
-        keyName='experiences'
+        values={state.currentCv.experiences}
+        titles={state.titles.experiences}
+        component='experiences'
         helper={helper}
         view={ViewExperiences}
         edit={EditExperiences}
       />
 
       <Section
-        dynamic={state.currentCv.educations}
-        static={state.static.educations}
-        keyName='educations'
+        values={state.currentCv.educations}
+        titles={state.titles.educations}
+        component='educations'
         helper={helper}
         view={ViewEducations}
         edit={EditEducations}
       />
 
       <Section
-        dynamic={state.currentCv.additional}
-        static={state.static.additional}
-        keyName='additional'
+        values={state.currentCv.additional}
+        titles={state.titles.additional}
+        component='additional'
         helper={helper}
         view={ViewAdditional}
         edit={EditAdditional}
