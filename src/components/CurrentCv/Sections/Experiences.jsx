@@ -8,86 +8,76 @@ import {
 } from '@mui/material';
 import { genericStyles } from '../../../mainTheme/localStyles.js';
 
-export class EditExperiences extends React.Component {
-  constructor(props) {
-    super(props);
+export const EditExperiences = ({ component, values, titles, helper}) => {
 
-    this.key = props.keyName;
-
-    this.id = props.section.id;
-
-    this.handleChange = props.helper.onChange;
-  }
-
-  render() {
     return (
       <>
         <TextField
-          label={this.props.static.title}
+          label={titles.title}
           size='small'
           type='text'
           InputLabelProps={{
             shrink: true,
           }}
           placeholder='dd/mm/yyyy'
-          value={this.props.section.title}
-          onChange={(e) => this.handleChange(this.key, 'title', e, this.id)}
+          value={values.title}
+          onChange={(e) => helper.onChange(component, 'title', e, values.id)}
         />
 
         <TextField
-          label={this.props.static.startDate}
+          label={titles.startDate}
           size='small'
           InputLabelProps={{
             shrink: true,
           }}
           placeholder='dd/mm/yyyy'
           type='date'
-          value={this.props.section.startDate}
-          onChange={(e) => this.handleChange(this.key, 'startDate', e, this.id)}
+          value={values.startDate}
+          onChange={(e) => helper.onChange(component, 'startDate', e, values.id)}
         />
 
         <FormControlLabel
           control={
             <Checkbox
               size='small'
-              checked={this.props.section.currentlyWork}
+              checked={values.currentlyWork}
               onChange={(e) =>
-                this.handleChange(this.key, 'currentlyWork', e, this.id)
+                helper.onChange(component, 'currentlyWork', e, values.id)
               }
             />
           }
-          label={this.props.static.currentlyWork}
+          label={titles.currentlyWork}
         />
 
-        {!this.props.section.currentlyWork && (
+        {!values.currentlyWork && (
           <TextField
-            label={this.props.static.endDate}
+            label={titles.endDate}
             size='small'
             type='date'
             InputLabelProps={{
               shrink: true,
             }}
             placeholder='dd/mm/yyyy'
-            value={this.props.section.endDate}
-            onChange={(e) => this.handleChange(this.key, 'endDate', e, this.id)}
+            value={values.endDate}
+            onChange={(e) => helper.onChange(component, 'endDate', e, values.id)}
           />
         )}
 
         <TextField
-          label={this.props.static.company}
+          label={titles.company}
           size='small'
           type='text'
-          value={this.props.section.company}
-          onChange={(e) => this.handleChange(this.key, 'company', e, this.id)}
+          value={values.company}
+          onChange={(e) => helper.onChange(component, 'company', e, values.id)}
         />
 
         <TextField
-          label={this.props.static.employmentType}
+          label={titles.employmentType}
           size='small'
           select
-          value={this.props.section.employmentType}
+          value={values.employmentType}
           onChange={(e) =>
-            this.handleChange(this.key, 'employmentType', e, this.id)
+            helper.onChange(component, 'employmentType', e, values.id)
           }
           SelectProps={{
             native: true,
@@ -99,20 +89,20 @@ export class EditExperiences extends React.Component {
         </TextField>
 
         <TextField
-          label={this.props.static.location}
+          label={titles.location}
           size='small'
           type='text'
-          value={this.props.section.location}
-          onChange={(e) => this.handleChange(this.key, 'location', e, this.id)}
+          value={values.location}
+          onChange={(e) => helper.onChange(component, 'location', e, values.id)}
         />
 
         <TextField
-          label={this.props.static.contractType}
+          label={titles.contractType}
           size='small'
           select
-          value={this.props.section.contractType}
+          value={values.contractType}
           onChange={(e) =>
-            this.handleChange(this.key, 'contractType', e, this.id)
+            helper.onChange(component, 'contractType', e, values.id)
           }
           SelectProps={{
             native: true,
@@ -124,52 +114,51 @@ export class EditExperiences extends React.Component {
         </TextField>
 
         <TextField
-          label={this.props.static.description}
+          label={titles.description}
           size='small'
           multiline
           minRows={4}
-          value={this.props.section.description}
+          value={values.description}
           onChange={(e) =>
-            this.handleChange(this.key, 'description', e, this.id)
+            helper.onChange(component, 'description', e, values.id)
           }
         />
       </>
     );
-  }
 }
 
-export class ViewExperiences extends React.Component {
-  render() {
+export const ViewExperiences = ({values, titles}) => {
     const { StackRow, PreBlock } = genericStyles;
+
     return (
       <>
-        <Typography variant='h5'>{this.props.section.company}</Typography>
+        <Typography variant='h5'>{values.company}</Typography>
 
         <Box>
           <StackRow>
             <Typography variant='subtitle1'>
-              {this.props.static.employmentType}
+              {titles.employmentType}
             </Typography>
             <Typography variant='body1'>
-              {this.props.section.employmentType}
+              {values.employmentType}
             </Typography>
           </StackRow>
 
           <StackRow>
             <Typography variant='subtitle1'>
-              {this.props.static.contractType}
+              {titles.contractType}
             </Typography>
             <Typography variant='body1'>
-              {this.props.section.contractType}
+              {values.contractType}
             </Typography>
           </StackRow>
         </Box>
 
         <StackRow>
           <Typography variant='body1'>
-            {this.props.section.startDate}
+            {values.startDate}
           </Typography>
-          {this.props.section.currentlyWork ? (
+          {values.currentlyWork ? (
             <>
               <Typography variant='body1'>-</Typography>
               <Typography variant='body1'>Currently work</Typography>
@@ -178,30 +167,29 @@ export class ViewExperiences extends React.Component {
               <>
                 <Typography variant='body1'>-</Typography>
                 <Typography variant='body1'>
-                  {this.props.section.endDate}
+                  {values.endDate}
                 </Typography>
               </>
             )}
         </StackRow>
 
-        {this.props.section.location.length > 0 && (
+        {values.location.length > 0 && (
           <StackRow>
             <Typography variant='subtitle1'>
-              {this.props.static.location}
+              {titles.location}
             </Typography>
             <Typography variant='subtitle1'>
-              {this.props.section.location}
+              {values.location}
             </Typography>
           </StackRow>
         )}
 
         <Box>
           <Typography variant='subtitle1'>
-            {this.props.static.description}
+            {titles.description}
           </Typography>
-          <PreBlock component='pre'>{this.props.section.description}</PreBlock>
+          <PreBlock component='pre'>{values.description}</PreBlock>
         </Box>
       </>
     );
   }
-}
