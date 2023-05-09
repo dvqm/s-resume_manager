@@ -69,7 +69,6 @@ const ManageCv = ({ state, helper, preview }) => {
 
         const actions = [
           {// first open
-
             condition: () => boolean,
 
             action: () => {
@@ -323,24 +322,7 @@ const ManageCv = ({ state, helper, preview }) => {
   );
 }
 
-class EditName extends React.Component {
-  change(e, field) {
-    this.props.handle.change(e, field);
-  }
-
-  save(boolean) {
-    this.props.handle.save(boolean);
-  }
-
-  rename() {
-    this.props.handle.rename();
-  }
-
-  cancel(operation) {
-    this.props.handle.cancelBtn(operation);
-  }
-
-  render() {
+const EditName = ({ handle, state }) => { 
     return (
       <div>
         <TextField
@@ -348,23 +330,23 @@ class EditName extends React.Component {
           size='small'
           label='Enter The Name'
           type='text'
-          value={this.props.state.currentCv.cvName}
-          onChange={(e) => this.change(e, 'cvName')}
+          value={state.currentCv.cvName}
+          onChange={(e) => handle.change(e, 'cvName')}
         />
 
         <IconButton
           title='Save resume'
           color='primary'
-          onClick={() => this.save(false)}
+          onClick={() => handle.save(false)}
         >
           <SaveIcon />
         </IconButton>
 
-        {!this.props.state.secondary.new && (
+        {!state.secondary.new && (
           <IconButton
             title='Rename resume'
             color='primary'
-            onClick={() => this.rename()}
+            onClick={() => handle.rename()}
           >
             <DriveFileRenameOutlineIcon />
           </IconButton>
@@ -373,13 +355,12 @@ class EditName extends React.Component {
         <IconButton
           title='Cancel'
           color='primary'
-          onClick={() => this.cancel('save')}
+          onClick={() => handle.cancel('save')}
         >
           <CancelIcon />
         </IconButton>
       </div>
     );
-  }
 }
 
 export default ManageCv;
