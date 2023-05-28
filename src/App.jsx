@@ -6,7 +6,7 @@ import Auth from './database/Auth';
 import { getData, saveData } from './database/firebase';
 import { ThemeProvider } from '@mui/material/styles';
 import mainTheme from './mainTheme/globalTheme.js';
-import { cvExamples, cvTemplate, staticFields } from './assets/templates';
+import { cvExamples, cvTemplate, titles } from './assets/templates';
 import { cvGrid } from './mainTheme/localStyles.js';
 import { ResumeViewer } from './components/PdfLayout/PdfMarkup';
 
@@ -22,7 +22,7 @@ class App extends React.Component {
         pdfPreview: false,
         listPreview: false,
       },
-      static: { ...staticFields },
+      titles: { ...titles },
     };
 
     this.addMock = this.addMock.bind(this);
@@ -322,7 +322,9 @@ class App extends React.Component {
               deleteMock={this.deleteMock}
             />
 
-            <ResumeViewer state={this.state} preview={this.preview} />
+            <ResumeViewer
+              state={this.state}
+              preview={this.preview} />
           </SidePanelGrid>
         </RootGrid>
       </ThemeProvider>
