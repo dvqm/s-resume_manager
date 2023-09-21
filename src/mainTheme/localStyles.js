@@ -114,10 +114,10 @@ export const genericStyles = {
   ]),
 };
 
-export const cvGrid = {
-  RootGrid: styled(Grid)(bs.flex.items.stretch),
+export const resumeStyled = {
+  ResumeLayout: styled(Grid)(bs.flex.items.stretch),
 
-  CurrentCvGrid: styled(Grid)(() => [bs.flex.column.nowrap, { paddingRight: 50 }]),
+  ResumeStyled: styled(Grid)(() => [bs.flex.column.nowrap, { paddingRight: 50 }]),
 
   SidePanelGrid: styled(Grid)(({ theme }) => [
     bs.flex.column.nowrap,
