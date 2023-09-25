@@ -1,12 +1,12 @@
 import mainTheme from '../mainTheme/globalTheme';
-import { cvTemplate, titleValues } from './templates';
+import { resumeTemplate, titleValues } from './templates';
 import { createContext, useState } from 'react';
 
 export const InitialState = createContext();
 
 const ContextProvider = ({ children }) => {
   const [resumes, setResumes] = useState([]);
-  const [resume, setResume] = useState({ ...cvTemplate });
+  const [resume, setResume] = useState({ ...resumeTemplate });
 
   const [titles, _] = useState({ ...titleValues });
 
@@ -15,45 +15,32 @@ const ContextProvider = ({ children }) => {
   const [list, setList] = useState(false);
 
   const accessResumes = (newValue) => {
-    if (newValue) {
-      setResumes(newValue);
-    } else {
-      return resumes;
-    }
+    if (newValue !== undefined) setResumes(newValue);
+    else return resumes;
   }
 
   const accessResume = (newValue) => {
-    if (newValue) {
-      setResume({ ...resume, ...newValue });
-    } else {
-      return resume;
-    }
+    if (newValue !== undefined) setResume({ ...resume, ...newValue });
+    else return resume;
   }
 
   const readTitles = () => titles;
 
   const accessCurrent = (newValue) => {
-    if (newValue) {
-      setCurrent(newValue);
-    } else {
-      return current;
-    }
+    if (newValue !== undefined) setCurrent(newValue);
+    else return current;
   }
 
   const accessPdf = (newValue) => {
-    if (newValue) {
-      setPdf(newValue);
-    } else {
-      return pdf;
-    }
+    if (newValue !== undefined) setPdf(newValue);
+    else return pdf;
+
   }
 
   const accessList = (newValue) => {
-    if (newValue) {
-      setList(newValue);
-    } else {
-      return list;
-    }
+    if (newValue !== undefined) setList(newValue);
+    else return list;
+
   }
 
   return (
