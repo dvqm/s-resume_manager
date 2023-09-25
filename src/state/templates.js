@@ -1,6 +1,6 @@
 import { Rick, Bazz } from '../assets/base64Img';
-export const cvTemplate = {
-  cvName: '',
+export const resumeTemplate = {
+  name: '',
   about: {
     first: '',
     middle: '',
@@ -25,9 +25,9 @@ export const cvTemplate = {
   additional: [],
 };
 
-export const cvExamples = [
+export const resumesExamples = [
   {
-    cvName: 'John Doe Developer',
+    name: 'John Doe Developer',
     mock: 0,
     about: {
       first: 'John',
@@ -186,7 +186,7 @@ export const cvExamples = [
     ],
   },
   {
-    cvName: 'Bazz Lighter the Astronaut',
+    name: 'Bazz Lighter the Astronaut',
     mock: 1,
     about: {
       first: 'Bazz',
@@ -361,7 +361,7 @@ export const cvExamples = [
     ],
   },
   {
-    cvName: 'Inter-Dimensional Scientist',
+    name: 'Inter-Dimensional Scientist',
     mock: 2,
     about: {
       first: 'Rick',
@@ -575,7 +575,7 @@ export const cvExamples = [
 ];
 
 export const titleValues = {
-  template: { ...cvTemplate },
+  template: { ...resumeTemplate },
   about: {
     header: 'About',
     first: 'First Name: ',

@@ -56,7 +56,7 @@ const logout = () => {
   signOut(auth);
 };
 
-const saveData = async (cvBase) => {
+const saveData = async (resumes) => {
   const user = auth.currentUser;
 
   const localTimestamp = new Date().getTime();
@@ -65,7 +65,7 @@ const saveData = async (cvBase) => {
     localStorage.setItem(
       'data',
       JSON.stringify({
-        cvBase,
+        resumes,
         localTimestamp,
       }),
     );
@@ -75,7 +75,7 @@ const saveData = async (cvBase) => {
     try {
       setLs();
 
-      await set(ref(db, `users/${user.uid}/data/`), { cvBase, localTimestamp });
+      await set(ref(db, `users/${user.uid}/data/`), { resumes, localTimestamp });
     } catch (error) {
       alert(error.message);
 
@@ -88,7 +88,7 @@ const getData = async () => {
 
   const user = await auth.currentUser;
 
-  if (!user && getLs() !== null) return getLs().cvBase;
+  if (!user && getLs() !== null) return getLs().resumes;
   else if (getLs() === null || getLs() === undefined) return [];
   else
     try {
@@ -97,17 +97,17 @@ const getData = async () => {
       const snapshot = await get(child(ref(db), `users/${user.uid}/data/`));
       const snapshotData = snapshot.val();
 
-      if (snapshotData && (ls.cvBase.length > 0 && snapshotData['cvBase'] !== null && snapshotData['cvBase'].length > 0)) {
+      if (snapshotData && (ls.resumes.length > 0 && snapshotData['resumes'] !== null && snapshotData['resumes'].length > 0)) {
         const lsTimestamp = ls.localTimestamp;
 
         const snapshotTimestamp = snapshotData['localTimestamp'];
 
         return snapshotTimestamp > lsTimestamp
-          ? snapshotData['cvBase']
-          : ls.cvBase;
-      } else if (snapshotData && snapshotData['cvBase'].length > 0)
-        return snapshotData['cvBase'];
-      else if (ls.cvBase.length > 0) return ls.cvBase;
+          ? snapshotData['resumes']
+          : ls.resumes;
+      } else if (snapshotData && snapshotData['resumes'].length > 0)
+        return snapshotData['resumes'];
+      else if (ls.resumes.length > 0) return ls.resumes;
       else return [];
     } catch (error) {
       alert(error.message);

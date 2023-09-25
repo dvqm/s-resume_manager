@@ -40,9 +40,9 @@ class Auth extends React.Component {
   async signIn() {
     await signInWithGoogle();
 
-    const cvBase = await getData();
+    const resumes = await getData();
 
-    if (this.state.user) this.props.helper.setState('cvBase', cvBase);
+    if (this.state.user) this.props.helper.setState('resumes', resumes);
   }
 
   componentDidMount() {
