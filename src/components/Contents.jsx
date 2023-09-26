@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { cvExamples } from '../state/templates';
+import { resumesExamples } from '../state/templates';
 import { InitialState } from '../state/context.jsx';
 import ContentsResumesList from './ManageContents/ContentsResumeList';
 
@@ -7,38 +7,38 @@ import ContentsResumesList from './ManageContents/ContentsResumeList';
 const ResumeList = () => {
 
   const { accessResumes, accessResume, accessList } = useContext(InitialState);
-  const [resumes, setResumes] = useState(accessResumes());
-  const [currentResume, _] = useState(accessResume());
-  console.log('accessList', accessList());
 
   const addMock = () => {
-    cvExamples.forEach((mockedResume) => {
-      const index = resumes.findIndex((resume) => resume.mock === mockedResume.mock);
+    accessResumes(() => {
+      const resumes = [...accessResumes()];
 
-      if (index !== -1) {
-        setResumes(prevState => {
-          prevState[index] = mockedResume;
-          return prevState;
-        });
-      } else {
-        setResumes(prevState => {
-          prevState.unshift(mockedResume);
-          return prevState;
-        });
-      }
+      resumesExamples.forEach((mockedResume) => {
+        const index = resumes.findIndex((resume) => resume.mock === mockedResume.mock);
+
+        if (index !== -1) {
+          resumes[index] = mockedResume;
+        } else {
+          resumes.unshift(mockedResume);
+        }
+      });
+      return resumes;
     });
   }
 
   const deleteMock = () => {
-    setResumes(prevState => prevState.filter((resume) => !resume.hasOwnProperty('mock')));
+    accessResumes(() => {
+      const resumes = [...accessResumes()];
+      return resumes.filter((resume) => !resume.hasOwnProperty('mock'))
+    });
   }
 
   return (
     <>
       {accessList() && (
         <ContentsResumesList
-          currentResume={currentResume} resumes={resumes}
+          accessResume={accessResume} accessResumes={accessResumes}
           deleteMock={deleteMock} addMock={addMock}
+          accessList={accessList}
         />
       )}
     </>
