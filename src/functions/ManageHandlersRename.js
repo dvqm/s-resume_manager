@@ -1,27 +1,36 @@
 const rename = (prevName, isUnique, setSave, accessResume, accessResumes) => {
   const { name } = { ...accessResume() };
 
-  const actions = new Map([
-    [ // Can be renamed
-      () => isUnique() && prevName !== name,
-      () => {
-        const index = accessResumes().findIndex(
-          (cv) => cv.name === prevName,
-        );
-        accessResumes()[index].name = name;
+  const actions = [
+    {
+      condition: () => isUnique() && prevName !== name,
+      action: () => {
+        accessResumes(() => {
+          const updatedResumes = [...accessResumes()];
+          const index = updatedResumes.findIndex(
+            (resume) => resume.name === prevName,
+          );
+          updatedResumes[index].name = name;
+          return updatedResumes;
+        });
+
         setSave(false);
-        accessResumes(accessResumes());
       },
-    ],
-    [ // can't be renamed, new name exists in the array.
-      () => !isUnique() && prevName !== name,
-      () => alert(
+    },
+    {
+      condition: () => !isUnique() && prevName !== name,
+      action: () => alert(
         'There is a resume with such name. Please, choose other name.',
       ),
-    ],
-  ]);
+    },
+  ];
 
-  actions.forEach((action, condition) => condition() && action());
+  for (const { condition, action } of actions) {
+    if (condition()) {
+      action();
+      break;
+    }
+  }
 }
 
 export default rename;
