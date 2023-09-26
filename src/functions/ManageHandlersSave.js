@@ -18,17 +18,17 @@ const save = (boolean, editMode,
 
   setSave(true);
 
-  const actions = new Map([
-    [ // first open
-      () => boolean,
-      () => {
+  const actions = [
+    { // first open
+      condition: () => boolean,
+      action: () => {
         setPrevName(accessResume().name);
         setSave(boolean);
       },
-    ],
-    [ // update existed
-      () => !isUnique() && prevName === accessResume().name,
-      () => {
+    },
+    { // update existed
+      condition: () => !isUnique() && prevName === accessResume().name,
+      action: () => {
         alert('Updated existed');
         updatedResumes = accessResumes().map((item) => {
           if (item.name === accessResume().name) {
@@ -39,32 +39,37 @@ const save = (boolean, editMode,
         setSave(boolean);
         accessResumes(updatedResumes);
       },
-    ],
-    [ // name can not be empty
-      () => accessResume().name.length === 0,
-      () => {
+    },
+    { // name can not be empty
+      condition: () => accessResume().name.length === 0,
+      action: () => {
         alert('Name can\'t be empty');
       }
-    ],
-    [ // this name already exists
-      () => !isUnique() && accessResume().name !== prevName,
-      () => {
+    },
+    { // this name already exists
+      condition: () => !isUnique() && accessResume().name !== prevName,
+      action: () => {
         alert('this name already exist');
         setSave(true);
       },
-    ],
-    [ // save as new
-      () => isUnique() && accessResume().name.length > 0 && accessResume().name !== prevName,
-      () => {
+    },
+    { // save as new
+      condition: () => isUnique() && accessResume().name.length > 0 && accessResume().name !== prevName,
+      action: () => {
         alert('Saved as new');
         setSave(false);
         const updatedResumes = [...accessResumes(), accessResume()];
         accessResumes(updatedResumes);
       },
-    ],
-  ]);
+    },
+  ];
 
-  actions.forEach((action, condition) => condition() && action());
+  for (const { condition, action } of actions) {
+    if (condition()) {
+      action();
+      break;
+    }
+  }
 
 }
 
