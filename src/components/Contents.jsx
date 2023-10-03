@@ -1,48 +1,52 @@
-import React, { useContext, useState } from 'react';
-import { resumesExamples } from '../state/templates';
-import { InitialState } from '../state/context.jsx';
-import ContentsResumesList from './ManageContents/ContentsResumeList';
+import React, { useContext } from 'react';
+import { contentsStyles } from '../mainTheme/localStyles';
+import { ListItemText } from '@mui/material';
+import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined';
+import { InitialState } from '../state/context';
+import MockBtns from './ManageContents/ResumeListMockBtns';
 
+const ResumesList = () => {
+  const { resume, resumes, resumesDispatch, chooseResume, accessList } = useContext(InitialState);
+  const { ListStyled, ListBtn, ListBtnSelected } = contentsStyles;
 
-const ResumeList = () => {
+  const addMock = () => resumesDispatch({ t: 'RES_ADD_MOCK' });
+  const deleteMock = () => resumesDispatch({ t: 'RES_DEL_MOCK' });
 
-  const { accessResumes, accessResume, accessList } = useContext(InitialState);
+  return <>
+    {accessList() && (
+      <ListStyled>
+        {resumes.length > 0 ? (
+          <>
+            <MockBtns addMock={addMock} deleteMock={deleteMock}
+              resumes={resumes} accessList={accessList} />
+            {resumes.map((item) => <React.Fragment key={item.name}>
+              {resume.name === item.name ? (
+                <ListBtnSelected onClick={chooseResume}>
+                  <ArticleOutlinedIcon />
+                  <ListItemText>{item.name}</ListItemText>
+                </ListBtnSelected>
+              ) : (
+                  <ListBtn onClick={chooseResume}>
+                    <ArticleOutlinedIcon />
+                    <ListItemText>{item.name}</ListItemText>
+                  </ListBtn>
+                )}
+            </React.Fragment>
+            )}
+          </>
+        ) : (
+          <>
+            <MockBtns addMock={addMock} deleteMock={deleteMock}
+                resumes={resumes} accessList={accessList} />
+            <ListItemText sx={{ textAlign: 'center' }}>
+              No saved resumes
+            </ListItemText>
+          </>
+        )}
+      </ListStyled>
 
-  const addMock = () => {
-    accessResumes(() => {
-      const resumes = [...accessResumes()];
+    )}
+  </>
+};
 
-      resumesExamples.forEach((mockedResume) => {
-        const index = resumes.findIndex((resume) => resume.mock === mockedResume.mock);
-
-        if (index !== -1) {
-          resumes[index] = mockedResume;
-        } else {
-          resumes.unshift(mockedResume);
-        }
-      });
-      return resumes;
-    });
-  }
-
-  const deleteMock = () => {
-    accessResumes(() => {
-      const resumes = [...accessResumes()];
-      return resumes.filter((resume) => !resume.hasOwnProperty('mock'))
-    });
-  }
-
-  return (
-    <>
-      {accessList() && (
-        <ContentsResumesList
-          accessResume={accessResume} accessResumes={accessResumes}
-          deleteMock={deleteMock} addMock={addMock}
-          accessList={accessList}
-        />
-      )}
-    </>
-  );
-}
-
-export default ResumeList;
+export default ResumesList;
