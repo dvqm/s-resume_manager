@@ -1,70 +1,57 @@
 import { useEffect, useState } from 'react';
 import SectionEdit from "./SectionEdit";
 import SectionView from "./SectionView";
-import { enterEdit, exitEdit, observeEdit } from '../../../functions/EditableObserver';
+import { observeEdit } from '../../../functions/EditableObserver';
 
-const SectionManage = ({ field, setFields, updateResume, viewer, editer, titles, id, initial }) => {
-  const [original, setOriginal] = useState([]);
+const SectionManage = ({ id, article, rubric, resumeDispatch, viewer, editer, titles, initial }) => {
+  const [original, setOriginal] = useState();
   const [init, setInit] = useState(true);
   const [isEdit, setIsEdit] = useState(initial);
 
- useEffect(() => {
+  useEffect(() => {
     observeEdit(isEdit);
 
     return () => observeEdit(isEdit);
   }, [isEdit]);
 
-  const actions = new Map([
-    ['delete', () => {
-      setFields(prevFields => prevFields.filter((_, index) => index !== id));
-      setIsEdit(false);
-    }],
-    ['update', (field, value) => {
-      setFields(prevFields => {
-        prevFields[id][field] = value
-        return [...prevFields,];
-      });
-    }],
-    ['save', () => {
-      setFields(prevFields => {
-        prevFields[id] = field;
-        return [...prevFields].sort((a, b) => a.startDate - b.startDate);
-      });
-      setIsEdit(false);
-      setInit(false);
-      updateResume();
-    }],
-    ['edit', () => {
-      setOriginal(field);
-      setIsEdit(true);
-    }],
-    ['cancel', () => {
-      setFields(prevFields => {
-        prevFields[id] = original;
-        return [...prevFields];
-      });
-      setIsEdit(false);
-    }]
-  ]);
+  const update = (field, e) => {
+    let value;
 
-  const handleAction = (e, action, field) => {
-    e.preventDefault();
-    const act = actions.get(action);
-    if (act) act(field, e.currentTarget.value);
+    if (field === 'currentlyWork') value = e.currentTarget.checked;
+    else value = e.currentTarget.value;
+
+    resumeDispatch({ t: 'SEC_UPD', p: [rubric, id, { [field]: value }] })
   };
+
+  const save = () => {
+    setIsEdit(false);
+    setInit(false);
+  }
+
+  const edit = () => {
+    setOriginal(article);
+    setIsEdit(true);
+  }
+
+  const remove = () => resumeDispatch({ t: 'SEC_DEL', p: [rubric, id] });
+
+  const restore = () => {
+    resumeDispatch({ t: 'SEC_RESTORE', p: [rubric, id, original] });
+    setIsEdit(false);
+  }
 
   return <>
     {
       isEdit ? (
         <SectionEdit init={init}
           editer={editer} titles={titles}
-          view={field} field={field}
-          setFields={setFields} handleAction={handleAction}
+          article={article} update={update}
+          save={save} restore={restore} remove={remove}
         />
       ) : (
         <SectionView viewer={viewer}
-          field={field} titles={titles}
-          handleAction={handleAction}
+          article={article} titles={titles}
+          edit={edit}
         />
       )}
   </>

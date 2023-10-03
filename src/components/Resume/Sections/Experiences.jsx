@@ -8,23 +8,18 @@ import {
 } from '@mui/material';
 import { genericStyles } from '../../../mainTheme/localStyles.js';
 
-export const EditExperiences = ({titles, field, handleAction}) => {
-  const handleChange = (key, e) => {
-    handleAction(e, 'update', key);
-  };
-
+export const EditExperiences = ({titles, article, update}) => {
     return (
       <>
         <TextField
-          label={titles.title}
           size='small'
           type='text'
           InputLabelProps={{
             shrink: true,
           }}
-          placeholder='dd/mm/yyyy'
-          value={field.title}
-          onChange={(e) => handleChange('title', e)}
+          placeholder='Position name'
+          value={article.title}
+          onChange={(e) => update('title', e)}
         />
 
         <TextField
@@ -35,22 +30,22 @@ export const EditExperiences = ({titles, field, handleAction}) => {
           }}
           placeholder='dd/mm/yyyy'
           type='date'
-          value={field.startDate}
-          onChange={(e) => handleChange('startDate', e)}
+          value={article.startDate}
+          onChange={(e) => update('startDate', e)}
         />
 
         <FormControlLabel
           control={
             <Checkbox
               size='small'
-              checked={field.currentlyWork}
-              onChange={(e) => handleChange('currentlyWork', e)}
+              checked={article.currentlyWork}
+              onChange={(e) => update('currentlyWork', e)}
             />
           }
           label={titles.currentlyWork}
         />
 
-        {!field.currentlyWork && (
+        {!article.currentlyWork && (
           <TextField
             label={titles.endDate}
             size='small'
@@ -59,8 +54,8 @@ export const EditExperiences = ({titles, field, handleAction}) => {
               shrink: true,
             }}
             placeholder='dd/mm/yyyy'
-            value={field.endDate}
-            onChange={(e) => handleChange('endDate', e)}
+            value={article.endDate}
+            onChange={(e) => update('endDate', e)}
           />
         )}
 
@@ -68,16 +63,16 @@ export const EditExperiences = ({titles, field, handleAction}) => {
           label={titles.company}
           size='small'
           type='text'
-          value={field.company}
-          onChange={(e) => handleChange('company', e)}
+          value={article.company}
+          onChange={(e) => update('company', e)}
         />
 
         <TextField
           label={titles.employmentType}
           size='small'
           select
-          value={field.employmentType}
-          onChange={(e) => handleChange('employmentType', e)}
+          value={article.employmentType}
+          onChange={(e) => update('employmentType', e)}
           SelectProps={{
             native: true,
           }}
@@ -91,16 +86,16 @@ export const EditExperiences = ({titles, field, handleAction}) => {
           label={titles.location}
           size='small'
           type='text'
-          value={field.location}
-          onChange={(e) => handleChange('location', e)}
+          value={article.location}
+          onChange={(e) => update('location', e)}
         />
 
         <TextField
           label={titles.contractType}
           size='small'
           select
-          value={field.contractType}
-          onChange={(e) => handleChange('contractType', e)}
+          value={article.contractType}
+          onChange={(e) => update('contractType', e)}
           SelectProps={{
             native: true,
           }}
@@ -115,19 +110,19 @@ export const EditExperiences = ({titles, field, handleAction}) => {
           size='small'
           multiline
           minRows={4}
-          value={field.description}
-          onChange={(e) => handleChange('description', e)}
+          value={article.description}
+          onChange={(e) => update('description', e)}
         />
       </>
     );
 }
 
-export const ViewExperiences = ({field, titles}) => {
+export const ViewExperiences = ({article, titles}) => {
     const { StackRow, PreBlock } = genericStyles;
 
     return (
       <>
-        <Typography variant='h5'>{field.company}</Typography>
+        <Typography variant='h5'>{article.company}</Typography>
 
         <Box>
           <StackRow>
@@ -135,7 +130,7 @@ export const ViewExperiences = ({field, titles}) => {
               {titles.employmentType}
             </Typography>
             <Typography variant='body1'>
-              {field.employmentType}
+              {article.employmentType}
             </Typography>
           </StackRow>
 
@@ -144,16 +139,16 @@ export const ViewExperiences = ({field, titles}) => {
               {titles.contractType}
             </Typography>
             <Typography variant='body1'>
-              {field.contractType}
+              {article.contractType}
             </Typography>
           </StackRow>
         </Box>
 
         <StackRow>
           <Typography variant='body1'>
-            {field.startDate}
+            {article.startDate}
           </Typography>
-          {field.currentlyWork ? (
+          {article.currentlyWork ? (
             <>
               <Typography variant='body1'>-</Typography>
               <Typography variant='body1'>Currently work</Typography>
@@ -162,19 +157,19 @@ export const ViewExperiences = ({field, titles}) => {
               <>
                 <Typography variant='body1'>-</Typography>
                 <Typography variant='body1'>
-                  {field.endDate}
+                  {article.endDate}
                 </Typography>
               </>
             )}
         </StackRow>
 
-        {field.location.length > 0 && (
+        {article.location.length > 0 && (
           <StackRow>
             <Typography variant='subtitle1'>
               {titles.location}
             </Typography>
             <Typography variant='subtitle1'>
-              {field.location}
+              {article.location}
             </Typography>
           </StackRow>
         )}
@@ -183,7 +178,7 @@ export const ViewExperiences = ({field, titles}) => {
           <Typography variant='subtitle1'>
             {titles.description}
           </Typography>
-          <PreBlock component='pre'>{field.description}</PreBlock>
+          <PreBlock component='pre'>{article.description}</PreBlock>
         </Box>
       </>
     );

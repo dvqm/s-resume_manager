@@ -5,29 +5,26 @@ import SectionTitle from './Sections/SectionTitle';
 import SectionManage from './Sections/SectionManage';
 
 const Section = ({ rubric, editer, viewer }) => {
-  const { accessResume, readTitles } = useContext(InitialState);
-  const [fields, setFields] = useState(accessResume()[rubric]);
-  const [initial, setInitial] = useState(false);
-  const titles = readTitles()[rubric];
+  const { resume, titles, resumeDispatch } = useContext(InitialState);
 
-  const updateResume = () => accessResume({ [rubric]: fields });
+  const [initial, setInitial] = useState(false);
 
   const add = () => {
-    setFields([...fields, { ...titles.default }]);
+    resumeDispatch({ t: 'SEC_ADD', p: [rubric] });
     setInitial(true);
   }
 
   const { SectionStyled } = genericStyles;
-
   return (
     <SectionStyled>
-      <SectionTitle titles={titles} add={add} />
-      {fields.length > 0 &&
-        fields.map((field, i) => <SectionManage key={i} id={i}
-          field={field} setFields={setFields}
-          updateResume={updateResume}
+      <SectionTitle titles={titles[rubric]} add={add} />
+      {resume[rubric].length > 0 &&
+       resume[rubric].map((article, i) => <SectionManage key={i} id={i}
+          article={article}
           viewer={viewer} editer={editer}
-          titles={titles}
+          rubric={rubric}
+          resumeDispatch={resumeDispatch}
+          titles={titles[rubric]}
           initial={initial}
         />)}
     </SectionStyled>

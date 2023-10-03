@@ -5,38 +5,34 @@ import { expertiseStyles } from './../../../mainTheme/localStyles';
 
 const { TextStyled } = expertiseStyles;
 
-export const EditExpertise = ({ titles, field, handleAction }) => {
-  const handleChange = (key, e) => {
-    handleAction(e, 'update', key);
-  };
-
+export const EditExpertise = ({ titles, article, update }) => {
   return (
     <>
       <TextStyled
         type='text'
         placeholder={titles.placeholder}
-        value={field.title}
-        onChange={(e) => handleChange('title', e, field.id)}
+        value={article.title}
+        onChange={(e) => update('title', e)}
       />
 
       <TextStyled
         multiline
         rows={8}
         placeholder={titles.tip}
-        value={field.labels}
-        onChange={(e) => handleChange('labels', e, field.id)}
+        value={article.labels}
+        onChange={(e) => update('labels', e)}
       />
     </>
   );
 }
 
-export const ViewExpertise = ({ titles, field }) => {
+export const ViewExpertise = ({ article }) => {
   const labelsParse = (labelsStr) => {
     if (labelsStr) return labelsStr.split(', ');
     else return [];
   };
 
-  const labels = labelsParse(field.labels);
+  const labels = labelsParse(article.labels);
 
   return (
     <Stack direction='row' sx={{ flexWrap: 'wrap' }}>

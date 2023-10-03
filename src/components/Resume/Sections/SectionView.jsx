@@ -3,16 +3,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import { genericStyles } from "../../../mainTheme/localStyles";
 import { createElement } from 'react';
 
-const SectionView = ({ viewer, field, titles, handleAction }) => {
+const SectionView = ({ viewer, article, titles, edit }) => {
   const { ArticleStyled, StackRow } = genericStyles;
   return <ArticleStyled>
     <StackRow>
-      <Typography variant='h3'>{field.title}</Typography>
+      <Typography variant='h3'>{article.title}</Typography>
 
       <IconButton
         color='secondary'
         size='medium'
-        onClick={(e) => handleAction(e, 'edit')}
+        onClick={edit}
       >
         <EditIcon />
       </IconButton>
@@ -20,7 +20,7 @@ const SectionView = ({ viewer, field, titles, handleAction }) => {
 
     {createElement(viewer, {
       titles: titles,
-      field: field,
+      article: article,
     })}
     <Divider light variant='inset' />
   </ArticleStyled>

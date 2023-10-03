@@ -5,11 +5,11 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import { genericStyles } from "../../../mainTheme/localStyles";
 import { createElement } from 'react';
 
-const SectionEdit = ({ editer, titles, field, handleAction, init }) => {
+const SectionEdit = ({ init, editer, titles, article, update, save, restore, remove}) => {
   const { ManageBtnsWrapper } = genericStyles;
 
   return <form
-    onSubmit={(e) => handleAction(e, 'save')}
+    onSubmit={save}
   >
     <FormGroup>
       <ManageBtnsWrapper>
@@ -19,14 +19,14 @@ const SectionEdit = ({ editer, titles, field, handleAction, init }) => {
         {!init && (
           <IconButton
             color='secondary'
-            onClick={(e) => handleAction(e, 'cancel')}
+            onClick={restore}
           >
             <CloseOutlinedIcon />
           </IconButton>
         )}
         <IconButton
           color='secondary'
-          onClick={(e) => handleAction(e, 'delete')}
+          onClick={remove}
         >
           <DeleteForeverOutlinedIcon />
         </IconButton>
@@ -34,8 +34,8 @@ const SectionEdit = ({ editer, titles, field, handleAction, init }) => {
 
       {createElement(editer, {
         titles: titles,
-        field: field,
-        handleAction: handleAction,
+        article: article,
+        update: update,
       })}
     </FormGroup>
   </form>

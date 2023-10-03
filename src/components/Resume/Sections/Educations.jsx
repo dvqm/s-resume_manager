@@ -2,10 +2,7 @@ import React from 'react';
 import { TextField, Typography } from '@mui/material';
 import { genericStyles } from '../../../mainTheme/localStyles.js';
 
-export const EditEducations = ({titles, field, handleAction}) => {
-  const handleChange = (key, e) => {
-    handleAction(e, 'update', key);
-  };
+export const EditEducations = ({titles, article, update}) => {
 
   return (
     <>
@@ -13,24 +10,24 @@ export const EditEducations = ({titles, field, handleAction}) => {
         fullWidth
         label={titles.title}
         size='small'
-        value={field.title}
-        onChange={(e) => handleChange('title', e)}
+        value={article.title}
+        onChange={(e) => update('title', e)}
       />
 
       <TextField
         fullWidth
         label={titles.degree}
         size='small'
-        value={field.degree}
-        onChange={(e) => handleChange('degree', e)}
+        value={article.degree}
+        onChange={(e) => update('degree', e)}
       />
 
       <TextField
         fullWidth
         label={titles.studyField}
         size='small'
-        value={field.studyField}
-        onChange={(e) => handleChange('studyField', e)}
+        value={article.studyField}
+        onChange={(e) => update('studyField', e)}
       />
 
       <TextField
@@ -42,8 +39,8 @@ export const EditEducations = ({titles, field, handleAction}) => {
           shrink: true,
         }}
         placeholder='dd/mm/yyyy'
-        value={field.startDate}
-        onChange={(e) => handleChange('startDate', e)}
+        value={article.startDate}
+        onChange={(e) => update('startDate', e)}
       />
 
       <TextField
@@ -55,16 +52,16 @@ export const EditEducations = ({titles, field, handleAction}) => {
         }}
         placeholder='dd/mm/yyyy'
         size='small'
-        value={field.endDate}
-        onChange={(e) => handleChange('endDate', e)}
+        value={article.endDate}
+        onChange={(e) => update('endDate', e)}
       />
 
       <TextField
         fullWidth
         label={titles.grade}
         size='small'
-        value={field.grade}
-        onChange={(e) => handleChange('grade', e)}
+        value={article.grade}
+        onChange={(e) => update('grade', e)}
       />
 
       <TextField
@@ -73,8 +70,8 @@ export const EditEducations = ({titles, field, handleAction}) => {
         multiline
         minRows={3}
         size='small'
-        value={field.activities}
-        onChange={(e) => handleChange('activities', e)}
+        value={article.activities}
+        onChange={(e) => update('activities', e)}
       />
 
       <TextField
@@ -83,51 +80,51 @@ export const EditEducations = ({titles, field, handleAction}) => {
         multiline
         minRows={3}
         size='small'
-        value={field.description}
-        onChange={(e) => handleChange('description', e)}
+        value={article.description}
+        onChange={(e) => update('description', e)}
       />
     </>
   );
 }
 
-export const ViewEducations = ({ field, titles }) => {
+export const ViewEducations = ({ article, titles }) => {
   const { PreBlock } = genericStyles;
 
   return (
     <>
       <Typography>
-        <Typography component='span'>{field.degree}</Typography>
+        <Typography component='span'>{article.degree}</Typography>
         <Typography component='span'> &#183; </Typography>
         <Typography component='span'>
-          {field.studyField}
+          {article.studyField}
         </Typography>
       </Typography>
       <Typography>
         <Typography component='span'>
-          {field.startDate}
+          {article.startDate}
         </Typography>
         <Typography component='span'> - </Typography>
-        <Typography component='span'>{field.endDate}</Typography>
+        <Typography component='span'>{article.endDate}</Typography>
       </Typography>
-      {field.grade && (
+      {article.grade && (
         <Typography>
           <Typography component='span'>{titles.grade}</Typography>
-          <Typography component='span'>{field.grade}</Typography>
+          <Typography component='span'>{article.grade}</Typography>
         </Typography>
       )}
-      {field.activities && (
+      {article.activities && (
         <>
           <Typography component='span'>
             {titles.activities}
           </Typography>
-          <PreBlock component='pre'>{field.activities}</PreBlock>
+          <PreBlock component='pre'>{article.activities}</PreBlock>
         </>
       )}
-      {field.description && (
+      {article.description && (
         <>
           <Typography variant='body1'>Description: </Typography>
           <PreBlock variant='body1' component='pre'>
-            {field.description}
+            {article.description}
           </PreBlock>
         </>
       )}

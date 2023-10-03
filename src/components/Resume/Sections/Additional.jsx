@@ -2,10 +2,7 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import { genericStyles } from './../../../mainTheme/localStyles';
 
-export const EditAdditional = ({titles, field, handleAction}) => {
-  const handleChange = (key, e) => {
-    handleAction(e, 'update', key);
-  };
+export const EditAdditional = ({titles, article, update}) => {
 
   return (
     <>
@@ -13,8 +10,8 @@ export const EditAdditional = ({titles, field, handleAction}) => {
         fullWidth
         label={titles.title}
         size='small'
-        value={field.title}
-        onChange={(e) => handleChange('title', e)}
+        value={article.title}
+        onChange={(e) => update('title', e)}
       />
 
       <TextField
@@ -22,20 +19,20 @@ export const EditAdditional = ({titles, field, handleAction}) => {
         minRows={8}
         size='small'
         label={titles.description}
-        value={field.description}
-        onChange={(e) => handleChange('description', e)}
+        value={article.description}
+        onChange={(e) => update('description', e)}
       />
     </>
   );
 }
 
-export const ViewAdditional = ({ field }) => {
+export const ViewAdditional = ({ article }) => {
   const { PreBlock } = genericStyles;
 
   return (
     <>
       <PreBlock variant='body1' component='pre'>
-        {field.description}
+        {article.description}
       </PreBlock>
     </>
   );

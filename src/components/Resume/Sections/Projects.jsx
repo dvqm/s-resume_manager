@@ -7,33 +7,28 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { genericStyles } from '../../../mainTheme/localStyles.js';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 
 const { StackRow, PreBlock } = genericStyles;
 
-export const EditProjects = ({ titles, field, handleAction }) => {
-  const handleChange = (key, e) => {
-    handleAction(e, 'update', key);
-  };
-
+export const EditProjects = ({ titles, article, update }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <TextField
         label={titles.title}
         size='small'
-        value={field.title}
-        onChange={(e) => handleChange('title', e)}
+        value={article.title}
+        onChange={(e) => update('title', e)}
       />
 
       <FormControlLabel
         control={
           <Checkbox
             size='small'
-            checked={field.currentlyWork}
+            checked={article.currentlyWork}
             onChange={(e) =>
-              handleChange('currentlyWork', e)
+              update('currentlyWork', e)
             }
           />
         }
@@ -48,11 +43,11 @@ export const EditProjects = ({ titles, field, handleAction }) => {
           shrink: true,
         }}
         placeholder='dd/mm/yyyy'
-        value={field.startDate}
-        onChange={(e) => handleChange('startDate', e)}
+        value={article.startDate}
+        onChange={(e) => update('startDate', e)}
       />
 
-      {!field.currentlyWork && (
+      {!article.currentlyWork && (
         <TextField
           type='date'
           label={titles.endDate}
@@ -61,23 +56,23 @@ export const EditProjects = ({ titles, field, handleAction }) => {
           }}
           placeholder='dd/mm/yyyy'
           size='small'
-          value={field.endDate}
-          onChange={(e) => handleChange('endDate', e)}
+          value={article.endDate}
+          onChange={(e) => update('endDate', e)}
         />
       )}
 
       <TextField
         label={titles.deployUrl}
         size='small'
-        value={field.deployUrl}
-        onChange={(e) => handleChange('deployUrl', e)}
+        value={article.deployUrl}
+        onChange={(e) => update('deployUrl', e)}
       />
 
       <TextField
         label={titles.sourceUrl}
         size='small'
-        value={field.sourceUrl}
-        onChange={(e) => handleChange('sourceUrl', e)}
+        value={article.sourceUrl}
+        onChange={(e) => update('sourceUrl', e)}
       />
 
       <TextField
@@ -86,8 +81,8 @@ export const EditProjects = ({ titles, field, handleAction }) => {
         label={titles.technologies}
         aria-label={titles.technologies}
         size='small'
-        value={field.technologies}
-        onChange={(e) => handleChange('technologies', e)}
+        value={article.technologies}
+        onChange={(e) => update('technologies', e)}
       />
 
       <TextField
@@ -96,45 +91,45 @@ export const EditProjects = ({ titles, field, handleAction }) => {
         label={titles.description}
         aria-label={titles.description}
         size='small'
-        value={field.description}
-        onChange={(e) => handleChange('description', e)}
+        value={article.description}
+        onChange={(e) => update('description', e)}
       />
     </Box>
   );
 }
 
-export const ViewProjects = ({ field, titles }) => {
+export const ViewProjects = ({ article, titles }) => {
   return (
     <>
-      {field.startDate ||
-        field.endDate ||
-        field.currentlyWork ? (
+      {article.startDate ||
+        article.endDate ||
+        article.currentlyWork ? (
         <StackRow>
           <Typography variant='body1'>
-            {field.startDate}
+            {article.startDate}
           </Typography>
-          {(field.currentlyWork ||
-            field.endDate) && (
+          {(article.currentlyWork ||
+            article.endDate) && (
               <Typography variant='body1'> - </Typography>
             )}
           <Typography variant='body1'>
-            {field.currentlyWork
+            {article.currentlyWork
               ? titles.currentlyWork
-              : field.endDate}
+              : article.endDate}
           </Typography>
         </StackRow>
       ) : (
         ''
       )}
 
-      {field.technologies && (
+      {article.technologies && (
         <StackRow>
           <Typography variant='subtitle1'>
             {titles.technologies}
           </Typography>
 
           <Typography variant='body1'>
-            {field.technologies}
+            {article.technologies}
           </Typography>
         </StackRow>
       )}
@@ -145,18 +140,18 @@ export const ViewProjects = ({ field, titles }) => {
         </Typography>
 
         <PreBlock variant='body1' component='pre'>
-          {field.description}
+          {article.description}
         </PreBlock>
       </StackRow>
-      {field.deployUrl || field.sourceUrl ? (
+      {article.deployUrl || article.sourceUrl ? (
         <StackRow>
-          {field.deployUrl ? (
+          {article.deployUrl ? (
             <Chip
               variant='link'
               color='info'
               label={titles.deployUrl}
               component='a'
-              href={field.deployUrl}
+              href={article.deployUrl}
               target='_blank'
               rel='noreferrer noopener'
               icon={<OpenInNewOutlinedIcon sx={{ fontSize: 15 }} />}
@@ -166,13 +161,13 @@ export const ViewProjects = ({ field, titles }) => {
             ''
           )}
 
-          {field.sourceUrl ? (
+          {article.sourceUrl ? (
             <Chip
               variant='link'
               color='info'
               label={titles.sourceUrl}
               component='a'
-              href={field.sourceUrl}
+              href={article.sourceUrl}
               target='_blank'
               rel='noreferrer noopener'
               icon={<OpenInNewOutlinedIcon sx={{ fontSize: 15 }} />}
