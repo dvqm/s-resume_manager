@@ -1,33 +1,33 @@
 import { aboutStyles } from "../../../mainTheme/localStyles";
 
-const AboutContacts = ({ titles, fields, handleChange }) => {
+const AboutContacts = ({ titles, resume, update }) => {
   const { EditContacts, ContactInput } = aboutStyles;
 
   return <EditContacts>
     <ContactInput
       label={titles.email}
       type='email'
-      value={fields.email}
-      onChange={(e) => handleChange('email', e)}
+      value={resume.email}
+      onChange={(e) => update('email', e)}
     />
 
     <ContactInput
       label={titles.tel}
       type='tel'
-      value={fields.tel}
-      onChange={(e) => handleChange('tel', e)}
+      value={resume.tel}
+      onChange={(e) => update('tel', e)}
     />
 
     <ContactInput
       label={titles.linkedin}
-      value={fields.linkedin}
-      onChange={(e) => handleChange('linkedin', e)}
+      value={resume.linkedin}
+      onChange={(e) => update('linkedin', e)}
     />
 
     <ContactInput
       label={titles.gitHub}
-      value={fields.gitHub}
-      onChange={(e) => handleChange('gitHub', e)}
+      value={resume.gitHub}
+      onChange={(e) => update('gitHub', e)}
     />
   </EditContacts>
 

@@ -1,24 +1,24 @@
 import { aboutStyles } from "../../../mainTheme/localStyles";
 
-const AboutAddress = ({ titles, fields, handleChange }) => {
+const AboutAddress = ({ titles, resume, update }) => {
   const { EditAddress, AddrInput } = aboutStyles;
   return <EditAddress>
     <AddrInput
       label={titles.city}
-      value={fields.city}
-      onChange={(e) => handleChange('city', e)}
+      value={resume.city}
+      onChange={(e) => update('city', e)}
     />
 
     <AddrInput
       label={titles.state}
-      value={fields.state}
-      onChange={(e) => handleChange('state', e)}
+      value={resume.state}
+      onChange={(e) => update('state', e)}
     />
 
     <AddrInput
       label={titles.country}
-      value={fields.country}
-      onChange={(e) => handleChange('country', e)}
+      value={resume.country}
+      onChange={(e) => update('country', e)}
     />
   </EditAddress>
 }

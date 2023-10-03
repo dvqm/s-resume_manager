@@ -1,46 +1,40 @@
 import React, { useContext, useState } from 'react';
-import { Divider, Typography, IconButton } from '@mui/material';
-import { genericStyles } from './../../mainTheme/localStyles';
 import { InitialState } from '../../state/context';
 import ArticleForm from './Articles/ArticleForm';
 import ArticleView from './Articles/ArticleView';
 
 const Article = ({ rubric, viewer, editer }) => {
-  const { StackRow } = genericStyles;
 
-  const { accessResume, readTitles } = useContext(InitialState);
+  const { resume, resumeDispatch, titles } = useContext(InitialState);
 
-  const [fields, setFields] = useState(accessResume()[rubric]);
-  const [original, setOriginal] = useState(fields);
+  const [original, setOriginal] = useState(resume[rubric]);
   const [isEdit, setIsEdit] = useState(false);
-  const titles = readTitles()[rubric];
 
   const handlers = () => {
     return {
+      update(field, e) {
+        resumeDispatch({ t: 'ART_CHANGE', p: [rubric, { [field]: e.currentTarget.value }] });
+      },
+
       edit() {
-        setOriginal(accessResume()[rubric]);
+        setOriginal(resume[rubric]);
         setIsEdit(true);
       },
 
       save(e) {
         e.preventDefault();
-        accessResume({ [rubric]: fields });
         setIsEdit(false);
       },
 
       cancel(e) {
         e.preventDefault();
-        setFields(original);
+        resumeDispatch({ t: 'ART_UPD', p: [rubric, original] });
         setIsEdit(false);
       },
 
       clear(e) {
         e.preventDefault();
-        const cleared = { ...fields };
-
-        Object.keys(cleared).forEach((key) => cleared[key] = '');
-
-        setFields(cleared);
+        resumeDispatch({ t: 'ART_CLEAR', p: [rubric] });
       },
     };
   };
@@ -49,12 +43,12 @@ const Article = ({ rubric, viewer, editer }) => {
 
   return <>
     {isEdit ? (
-      <ArticleForm titles={titles} handle={handle} editer={editer}
-        fields={fields} setFields={setFields} rubric={rubric}
+      <ArticleForm titles={titles[rubric]} handle={handle}
+        editer={editer} resume={resume[rubric]}
       />
     ) : (
-      <ArticleView titles={titles} handle={handle}
-        fields={fields} viewer={viewer}
+      <ArticleView titles={titles[rubric]} edit={handle.edit}
+        resume={resume[rubric]} viewer={viewer}
       />
     )}
   </>

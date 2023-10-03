@@ -17,73 +17,65 @@ const {
   ViewContacts,
 } = aboutStyles;
 
-export const EditAbout = ({ titles, fields, setFields }) => {
+export const EditAbout = ({ titles, update, resume }) => {
 
-  const handleChange = (key, e) => {
-    setFields(prevFields => ({
-      ...prevFields, [key]: e.target.value,
-    }))
-  };
+  return <>
+    <EditCredentials>
+      <EditInfo>
+        <AboutAvatar update={update} resume={resume} />
+        <AboutName titles={titles} update={update} resume={resume} />
+      </EditInfo>
 
-  return (
-    <>
-      <EditCredentials>
-        <EditInfo>
-          <AboutAvatar fields={fields} setFields={setFields} handleChange={handleChange} />
-          <AboutName titles={titles} fields={fields} handleChange={handleChange} />
-        </EditInfo>
+      <EditPosition
+        label={titles.position}
+        value={resume.position}
+        onChange={(e) => update('position', e)}
+      />
+    </EditCredentials>
 
-        <EditPosition
-          label={titles.position}
-          value={fields.position}
-          onChange={(e) => handleChange('position', e)}
-        />
-      </EditCredentials>
+    <AboutAddress titles={titles} update={update} resume={resume} />
+    <AboutContacts titles={titles} update={update} resume={resume} />
 
-      <AboutAddress titles={titles} fields={fields} handleChange={handleChange} />
-      <AboutContacts titles={titles} fields={fields} handleChange={handleChange} />
-
-    </>
-  );
+  </>
+    ;
 }
 
-export const ViewAbout = ({ fields }) => {
-  return (
-    <ViewWrap>
-      {fields.photo && (
-        <Photo variant='circular' src={fields.photo} alt='Edit' />
-      )}
-      <ViewMainInfo>
-        <ViewTitle>
-          <Typography variant='h3'>
-            {fields.first && `${fields.first} `}
-            {fields.middle && `${fields.middle} `}
-            {fields.last}
-          </Typography>
-          <Typography variant='h5'>{fields.position}</Typography>
-        </ViewTitle>
+export const ViewAbout = ({ resume }) => {
+  return <ViewWrap>
+    {resume.photo && (
+      <Photo variant='circular' src={resume.photo} alt='Edit' />
+    )}
+    <ViewMainInfo>
+      <ViewTitle>
+        <Typography variant='h3'>
+          {resume.first && `${resume.first} `}
+          {resume.middle && `${resume.middle} `}
+          {resume.last}
+        </Typography>
+        <Typography variant='h5'>{resume.position}</Typography>
+      </ViewTitle>
 
-        <ViewAddress>
-          {fields.city && `${fields.city}, `}
-          {fields.state && `${fields.state}, `}
-          {fields.country}
-        </ViewAddress>
+      <ViewAddress>
+        {resume.city && `${resume.city}, `}
+        {resume.state && `${resume.state}, `}
+        {resume.country}
+      </ViewAddress>
 
-        <ViewContacts>
-          <Link href={`tel:${fields.tel}`}>
-            {fields.tel}
-          </Link>
-          <Link href={`mailto:${fields.email}`}>
-            {fields.email}
-          </Link>
-          <Link href={fields.linkedin}>
-            {fields.linkedin}
-          </Link>
-          <Link href={fields.gitHub}>
-            {fields.gitHub}
-          </Link>
-        </ViewContacts>
-      </ViewMainInfo>
-    </ViewWrap>
-  );
+      <ViewContacts>
+        <Link href={`tel:${resume.tel}`}>
+          {resume.tel}
+        </Link>
+        <Link href={`mailto:${resume.email}`}>
+          {resume.email}
+        </Link>
+        <Link href={resume.linkedin}>
+          {resume.linkedin}
+        </Link>
+        <Link href={resume.gitHub}>
+          {resume.gitHub}
+        </Link>
+      </ViewContacts>
+    </ViewMainInfo>
+  </ViewWrap>
+    ;
 }

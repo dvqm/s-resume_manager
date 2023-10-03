@@ -2,19 +2,16 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { aboutStyles } from "../../../mainTheme/localStyles";
 
-const AboutAvatar = ({ fields, setFields, handleChange }) => {
+const AboutAvatar = ({ resume, update }) => {
   const deletePhoto = (e) => {
     e.preventDefault();
-
-    setFields(prevFields => ({
-      ...prevFields, photo: '',
-    }))
+    update('photo', '')
   }
 
   const { EditAvatar, Photo, ManagePhotoBtn } = aboutStyles
 
   return <EditAvatar>
-    {!fields.photo && (
+    {!resume.photo && (
       <>
         <Photo variant='circular' alt='Edit' />
         <ManagePhotoBtn
@@ -24,7 +21,7 @@ const AboutAvatar = ({ fields, setFields, handleChange }) => {
         >
           <input
             hidden
-            onChange={(e) => handleChange('photo', e)}
+            onChange={(e) => update('photo', e)}
             accept='image/*'
             type='file'
           />
@@ -33,11 +30,11 @@ const AboutAvatar = ({ fields, setFields, handleChange }) => {
       </>
     )}
 
-    {fields.photo && (
+    {resume.photo && (
       <>
         <Photo
           variant='circular'
-          src={fields.photo}
+          src={resume.photo}
           alt='Edit'
         />
         <ManagePhotoBtn

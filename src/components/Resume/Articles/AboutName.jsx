@@ -1,25 +1,26 @@
 import { aboutStyles } from "../../../mainTheme/localStyles";
 
-const AboutName = ({ titles, fields, handleChange }) => {
+const AboutName = ({ titles, resume, update }) => {
   const { EditName, EditNameInput } = aboutStyles
+  
   return <>
     <EditName>
       <EditNameInput
         label={titles.first}
-        value={fields.first}
-        onChange={(e) => handleChange('first', e)}
+        value={resume.first}
+        onChange={(e) => update('first', e)}
       />
 
       <EditNameInput
         label={titles.middle}
-        value={fields.middle}
-        onChange={(e) => handleChange('middle', e)}
+        value={resume.middle}
+        onChange={(e) => update('middle', e)}
       />
 
       <EditNameInput
         label={titles.last}
-        value={fields.last}
-        onChange={(e) => handleChange('last', e)}
+        value={resume.last}
+        onChange={(e) => update('last', e)}
       />
     </EditName>
   </>

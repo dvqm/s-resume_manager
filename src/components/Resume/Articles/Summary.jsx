@@ -3,29 +3,23 @@ import { genericStyles } from '../../../mainTheme/localStyles.js';
 
 const { PreBlock } = genericStyles;
 
-export const EditSummary = ({ titles, fields, setFields }) => {
-  const handleChange = (key, e) => {
-    setFields(prevFields => ({
-      ...prevFields, [key]: e.target.value,
-    }))
-  };
-
+export const EditSummary = ({ titles, update, resume }) => {
   return (
     <TextField
       label={titles.summary}
       minRows={10}
       fullWidth
       multiline
-      value={fields.summary}
-      onChange={(e) => handleChange('summary', e)}
+      value={resume.summary}
+      onChange={(e) => update('summary', e)}
     />
   );
 }
 
-export const ViewSummary = ({ fields }) => {
+export const ViewSummary = ({ resume }) => {
   return (
     <PreBlock variant='body1' component='pre'>
-      {fields.summary}
+      {resume.summary}
     </PreBlock>
   );
 }
