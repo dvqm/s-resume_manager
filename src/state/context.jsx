@@ -1,53 +1,31 @@
-import mainTheme from '../mainTheme/globalTheme';
-import { resumeTemplate, titleValues } from './templates';
-import { createContext, useState } from 'react';
+import { template, titles } from './templates';
+import { createContext, useReducer, useState } from 'react';
+import resumeReducer from './resumeReducer';
+import resumesReducer from './resumesReducer';
 
-export const InitialState = createContext();
+export const InitialState = createContext(template);
 
 const ContextProvider = ({ children }) => {
-  const [resumes, setResumes] = useState([]);
-  const [resume, setResume] = useState({ ...resumeTemplate });
-
-  const [titles, _] = useState({ ...titleValues });
-
+  const [resume, resumeDispatch] = useReducer(resumeReducer, template);
+  const [resumes, resumesDispatch] = useReducer(resumesReducer, []);
   const [current, setCurrent] = useState(true);
-  const [pdf, setPdf] = useState(false);
   const [list, setList] = useState(false);
 
-  const accessResumes = (newValue) => {
-    if (newValue !== undefined) setResumes(newValue);
-    else return resumes;
+  const chooseResume = (e) => {
+    const chosenResume = resumes.filter(
+      (item) => item.name === e.target.textContent,
+    )[0];
+    resumeDispatch({ t: 'RES_UPD', p: chosenResume });
   }
 
-  const accessResume = (newValue) => {
-    if (newValue !== undefined) setResume({ ...resume, ...newValue });
-    else return resume;
-  }
-
-  const readTitles = () => titles;
-
-  const accessCurrent = (newValue) => {
-    if (newValue !== undefined) setCurrent(newValue);
-    else return current;
-  }
-
-  const accessPdf = (newValue) => {
-    if (newValue !== undefined) setPdf(newValue);
-    else return pdf;
-
-  }
-
-  const accessList = (newValue) => {
-    if (newValue !== undefined) setList(newValue);
+  const accessList = (value) => {
+    if (value) setList(value)
     else return list;
-
   }
 
-  return (
-    <InitialState.Provider value={{ accessResumes, accessResume, readTitles, accessCurrent, accessPdf, accessList }}>
-      {children}
-    </InitialState.Provider>
-  );
+  return <InitialState.Provider value={{ titles, resume, resumes, resumeDispatch, resumesDispatch, chooseResume, accessList }}>
+    {children}
+  </InitialState.Provider>
 }
 
 export default ContextProvider;
