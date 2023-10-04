@@ -6,27 +6,21 @@ const resumesReducer = (s, a) => {
       t: 'RES_SAVE',
       handler: (s, p) => {
         const index = s.findIndex((item) => item.name === p.name)
-        return index === -1 && [...s, p]
+        return index === -1 ? [...s, p] : s;
       }
     },
 
     {
       t: 'RES_UPDATE',
-      handler: (s, p) => {
-        const [rubric, index, value] = p;
-        const updated = [...s[rubric]];
-        updated[index] = value;
-        return {
-          ...s,
-          [rubric]: updated,
-        }
-      }
+      handler: (s, p) => [...s.map((item) => item.name === p.original ? p.resume : item)]
     },
 
     {
       t: 'RES_ADD_MOCK',
       handler: (s) => {
-        const resumesMap = new Map(s.map(resume => [resume.mock, resume]));
+        const resumesMap = new Map(s.map(resume => resume.hasOwnProperty('mock')
+          ? [resume.mock, resume]
+          : [resume.name, resume]));
         examples.forEach(mockedResume => {
           resumesMap.set(mockedResume.mock, mockedResume);
         });
