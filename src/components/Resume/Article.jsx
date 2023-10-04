@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { InitialState } from '../../state/context';
 import ArticleForm from './Articles/ArticleForm';
 import ArticleView from './Articles/ArticleView';
+import { observeEdit } from '../../functions/EditableObserver';
 
 const Article = ({ rubric, viewer, editer }) => {
 
@@ -9,6 +10,12 @@ const Article = ({ rubric, viewer, editer }) => {
 
   const [original, setOriginal] = useState(resume[rubric]);
   const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    observeEdit(isEdit);
+
+    return () => observeEdit(isEdit);
+  }, [isEdit]);
 
   const handlers = () => {
     return {
