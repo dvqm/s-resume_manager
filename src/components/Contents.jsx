@@ -9,7 +9,9 @@ const ResumesList = () => {
   const { resume, resumes, resumesDispatch, chooseResume, accessList } = useContext(InitialState);
   const { ListStyled, ListBtn, ListBtnSelected } = contentsStyles;
 
-  const addMock = () => resumesDispatch({ t: 'RES_ADD_MOCK' });
+  const addMock = () => {
+    resumesDispatch({ t: 'RES_ADD_MOCK' });
+  }
   const deleteMock = () => resumesDispatch({ t: 'RES_DEL_MOCK' });
 
   return <>
@@ -21,23 +23,23 @@ const ResumesList = () => {
               resumes={resumes} accessList={accessList} />
             {resumes.map((item) => <React.Fragment key={item.name}>
               {resume.name === item.name ? (
-                <ListBtnSelected onClick={chooseResume}>
+                <ListBtnSelected onClick={() => chooseResume(item.name)}>
                   <ArticleOutlinedIcon />
                   <ListItemText>{item.name}</ListItemText>
                 </ListBtnSelected>
               ) : (
-                  <ListBtn onClick={chooseResume}>
-                    <ArticleOutlinedIcon />
-                    <ListItemText>{item.name}</ListItemText>
-                  </ListBtn>
-                )}
+                <ListBtn onClick={() => chooseResume(item.name)}>
+                  <ArticleOutlinedIcon />
+                  <ListItemText>{item.name}</ListItemText>
+                </ListBtn>
+              )}
             </React.Fragment>
             )}
           </>
         ) : (
           <>
             <MockBtns addMock={addMock} deleteMock={deleteMock}
-                resumes={resumes} accessList={accessList} />
+              resumes={resumes} accessList={accessList} />
             <ListItemText sx={{ textAlign: 'center' }}>
               No saved resumes
             </ListItemText>
