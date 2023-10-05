@@ -5,7 +5,7 @@ import SectionTitle from './Sections/SectionTitle';
 import SectionManage from './Sections/SectionManage';
 
 const Section = ({ rubric, editer, viewer }) => {
-  const { resume, titles, resumeDispatch } = useContext(InitialState);
+  const { resume, titles, resumeDispatch, setAnyEditMode} = useContext(InitialState);
 
   const [initial, setInitial] = useState(false);
 
@@ -24,6 +24,7 @@ const Section = ({ rubric, editer, viewer }) => {
           viewer={viewer} editer={editer}
           rubric={rubric}
           resumeDispatch={resumeDispatch}
+          setAnyEditMode={setAnyEditMode}
           titles={titles[rubric]}
           initial={initial}
         />)}

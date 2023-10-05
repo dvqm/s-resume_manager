@@ -1,52 +1,28 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { InitialState } from '../../state/context';
 import ArticleForm from './Articles/ArticleForm';
 import ArticleView from './Articles/ArticleView';
-import { observeEdit } from '../../functions/EditableObserver';
+import ArticleHandlers from '../../functions/ArticleHandlers';
 
 const Article = ({ rubric, viewer, editer }) => {
 
-  const { resume, resumeDispatch, titles } = useContext(InitialState);
+  const { resume, resumeDispatch, titles, setAnyEditMode } = useContext(InitialState);
 
   const [original, setOriginal] = useState(resume[rubric]);
   const [isEdit, setIsEdit] = useState(false);
 
+  const checkAnyEdit = useCallback((bool) => {
+    setAnyEditMode(bool);
+  }, [setAnyEditMode]);
+
   useEffect(() => {
-    observeEdit(isEdit);
+    checkAnyEdit(isEdit);
+    return () => checkAnyEdit(isEdit);
+  }, [isEdit, checkAnyEdit]);
 
-    return () => observeEdit(isEdit);
-  }, [isEdit]);
 
-  const handlers = () => {
-    return {
-      update(field, e) {
-        resumeDispatch({ t: 'ART_CHANGE', p: [rubric, { [field]: e.currentTarget.value }] });
-      },
-
-      edit() {
-        setOriginal(resume[rubric]);
-        setIsEdit(true);
-      },
-
-      save(e) {
-        e.preventDefault();
-        setIsEdit(false);
-      },
-
-      cancel(e) {
-        e.preventDefault();
-        resumeDispatch({ t: 'ART_UPD', p: [rubric, original] });
-        setIsEdit(false);
-      },
-
-      clear(e) {
-        e.preventDefault();
-        resumeDispatch({ t: 'ART_CLEAR', p: [rubric] });
-      },
-    };
-  };
-
-  const handle = handlers();
+  const handle = ArticleHandlers(rubric, setIsEdit,
+    resumeDispatch, resume, setOriginal, original);
 
   return <>
     {isEdit ? (
