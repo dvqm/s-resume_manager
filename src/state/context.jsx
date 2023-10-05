@@ -7,15 +7,17 @@ export const InitialState = createContext(template);
 
 const ContextProvider = ({ children }) => {
   const [resume, resumeDispatch] = useReducer(resumeReducer, template);
-  const [original, setOriginal] = useState(resume.name);
+  const [original, setOriginal] = useState(resume);
   const [resumes, resumesDispatch] = useReducer(resumesReducer, []);
-  const [current, setCurrent] = useState(true);
   const [list, setList] = useState(false);
+  const [anyEditMode, setAnyEditMode] = useState(false);
+
+
 
   const chooseResume = (resumeName) => {
-    setOriginal(resumeName);
     const chosenResume = resumes.filter(
       (item) => item.name === resumeName)[0];
+    setOriginal(chosenResume);
     resumeDispatch({ t: 'RES_UPD', p: chosenResume });
   }
 
@@ -29,7 +31,7 @@ const ContextProvider = ({ children }) => {
     else return list;
   }
 
-  return <InitialState.Provider value={{ titles, resume, resumes, resumeDispatch, resumesDispatch, chooseResume, accessList, accessOriginal }}>
+  return <InitialState.Provider value={{ titles, resume, resumes, resumeDispatch, resumesDispatch, chooseResume, accessList, accessOriginal, anyEditMode, setAnyEditMode }}>
     {children}
   </InitialState.Provider>
 }

@@ -1,4 +1,4 @@
-import { defaultValues } from './templates';
+import { defaultValues, template } from './templates';
 
 const resumeReducer = (s, a) => {
   const handlers = [
@@ -10,6 +10,10 @@ const resumeReducer = (s, a) => {
     {
       t: 'RES_NAME',
       handler: (s, p) => ({ ...s, name: p, })
+    },
+    {
+      t: 'RES_NEW',
+      handler: () => ({ ...template })
     },
 
     {

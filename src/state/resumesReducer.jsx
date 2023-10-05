@@ -12,7 +12,12 @@ const resumesReducer = (s, a) => {
 
     {
       t: 'RES_UPDATE',
-      handler: (s, p) => [...s.map((item) => item.name === p.original ? p.resume : item)]
+      handler: (s, p) => [...s.map((item) => item.name === p.originalName ? p.resume : item)]
+    },
+
+    {
+      t: 'RES_DEL',
+      handler: (s, p) => s.filter((item) => item.name !== p)
     },
 
     {
