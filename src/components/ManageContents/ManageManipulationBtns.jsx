@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import { IconButton } from "@mui/material";
 
-const ManipulationBtns = ({ handle, save }) => {
+const ManipulationBtns = ({ restorePrevious, newResume, deleteResume, cloneResume, save }) => {
   return <>
     {
       !save && (
@@ -12,7 +12,7 @@ const ManipulationBtns = ({ handle, save }) => {
           <IconButton
             title='Restore previous version or clear all if unsaved'
             color='primary'
-            onClick={handle.cancel}
+            onClick={restorePrevious}
           >
             <RestoreIcon />
           </IconButton>
@@ -21,7 +21,7 @@ const ManipulationBtns = ({ handle, save }) => {
             <IconButton
               title='Create new resume'
               color='primary'
-              onClick={handle.new}
+              onClick={newResume}
             >
               <NoteAddIcon />
             </IconButton>
@@ -29,7 +29,7 @@ const ManipulationBtns = ({ handle, save }) => {
             <IconButton
               title='Delete resume'
               color='primary'
-              onClick={handle.delete}
+              onClick={deleteResume}
             >
               <DeleteIcon />
             </IconButton>
@@ -37,7 +37,7 @@ const ManipulationBtns = ({ handle, save }) => {
             <IconButton
               title='Duplicate resume'
               color='primary'
-              onClick={handle.duplicate}
+              onClick={cloneResume}
             >
               <ControlPointDuplicateIcon />
             </IconButton>

@@ -1,18 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import SectionEdit from "./SectionEdit";
 import SectionView from "./SectionView";
-import { observeEdit } from '../../../functions/EditableObserver';
 
-const SectionManage = ({ id, article, rubric, resumeDispatch, viewer, editer, titles, initial }) => {
+const SectionManage = ({ id, article, rubric, resumeDispatch, viewer, editer, titles, initial, setAnyEditMode }) => {
   const [original, setOriginal] = useState();
   const [init, setInit] = useState(true);
   const [isEdit, setIsEdit] = useState(initial);
 
-  useEffect(() => {
-    observeEdit(isEdit);
+const checkAnyEdit = useCallback((bool) => {
+    setAnyEditMode(bool);
+  }, [setAnyEditMode]);
 
-    return () => observeEdit(isEdit);
-  }, [isEdit]);
+  useEffect(() => {
+    checkAnyEdit(isEdit);
+    return () => checkAnyEdit(isEdit);
+  }, [isEdit, checkAnyEdit ]);
 
   const update = (field, e) => {
     let value;
