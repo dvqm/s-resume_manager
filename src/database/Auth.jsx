@@ -1,110 +1,47 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { auth, signInWithGoogle, logout, getData } from './firebase';
 import { authStyles } from './../mainTheme/localStyles.js';
+import Dashboard from './Dashboard';
+import { InitialState } from '../state/context';
 
-class Auth extends React.Component {
-  constructor(props) {
-    super(props);
+const Auth = (props) => {
+  const { resumesDispatch} = useContext(InitialState);
+  const [state, setState] = useState({
+    email: '',
+    password: '',
+    user: null,
+    loading: true,
+    error: null,
+  });
 
-    this.state = {
-      email: '',
-      password: '',
-      user: null,
-      loading: true,
-      error: null,
-    };
 
-    this.signIn = this.signIn.bind(this);
-  }
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => setState({ ...state, user }));
+  }, [state])
 
-  setToState = (...params) => {
-    let i = 0;
-
-    const recursiveSetToState = () => {
-      if (i >= params.length) return;
-
-      const key = params[i];
-
-      const value = params[i + 1];
-
-      i += 2;
-
-      this.setState({ ...this.state, [key]: value }, () => {
-        recursiveSetToState();
-      });
-    };
-
-    recursiveSetToState();
-  };
-
-  async signIn() {
+  const signIn = async () => {
     await signInWithGoogle();
 
     const resumes = await getData();
 
-    if (this.state.user) this.props.helper.setState('resumes', resumes);
+    if (state.user) resumesDispatch({ t: 'RES_LOAD', p: resumes });
   }
 
-  componentDidMount() {
-    auth.onAuthStateChanged((user) => this.setToState('user', user));
-  }
+  const { LoginBtn } = authStyles;
 
-  render = () => {
-    const { LoginBtn } = authStyles;
-
-    return (
-      <>
-        {this.state.user ? (
-          <Dashboard
-            state={this.state}
-            history={this.props.history}
-            setToState={this.setToState}
-          />
-        ) : (
-          <LoginBtn variant='contained' size='small' onClick={this.signIn}>
-            Connect with Google
-          </LoginBtn>
-        )}
-      </>
-    );
-  };
-}
-
-class Dashboard extends React.Component {
-  logout = () => {
-    logout();
-
-    this.props.setToState('user', null);
-  };
-
-  render() {
-    const { photoURL, displayName, email } = this.props.state.user;
-
-    const { Container, Avatar, UserInfo, UserName, UserEmail, LogoutBtn } =
-      authStyles;
-
-    return (
-      <>
-        {this.props.state.user !== null && (
-          <Container>
-            <UserInfo>
-              <Avatar alt='User' src={photoURL} />
-              <UserName variant='subtitle1'>{displayName}</UserName>
-            </UserInfo>
-            <UserEmail variant='body1'>{email}</UserEmail>
-            <LogoutBtn
-              variant='outlined'
-              color='primary'
-              size='small'
-              onClick={this.logout}
-            >
-              Logout
-            </LogoutBtn>
-          </Container>
-        )}
-      </>
-    );
-  }
+  return <>
+    {state.user ? (
+      <Dashboard
+        state={state}
+        history={props.history}
+        setState={setState}
+      />
+    ) : (
+      <LoginBtn variant='contained' size='small' onClick={signIn}>
+        Connect with Google
+      </LoginBtn>
+    )}
+  </>
 }
 
 export default Auth;
