@@ -105,8 +105,9 @@ export const genericStyles = {
     bs.flex.items.center,
     bs.flex.row.wrap,
     {
-      justifyContent: 'flex-start',
-      margin: '5px 0',
+      justifyContent: 'flex-between',
+      gap: 12,
+      margin: '0.5rem 2rem',
       '&>*': {
         margin: '0 5px',
       },
@@ -115,15 +116,24 @@ export const genericStyles = {
 };
 
 export const resumeStyled = {
-  ResumeLayout: styled(Grid)(bs.flex.items.stretch),
+  ResumeLayout: styled(Grid)(() => [bs.flex.items.stretch, {
+    background: 'linear-gradient(to right, red 0%, brown 30%, black 120%)',
+    justifyContent: 'space-between',
+    minHeight: '100vh',
+    padding: '3.5rem',
+  }]),
 
-  ResumeStyled: styled(Grid)(() => [bs.flex.column.nowrap, { paddingRight: 50 }]),
+  ResumeStyled: styled(Grid)(() => [bs.flex.column.nowrap, {
+    padding: '4rem',
+    background: 'white',
+    minWidth: '20rem',
+    boxShadow: '4px 4px 8px rgba(0, 0, 0, 0.2)',
+  }]),
 
   SidePanelGrid: styled(Grid)(({ theme }) => [
     bs.flex.column.nowrap,
     {
-      backgroundImage: theme.palette.background.spBgGradient,
-      padding: 15,
+      gap: 15,
     },
   ]),
 };
@@ -222,7 +232,7 @@ export const pdfStyles = {
   BoxStyled: styled(Box)(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
       position: 'fixed',
-      top: 10,
+      top: '0.7rem',
       width: '90%',
       left: '20%',
       transform: 'translateX(-20%)',
@@ -292,7 +302,7 @@ export const aboutStyles = {
   Photo: styled(Avatar)(({ theme }) => ({
     width: 150,
     height: 150,
-    marginBottom: 30,
+    marginBottom: '2rem',
     [theme.breakpoints.down('sm')]: {
       margin: '20px auto',
     },
@@ -348,9 +358,9 @@ export const aboutStyles = {
     },
   ]),
 
-  ViewWrap: styled(Stack)(() => [bs.flex.row.nowrap,
+  ViewWrap: styled(Stack)(() => [bs.flex.row.wrap,
   {
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
     columnGap: 40,
   }]),
