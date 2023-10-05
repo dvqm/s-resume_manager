@@ -5,22 +5,19 @@ import { PdfResume } from '../components/PdfLayout/PdfMarkup';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import { InitialState } from '../state/context.jsx';
-import { checkEdit, observeEdit } from '../functions/EditableObserver.js';
 import SaveProcess from './ManageContents/ManageSaveProcess.jsx';
 import ManipulationBtns from './ManageContents/ManageManipulationBtns.jsx';
+import ManageHandlers from '../functions/ManageHandlers.js';
 
 const Manage = () => {
-  const { resume, resumeDispatch, resumes, resumesDispatch, accessOriginal } = useContext(InitialState)
+  const { resume, resumeDispatch, resumes, resumesDispatch, accessOriginal, anyEditMode } = useContext(InitialState)
 
   const [save, setSave] = useState(false);
-  const [editMode, setEditMode] = useState(checkEdit());
 
-  useEffect(() => {
-    setEditMode(checkEdit());
-  }, []);
 
   const { ManageCvBox, IconButtonStyled, PDFDownloadLinkStyled } = manageCvStyles;
 
+  const handle = ManageHandlers(resume, resumes, resumeDispatch, resumesDispatch, accessOriginal);
 
   return (
     <ManageCvBox>
@@ -50,9 +47,15 @@ const Manage = () => {
 
       <SaveProcess resume={resume} resumes={resumes} save={save}
         setSave={setSave} accessOriginal={accessOriginal}
-        resumeDispatch={resumeDispatch} editMode={editMode}
+        resumeDispatch={resumeDispatch} anyEditMode={anyEditMode}
         resumesDispatch={resumesDispatch} />
-      {/* <ManipulationBtns save={save} /> */}
+      <ManipulationBtns
+        restorePrevious={handle.restore}
+        newResume={handle.new}
+        deleteResume={handle.delete}
+        cloneResume={handle.clone}
+        save={save}
+      />
     </ManageCvBox >
   );
 }
