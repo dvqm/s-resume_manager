@@ -58,7 +58,7 @@ const Resume = () => {
   const { ResumeStyled } = resumeStyled;
 
   return (
-    <ResumeStyled item xs={12} md={8} order={{ xs: 2, md: 1 }}>
+    <ResumeStyled item xs={12} md={6} order={{ xs: 2, md: 1 }}>
       {components.map((item, i) => {
         return <item.component
           key={i}
