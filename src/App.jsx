@@ -1,37 +1,51 @@
-import { ThemeProvider } from "@mui/material";
-import mainTheme from "./mainTheme/globalTheme";
-import { resumeStyled } from "./mainTheme/localStyles";
-import Resume from "./components/Resume";
-import ResumeList from "./components/Contents";
-import { useContext, useEffect } from "react";
-import { InitialState } from "./state/context";
-import Manage from "./components/Manage";
+import { ThemeProvider } from '@mui/material';
+import mainTheme from './mainTheme/globalTheme';
+import { resumeStyled } from './mainTheme/localStyles';
+import './mainTheme/global.css';
+import Resume from './components/Resume';
+import ResumeList from './components/Contents';
+import { useContext, useEffect } from 'react';
+import { InitialState } from './state/context';
+import Manage from './components/Manage';
+import Auth from './database/Auth';
+import PdfResumeViewer from './components/PdfLayout/PdfResumeView';
 
 const App = () => {
   const { ResumeLayout, SidePanelGrid } = resumeStyled;
-  const { accessList } = useContext(InitialState);
-
+  const { resume, accessList, accessPdf, accessManualPdf } = useContext(InitialState);
+                               
   useEffect(() => {
+    const breakpoint = mainTheme.breakpoints.values.lg;
     const setScreen = () => {
-      const mdBreakpoint = mainTheme.breakpoints.values.md;
-      if (window.innerWidth < mdBreakpoint) accessList(false);
-      else accessList(true);
+      if (window.innerWidth > breakpoint) {
+        accessList(true);
+        accessPdf(true);
+      }
+      if (window.innerWidth < breakpoint) {
+        accessList(false);
+        accessPdf(false);
+      }
     };
     setScreen();
 
-    window.addEventListener("resize", setScreen);
+    window.addEventListener('resize', setScreen);
     return () => {
-      window.removeEventListener("resize", setScreen);
+      window.removeEventListener('resize', setScreen);
     };
-  }, [accessList]);
+  }, [accessList, accessPdf]);
 
   return (
     <ThemeProvider theme={mainTheme}>
-      <ResumeLayout container spacing={4}>
+      <ResumeLayout container>
         <Resume />
-        <SidePanelGrid item xs={12} md={4} order={{ xs: 1, md: 2 }}>
+        <SidePanelGrid item xs={12} lg={5} order={{ xs: 1, lg: 2 }}>
+          <Auth />
+          <Manage />
           <ResumeList />
-            <Manage />
+          <PdfResumeViewer
+            resume={resume}
+            accessPdf={accessPdf}
+            accessManualPdf={accessManualPdf} />
         </SidePanelGrid>
       </ResumeLayout>
     </ThemeProvider>
