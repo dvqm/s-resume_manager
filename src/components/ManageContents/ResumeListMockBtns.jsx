@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, ListItem, IconButton } from '@mui/material';
+import { Button, ListItem } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { contentsStyles } from '../../mainTheme/localStyles';
 
-const MockBtns = ({ addMock, deleteMock, resumes, accessList }) => {
-  const { BoxStyled } = contentsStyles;
+const MockBtns = ({ addMock, deleteMock, resumes, accessManualList }) => {
+  const { BoxStyled, IconButtonStyled } = contentsStyles;
   const styles = {
     btn: {
       border: 'none',
@@ -45,11 +45,9 @@ const MockBtns = ({ addMock, deleteMock, resumes, accessList }) => {
             Load Demo
           </Button>
         )}
-        {!accessList() &&
-          <IconButton /*onClick={}*/>
-            <CloseOutlinedIcon />
-          </IconButton>
-        }
+        <IconButtonStyled onClick={() => accessManualList(prev => !prev)}>
+          <CloseOutlinedIcon />
+        </IconButtonStyled>
       </ListItem>
     </BoxStyled>
   );
