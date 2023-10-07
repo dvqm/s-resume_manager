@@ -43,7 +43,9 @@ export const s = StyleSheet.create({
   viewer: {
     marginTop: 30,
     width: '100%',
-    height: '180mm',
+    height: '75vh',
+    borderRadius: '15px',
+    boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.2)',
   },
   photo: {
     width: '20%',
@@ -58,7 +60,7 @@ export const s = StyleSheet.create({
   title2: {
     fontSize: 14,
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: 20,
   },
   labels: {
     display: 'flex',
@@ -67,7 +69,7 @@ export const s = StyleSheet.create({
     alignContent: 'flex-start',
     alignItems: 'flex-start',
     flexWrap: 'wrap',
-    gap: '5px 20px',
+    gap: '0 20px',
   },
   dates: {
     display: 'flex',
