@@ -56,11 +56,11 @@ const bs = {
   text: {
     margin: {
       bottom: {
-        marginBottom: '15px',
+        marginBottom: '1rem',
       },
 
       vh: {
-        margin: '10px 40px',
+        margin: '0.625rem 2.5rem',
       },
 
       v: {
@@ -88,7 +88,7 @@ const bs = {
 
 export const genericStyles = {
   ArticleStyled: styled('article')({
-    margin: '10px 0',
+    margin: '0.625rem 0',
   }),
 
   SectionStyled: styled('section')({
@@ -102,115 +102,136 @@ export const genericStyles = {
   }),
 
   StackRow: styled(Stack)(() => [
-    bs.flex.items.center,
+    bs.flex.items.stretch,
     bs.flex.row.wrap,
     {
-      justifyContent: 'flex-between',
+      justifyContent: 'space-between',
       gap: 12,
-      margin: '0.5rem 2rem',
       '&>*': {
-        margin: '0 5px',
+        margin: 0,
+        marginTop: '1.5rem',
       },
     },
   ]),
 };
 
 export const resumeStyled = {
-  ResumeLayout: styled(Grid)(() => [bs.flex.items.stretch, {
-    background: 'linear-gradient(to right, red 0%, brown 30%, black 120%)',
+  ResumeLayout: styled(Grid)(({ theme }) => [bs.flex.items.stretch, {
+    background: theme.palette.background.spBgGradient,
     justifyContent: 'space-between',
     minHeight: '100vh',
     padding: '3.5rem',
+    [theme.breakpoints.down('lg')]: {
+      alignContent: 'flex-start',
+      gap: 80,
+    },
+    [theme.breakpoints.down('sm')]: {
+      padding: 8,
+      gap: '2rem',
+      alignContent: 'flex-start',
+    },
   }]),
 
-  ResumeStyled: styled(Grid)(() => [bs.flex.column.nowrap, {
+  ResumeStyled: styled(Grid)(({ theme }) => [bs.flex.column.nowrap, {
     padding: '4rem',
     background: 'white',
-    minWidth: '20rem',
-    boxShadow: '4px 4px 8px rgba(0, 0, 0, 0.2)',
+    boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.2)',
+    borderRadius: '1rem',
+    [theme.breakpoints.down('sm')]: {
+      width: '95%',
+      padding: '0.9rem',
+    },
   }]),
 
-  SidePanelGrid: styled(Grid)(({ theme }) => [
+  SidePanelGrid: styled(Grid)(() => [
     bs.flex.column.nowrap,
-    {
-      gap: 15,
-    },
   ]),
 };
 
 export const authStyles = {
   Container: styled(Box)(({ theme }) => [
-    bs.flex.column.nowrap,
+    bs.flex.row.nowrap,
     {
-      padding: '20px',
-      borderRadius: '4px',
+      background: theme.palette.background.tertiary,
+      padding: '1.25rem',
+      borderRadius: '1rem',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      alignContent: 'center',
       '& > *': {
         alignSelf: 'flex-end',
       },
     },
   ]),
 
-  UserInfo: styled('div')(bs.flex.center),
+  UserInfo: styled('div')(() => [bs.flex.column.nowrap, {
+    alignItems: 'center',
+  }]),
 
   Avatar: styled(Avatar)({
-    width: 40,
-    height: 40,
+    width: 100,
+    height: 100,
     marginRight: 5,
   }),
 
   UserName: styled(Typography)({
     fontWeight: 'bold',
+    fontSize: '1.5rem',
   }),
 
-  UserEmail: styled(Typography)({}),
+  UserEmail: styled(Typography)({
+    fontSize: '1.5rem',
+  }),
 
-  LoginBtn: styled(Button)(({ theme }) => ({
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.light,
-    alignSelf: 'flex-end',
-    width: 230,
-    '&:hover': {
-      backgroundColor: theme.palette.primary.dark,
-    },
-  })),
+  SignBtn: styled(Button)(({ theme }) => [
+    bs.flex.row.nowrap,
+    {
+      backgroundColor: theme.palette.background.tertiary,
+      color: 'blue',
+      padding: '1rem 1.5rem',
+      borderRadius: '0.4rem',
+      alignSelf: 'center',
+      gap: 30,
+      '&:hover': {
+        backgroundColor: theme.palette.primary.dark,
+      },
+    }]),
 
-  LogoutBtn: styled(Button)(({ theme }) => ({
-    marginTop: 5,
-    color: 'black',
-    border: 'none',
-    maxWidth: 100,
-    fontSize: '0.875rem',
-    '&:hover': {
-      border: 'none',
-      outline: `1px solid ${theme.palette.primary.main}`,
-    },
-  })),
 };
 
 export const contentsStyles = {
-  BoxStyled: styled(Box)(({ theme }) => ({
-    [theme.breakpoints.down('md')]: {
-      position: 'fixed',
-      top: 80,
-      left: '50%',
-      transform: 'translateX(-50%)',
-    },
-  })),
+  BoxStyled: styled(Box)(() => [
+    bs.flex.row.nowrap,
+    {
+      margin: '0 1.5rem 0.5rem 1.5rem',
+      justifyContent: 'space-between',
+    }
+  ]),
 
   ListStyled: styled(List)(({ theme }) => [
     bs.flex.column.nowrap,
     bs.flex.center,
     {
       backgroundColor: theme.palette.background.tertiary,
-      border: '1px lightgrey solid',
-      margin: '1%',
+      paddingTop: '1rem',
+      borderRadius: '1rem',
+      boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.2)',
+      paddingBottom: '1.5rem',
+      [theme.breakpoints.down('lg')]: {
+        position: 'fixed',
+        border: '2px darkgray solid',
+        top: '15%',
+        width: '83%',
+        left: '8.4%',
+        transform: 'translateX(0%)',
+      },
     },
   ]),
 
   ListBtn: styled(ListItemButton)(({ theme }) => [
     bs.flex.center,
     {
-      margin: '15px 20px 0',
+      margin: '1rem 1.25rem 0',
       '&:hover': {
         backgroundColor: theme.palette.primary.main,
       },
@@ -220,46 +241,62 @@ export const contentsStyles = {
     },
   ]),
 
-  ListBtnSelected: styled(ListItemButton)(({ theme }) => [
+  ListBtnSelected: styled(ListItemButton)(() => [
     bs.flex.center,
     {
-      margin: '0px 10px 0',
+      margin: '0 0.625rem 0',
     },
   ]),
-};
 
-export const pdfStyles = {
-  BoxStyled: styled(Box)(({ theme }) => ({
-    [theme.breakpoints.down('md')]: {
-      position: 'fixed',
-      top: '0.7rem',
-      width: '90%',
-      left: '20%',
-      transform: 'translateX(-20%)',
-    },
-  })),
   IconButtonStyled: styled(IconButton)(({ theme }) => ({
     position: 'absolute',
     right: -10,
     top: -10,
 
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
+      display: 'none',
+    }
+  })),
+};
+
+export const pdfStyles = {
+  BoxStyled: styled(Box)(({ theme }) => ({
+    [theme.breakpoints.down('lg')]: {
+      position: 'fixed',
+      width: '100%',
+      left: '0%',
+      top: '6rem',
+    },
+  })),
+
+  IconButtonStyled: styled(IconButton)(({ theme }) => ({
+    position: 'absolute',
+    right: 20,
+    top: 80,
+
+    [theme.breakpoints.up('lg')]: {
       display: 'none',
     }
 
-  }))
+  })),
 };
 
 export const manageCvStyles = {
-  ManageCvBox: styled(Box)(bs.flex.row.nowrap),
+  ManageCvBox: styled(Box)(() => [bs.flex.row.nowrap, {
+    marginTop: '2rem',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '3rem',
+  }]),
   IconButtonStyled: styled(IconButton)(({ theme }) => ({
-    [theme.breakpoints.up('md')]: {
+    margin: '1rem 0',
+    [theme.breakpoints.up('lg')]: {
       display: 'none',
     },
   })),
 
   PDFDownloadLinkStyled: styled(PDFDownloadLink)(({ theme }) => ({
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       display: 'none',
     },
   })),
@@ -270,7 +307,7 @@ export const aboutStyles = {
   EditCredentials: styled(FormControl)(bs.flex.column.nowrap),
 
   EditInfo: styled(FormControl)(({ theme }) => ({
-    [theme.breakpoints.up('md')]: [
+    [theme.breakpoints.up('lg')]: [
       bs.flex.row.wrap,
       {
         justifyContent: 'flex-start',
@@ -286,15 +323,15 @@ export const aboutStyles = {
   })),
 
   EditAvatar: styled(FormControl)(({ theme }) => ({
-    [theme.breakpoints.down('md')]: {
-      margin: '40px auto',
+    [theme.breakpoints.down('lg')]: {
+      margin: '2.5rem auto',
     },
 
-    [theme.breakpoints.up('md')]: [
+    [theme.breakpoints.up('lg')]: [
       bs.flex.column.nowrap,
       {
         position: 'relative',
-        margin: '0 30px',
+        margin: '0 1.875rem',
       },
     ],
   })),
@@ -326,7 +363,7 @@ export const aboutStyles = {
       justifyContent: 'space-between',
 
       '&>*:nth-of-type(2)': { marginLeft: 10, marginRight: 10 },
-      [theme.breakpoints.down('md')]: [
+      [theme.breakpoints.down('lg')]: [
         bs.flex.column.wrap,
         {
           '&>*:nth-of-type(2)': { marginLeft: 0, marginRight: 0 },
@@ -335,7 +372,7 @@ export const aboutStyles = {
     },
   ]),
 
-  AddrInput: styled(TextField)(({ theme }) => [
+  AddrInput: styled(TextField)(() => [
     bs.text.margin.bottom,
     {
       flex: `1 0 auto`,
@@ -347,14 +384,14 @@ export const aboutStyles = {
     {
       justifyContent: 'space-between',
 
-      [theme.breakpoints.down('md')]: bs.flex.column.wrap,
+      [theme.breakpoints.down('lg')]: bs.flex.column.wrap,
     },
   ]),
 
-  ContactInput: styled(TextField)(({ theme }) => [
+  ContactInput: styled(TextField)(() => [
     bs.text.margin.bottom,
     {
-      flexBasis: `calc(50% - 10px)`,
+      width: '100%',
     },
   ]),
 
@@ -366,24 +403,25 @@ export const aboutStyles = {
   }]),
 
   ViewMainInfo: styled(Stack)(({ theme }) => ({
-    justifyContent: 'flex-start',
-    columnGap: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    columnGap: 50,
 
-    [theme.breakpoints.up('md')]: [bs.flex.row.wrap, {
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-    }]
+    [theme.breakpoints.up('lg')]: bs.flex.row.wrap
   })),
 
   ViewTitle: styled(Stack)(({ theme }) => ({
     '&>*:last-of-type': { marginLeft: 20 },
-    [theme.breakpoints.up('md')]: bs.flex.column.wrap,
+    [theme.breakpoints.up('lg')]: bs.flex.column.wrap
   })),
 
   ViewAddress: styled('address')(({ theme }) => ({
     fontSize: '1.5em',
     marginLeft: 20,
-    [theme.breakpoints.up('md')]: bs.flex.row.wrap,
+    [theme.breakpoints.up('lg')]: bs.flex.row.wrap,
+    [theme.breakpoints.down('lg')]: {
+      fontSize: '1rem',
+    },
   })),
 
   ViewContacts: styled(Stack)(({ theme }) => ([
@@ -391,6 +429,11 @@ export const aboutStyles = {
     {
       fontSize: '1.5em',
       marginLeft: 20,
+    },
+    {
+      [theme.breakpoints.down('lg')]: {
+        fontSize: '1rem',
+      },
     },
   ])),
 

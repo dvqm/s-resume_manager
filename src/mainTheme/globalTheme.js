@@ -1,10 +1,10 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
-const mainTheme = createTheme({
+let mainTheme = createTheme({
   spacing: 4,
   palette: {
     primary: {
-      main: '#3447F0',
+      main: '#0000FF',
     },
     secondary: {
       main: '#0051FF',
@@ -14,27 +14,30 @@ const mainTheme = createTheme({
       secondary: '#FF0000',
       tertiary: '#fff',
       spBgGradient:
-        'linear-gradient(225deg, rgba(52,71,240,0.6) 0%, rgba(255,247,0,0.6) 100%)',
+        'linear-gradient(81deg, #7B3EFF 17.17%, #A666FF 43.85%, #FC5CFF 72.24%, #FFDB00 99.78%)',
     },
   },
   typography: {
     h2: {
-      fontSize: '2rem',
+      fontSize: '1.3rem',
     },
 
     h3: {
-      fontSize: '1.7rem',
+      fontSize: '1.2rem',
     },
 
     h4: {
-      fontSize: '1.4rem',
+      fontSize: '1rem',
+    },
+    subtitle1: {
+      fontWeight: 'bold',
     },
   },
   components: {
     MuiTextField: {
       styleOverrides: {
         root: {
-          margin: '10px 0',
+          margin: '0.6rem 0',
         },
       },
     },
@@ -66,5 +69,7 @@ const mainTheme = createTheme({
     },
   },
 });
+
+mainTheme = responsiveFontSizes(mainTheme);
 
 export default mainTheme;
