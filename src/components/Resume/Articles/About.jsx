@@ -52,14 +52,15 @@ export const ViewAbout = ({ resume }) => {
           {resume.middle && `${resume.middle} `}
           {resume.last}
         </Typography>
-        <Typography variant='h5'>{resume.position}</Typography>
-      </ViewTitle>
 
-      <ViewAddress>
-        {resume.city && `${resume.city}, `}
-        {resume.state && `${resume.state}, `}
-        {resume.country}
-      </ViewAddress>
+        <Typography variant='h5'>{resume.position}</Typography>
+
+        <ViewAddress>
+          {resume.city && `${resume.city}, `}
+          {resume.state && `${resume.state}, `}
+          {resume.country}
+        </ViewAddress>
+      </ViewTitle>
 
       <ViewContacts>
         <Link href={`tel:${resume.tel}`}>

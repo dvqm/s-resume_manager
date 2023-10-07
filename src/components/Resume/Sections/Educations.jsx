@@ -93,9 +93,9 @@ export const ViewEducations = ({ article, titles }) => {
   return (
     <>
       <Typography>
-        <Typography component='span'>{article.degree}</Typography>
-        <Typography component='span'> &#183; </Typography>
-        <Typography component='span'>
+        <Typography variant='subtitle1' component='span'>{article.degree}</Typography>
+        <Typography variant='subtitle1' component='span'> &#183; </Typography>
+        <Typography variant='subtitle1' component='span'>
           {article.studyField}
         </Typography>
       </Typography>
@@ -108,7 +108,7 @@ export const ViewEducations = ({ article, titles }) => {
       </Typography>
       {article.grade && (
         <Typography>
-          <Typography component='span'>{titles.grade}</Typography>
+          <Typography variant='subtitle1' component='span'>{titles.grade}</Typography>
           <Typography component='span'>{article.grade}</Typography>
         </Typography>
       )}

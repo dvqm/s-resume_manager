@@ -5,7 +5,7 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 
 const EditName = ({ updateCurrent, saveAsNew, cancelSave, name, updateName, original }) => {
   return (
-    <div>
+    <>
       <TextField
         color='primary'
         size='small'
@@ -40,7 +40,7 @@ const EditName = ({ updateCurrent, saveAsNew, cancelSave, name, updateName, orig
       >
         <CancelIcon />
       </IconButton>
-    </div>
+    </>
   );
 }
 
