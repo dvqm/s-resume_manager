@@ -3,6 +3,11 @@ import { examples } from '../state/templates';
 const resumesReducer = (s, a) => {
   const handlers = [
     {
+      t: 'RES_LOAD',
+      handler: (_, p) => [...p],
+    },
+
+    {
       t: 'RES_SAVE',
       handler: (s, p) => {
         const index = s.findIndex((item) => item.name === p.name)
