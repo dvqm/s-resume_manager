@@ -1,7 +1,8 @@
 import { template, titles } from './templates';
-import { createContext, useReducer, useState } from 'react';
+import { createContext, useEffect, useReducer, useState } from 'react';
 import resumeReducer from './resumeReducer';
 import resumesReducer from './resumesReducer';
+import { saveData, getData } from '../database/firebase';
 
 export const InitialState = createContext(template);
 
@@ -10,9 +11,25 @@ const ContextProvider = ({ children }) => {
   const [original, setOriginal] = useState(resume);
   const [resumes, resumesDispatch] = useReducer(resumesReducer, []);
   const [list, setList] = useState(false);
+  const [manualList, setManualList] = useState(false);
   const [anyEditMode, setAnyEditMode] = useState(false);
+  const [pdf, setPdf] = useState(false);
+  const [manualPdf, setManualPdf] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!isInitialized) {
+        const initialResumes = await getData();
+        resumesDispatch({ t: 'RES_LOAD', p: initialResumes });
+        setIsInitialized(true);
+      } else {
+        saveData(resumes);
+      }
+    };
 
+    fetchData();
+  }, [resumes, isInitialized]);
 
   const chooseResume = (resumeName) => {
     const chosenResume = resumes.filter(
@@ -26,12 +43,36 @@ const ContextProvider = ({ children }) => {
     else return original;
   }
 
-  const accessList = (value) => {
-    if (value) setList(value)
+  const accessList = (value = null) => {
+    if (value !== null) setList(value);
     else return list;
   }
 
-  return <InitialState.Provider value={{ titles, resume, resumes, resumeDispatch, resumesDispatch, chooseResume, accessList, accessOriginal, anyEditMode, setAnyEditMode }}>
+  const accessManualList = (value = null) => {
+    if (value !== null) setManualList(value);
+    else return manualList;
+  }
+
+  const accessPdf = (value = null) => {
+    if (value !== null) setPdf(value);
+    else return pdf;
+  }
+
+  const accessManualPdf = (value = null) => {
+    if (value !== null) setManualPdf(value);
+    else return manualPdf;
+  }
+
+
+  return <InitialState.Provider value={{
+    titles, chooseResume,
+    resume, resumes,
+    resumeDispatch, resumesDispatch,
+    accessList, accessManualList,
+    accessPdf, accessManualPdf,
+    accessOriginal,
+    anyEditMode, setAnyEditMode,
+  }}>
     {children}
   </InitialState.Provider>
 }
