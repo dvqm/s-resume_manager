@@ -106,7 +106,7 @@ export const genericStyles = {
     bs.flex.row.wrap,
     {
       justifyContent: 'space-between',
-      gap: 12,
+      gap: 40,
       '&>*': {
         margin: 0,
         marginTop: '1.5rem',
@@ -150,7 +150,7 @@ export const resumeStyled = {
 
 export const authStyles = {
   Container: styled(Box)(({ theme }) => [
-    bs.flex.row.nowrap,
+    bs.flex.row.wrap,
     {
       background: theme.palette.background.tertiary,
       padding: '1.25rem',
@@ -159,28 +159,28 @@ export const authStyles = {
       alignItems: 'center',
       alignContent: 'center',
       '& > *': {
-        alignSelf: 'flex-end',
+        alignSelf: 'center',
       },
     },
   ]),
 
   UserInfo: styled('div')(() => [bs.flex.column.nowrap, {
-    alignItems: 'center',
+    justifyContent: 'flex-start',
   }]),
 
   Avatar: styled(Avatar)({
-    width: 100,
-    height: 100,
-    marginRight: 5,
+    width: '6vh',
+    height: '6vh',
+    margin: '1rem',
   }),
 
   UserName: styled(Typography)({
     fontWeight: 'bold',
-    fontSize: '1.5rem',
+    fontSize: '1.1rem',
   }),
 
   UserEmail: styled(Typography)({
-    fontSize: '1.5rem',
+    fontSize: '1.1rem',
   }),
 
   SignBtn: styled(Button)(({ theme }) => [
@@ -188,6 +188,7 @@ export const authStyles = {
     {
       backgroundColor: theme.palette.background.tertiary,
       color: 'blue',
+      minWidth: '9rem',
       padding: '1rem 1.5rem',
       borderRadius: '0.4rem',
       alignSelf: 'center',
@@ -283,7 +284,7 @@ export const pdfStyles = {
 
 export const manageCvStyles = {
   ManageCvBox: styled(Box)(() => [bs.flex.row.nowrap, {
-    marginTop: '2rem',
+    margin: '2rem 0',
     justifyContent: 'center',
     alignItems: 'center',
     height: '3rem',
@@ -402,13 +403,14 @@ export const aboutStyles = {
     columnGap: 40,
   }]),
 
-  ViewMainInfo: styled(Stack)(({ theme }) => ({
-    justifyContent: 'space-between',
+  ViewMainInfo: styled(Stack)(({ theme }) => [
+    {
+    justifyContent: 'space-around',
     alignItems: 'center',
-    columnGap: 50,
+    gap: 50,
 
     [theme.breakpoints.up('lg')]: bs.flex.row.wrap
-  })),
+  } ]),
 
   ViewTitle: styled(Stack)(({ theme }) => ({
     '&>*:last-of-type': { marginLeft: 20 },
@@ -416,7 +418,7 @@ export const aboutStyles = {
   })),
 
   ViewAddress: styled('address')(({ theme }) => ({
-    fontSize: '1.5em',
+    fontSize: '1.5rem',
     marginLeft: 20,
     [theme.breakpoints.up('lg')]: bs.flex.row.wrap,
     [theme.breakpoints.down('lg')]: {
@@ -427,7 +429,7 @@ export const aboutStyles = {
   ViewContacts: styled(Stack)(({ theme }) => ([
     bs.flex.column.nowrap,
     {
-      fontSize: '1.5em',
+      fontSize: '1.2rem',
       marginLeft: 20,
     },
     {

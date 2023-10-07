@@ -53,7 +53,7 @@ export const ViewAbout = ({ resume }) => {
           {resume.last}
         </Typography>
 
-        <Typography variant='h5'>{resume.position}</Typography>
+        <Typography variant='h3'>{resume.position}</Typography>
 
         <ViewAddress>
           {resume.city && `${resume.city}, `}

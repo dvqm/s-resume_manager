@@ -20,6 +20,11 @@ const Dashboard = ({ state, setState }) => {
   return <>
     {state.user !== null && (
       <Container>
+        <Avatar alt='User' src={photoURL} />
+        <UserInfo>
+          <UserName variant='subtitle1'>{displayName}</UserName>
+          <UserEmail variant='body1'>{email}</UserEmail>
+        </UserInfo>
         <SignBtn
           variant='outlined'
           color='primary'
@@ -29,11 +34,6 @@ const Dashboard = ({ state, setState }) => {
           <GoogleIcon />
           <span>Logout</span>
         </SignBtn>
-        <UserInfo>
-          <Avatar alt='User' src={photoURL} />
-          <UserName variant='subtitle1'>{displayName}</UserName>
-          <UserEmail variant='body1'>{email}</UserEmail>
-        </UserInfo>
       </Container>
     )}
   </>
