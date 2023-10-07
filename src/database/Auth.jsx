@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { auth, signInWithGoogle, logout, getData } from './firebase';
+import React, { useEffect, useState } from 'react';
+import { auth, signInWithGoogle } from './firebase';
 import { authStyles } from './../mainTheme/localStyles.js';
 import Dashboard from './Dashboard';
-import { InitialState } from '../state/context';
+import GoogleIcon from '@mui/icons-material/Google';
 
-const Auth = (props) => {
-  const { resumesDispatch} = useContext(InitialState);
+const Auth = () => {
   const [state, setState] = useState({
     email: '',
     password: '',
@@ -14,32 +13,35 @@ const Auth = (props) => {
     error: null,
   });
 
-
   useEffect(() => {
-    auth.onAuthStateChanged((user) => setState({ ...state, user }));
-  }, [state])
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (JSON.stringify(user) !== JSON.stringify(state.user)) {
+        setState({ ...state, user });
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [state, setState]);
 
   const signIn = async () => {
     await signInWithGoogle();
-
-    const resumes = await getData();
-
-    if (state.user) resumesDispatch({ t: 'RES_LOAD', p: resumes });
   }
 
-  const { LoginBtn } = authStyles;
+  const { SignBtn } = authStyles;
 
   return <>
     {state.user ? (
       <Dashboard
         state={state}
-        history={props.history}
         setState={setState}
       />
     ) : (
-      <LoginBtn variant='contained' size='small' onClick={signIn}>
-        Connect with Google
-      </LoginBtn>
+      <SignBtn variant='contained' size='small' onClick={signIn}>
+        <GoogleIcon />
+        <span> Sync with Google </span>
+      </SignBtn>
     )}
   </>
 }
