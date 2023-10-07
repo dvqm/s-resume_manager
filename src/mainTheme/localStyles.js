@@ -232,20 +232,21 @@ export const contentsStyles = {
   ListBtn: styled(ListItemButton)(({ theme }) => [
     bs.flex.center,
     {
-      margin: '1rem 1.25rem 0',
+      gap: 30,
       '&:hover': {
         backgroundColor: theme.palette.primary.main,
       },
-      '&>div>:last-child': {
-        marginLeft: 10,
-      },
+      // '&>div>:last-child': {
+      //   marginLeft: 10,
+      // },
     },
   ]),
 
   ListBtnSelected: styled(ListItemButton)(() => [
     bs.flex.center,
     {
-      margin: '0 0.625rem 0',
+      gap: 30,
+      backgroundColor: 'lightBlue',
     },
   ]),
 
@@ -405,12 +406,12 @@ export const aboutStyles = {
 
   ViewMainInfo: styled(Stack)(({ theme }) => [
     {
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    gap: 50,
+      justifyContent: 'space-around',
+      alignItems: 'center',
+      gap: 50,
 
-    [theme.breakpoints.up('lg')]: bs.flex.row.wrap
-  } ]),
+      [theme.breakpoints.up('lg')]: bs.flex.row.wrap
+    }]),
 
   ViewTitle: styled(Stack)(({ theme }) => ({
     '&>*:last-of-type': { marginLeft: 20 },
