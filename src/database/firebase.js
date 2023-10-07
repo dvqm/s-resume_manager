@@ -46,14 +46,17 @@ const signInWithGoogle = async () => {
       console.info('No data available');
     }
   } catch (error) {
-    alert(error.message);
-
     console.error('Error authenticating with Google:', error);
   }
 };
 
-const logout = () => {
-  signOut(auth);
+const logout = async () => {
+  try {
+    console.info('firebase.js - It works!');
+    await signOut(auth);
+  } catch (error) {
+    console.error("Logout failed: ", error);
+  }
 };
 
 const saveData = async (resumes) => {
@@ -61,7 +64,7 @@ const saveData = async (resumes) => {
 
   const localTimestamp = new Date().getTime();
 
-  const setLs = () =>
+  const setLocalStorageData = () =>
     localStorage.setItem(
       'data',
       JSON.stringify({
@@ -70,34 +73,37 @@ const saveData = async (resumes) => {
       }),
     );
 
-  if (!user) setLs();
+  if (!user) setLocalStorageData();
   else
     try {
-      setLs();
+      setLocalStorageData();
 
       await set(ref(db, `users/${user.uid}/data/`), { resumes, localTimestamp });
     } catch (error) {
-      alert(error.message);
-
       console.error('Error saving data to database:', error);
     }
 };
 
 const getData = async () => {
-  const getLs = () => JSON.parse(localStorage.getItem('data'));
+  const getLocalStorageData = () => JSON.parse(localStorage.getItem('data'));
 
-  const user = await auth.currentUser;
+  const user = auth.currentUser;
 
-  if (!user && getLs() !== null) return getLs().resumes;
-  else if (getLs() === null || getLs() === undefined) return [];
+  if (!user && getLocalStorageData() !== null)
+  return getLocalStorageData().resumes;
+
+  else if (getLocalStorageData() === null 
+    || getLocalStorageData() === undefined) return [];
   else
     try {
-      const ls = getLs();
+      const ls = getLocalStorageData();
 
       const snapshot = await get(child(ref(db), `users/${user.uid}/data/`));
       const snapshotData = snapshot.val();
 
-      if (snapshotData && (ls.resumes.length > 0 && snapshotData['resumes'] !== null && snapshotData['resumes'].length > 0)) {
+      if (snapshotData && (ls.resumes.length > 0 
+      && snapshotData['resumes'] !== null 
+      && snapshotData['resumes'].length > 0)) {
         const lsTimestamp = ls.localTimestamp;
 
         const snapshotTimestamp = snapshotData['localTimestamp'];
@@ -110,8 +116,6 @@ const getData = async () => {
       else if (ls.resumes.length > 0) return ls.resumes;
       else return [];
     } catch (error) {
-      alert(error.message);
-
       console.error('Something went wrong:', error);
     }
 };
