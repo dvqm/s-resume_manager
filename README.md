@@ -16,4 +16,4 @@ SPA for creating, and storing resumes. Synchronizing data with the cloud.
 * Firebase.
 * @react-pdf/renderer.
 
-[Github pages](https://ocnm.github.io/sb-cvapp/) 
+[Github pages](https://dvqm.github.io/sb-cvapp/) 
