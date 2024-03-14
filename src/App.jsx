@@ -13,7 +13,7 @@ import PdfResumeViewer from './components/PdfLayout/PdfResumeView';
 const App = () => {
   const { ResumeLayout, SidePanelGrid } = resumeStyled;
   const { resume, accessList, accessPdf, accessManualPdf } = useContext(InitialState);
-                               
+
   useEffect(() => {
     const breakpoint = mainTheme.breakpoints.values.lg;
     const setScreen = () => {
