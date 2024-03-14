@@ -16,7 +16,7 @@ const firebaseConfig = {
   storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+  // measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
@@ -33,10 +33,10 @@ const signInWithGoogle = async () => {
 
     const user = result.user;
 
-    const snapshot = await get(child(ref(db), `users/${user.uid}`));
+    const snapshot = await get(child(ref(db), `s-resume_builder/${user.uid}`));
 
     if (snapshot.exists()) {
-      await update(ref(db, `users/${user.uid}`), {
+      await update(ref(db, `s-resume_builder/${user.uid}`), {
         uid: user.uid,
         name: user.displayName,
         authProvider: 'google',
@@ -78,7 +78,7 @@ const saveData = async (resumes) => {
     try {
       setLocalStorageData();
 
-      await set(ref(db, `users/${user.uid}/data/`), { resumes, localTimestamp });
+      await set(ref(db, `s-resume_builder/${user.uid}/data/`), { resumes, localTimestamp });
     } catch (error) {
       console.error('Error saving data to database:', error);
     }
@@ -98,7 +98,7 @@ const getData = async () => {
     try {
       const ls = getLocalStorageData();
 
-      const snapshot = await get(child(ref(db), `users/${user.uid}/data/`));
+      const snapshot = await get(child(ref(db), `s-resume_builder/${user.uid}/data/`));
       const snapshotData = snapshot.val();
 
       if (snapshotData && (ls.resumes.length > 0 
