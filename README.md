@@ -1,4 +1,6 @@
-# Resume App.
+[Github pages](https://dvqm.github.io/s-resume_manager/) 
+
+# Resume Manager.
 
 SPA for creating, and storing resumes. Synchronizing data with the cloud.
 
@@ -16,4 +18,3 @@ SPA for creating, and storing resumes. Synchronizing data with the cloud.
 * Firebase.
 * @react-pdf/renderer.
 
-[Github pages](https://dvqm.github.io/sb-cvapp/) 
