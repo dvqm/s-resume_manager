@@ -1,7 +1,7 @@
 {
-  "name": "sb-cv-app",
+  "name": "s-resume_manager",
   "version": "0.1.0",
-  "homepage": "https://ocnm.github.io/sb-cvapp",
+  "homepage": "https://dvqm.github.io/s-resume_manager",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.1",
