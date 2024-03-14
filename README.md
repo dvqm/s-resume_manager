@@ -1,6 +1,5 @@
-[Github pages](https://dvqm.github.io/s-resume_manager/) 
-
 # Resume Manager.
+[Github pages](https://dvqm.github.io/s-resume_manager/) 
 
 SPA for creating, and storing resumes. Synchronizing data with the cloud.
 
