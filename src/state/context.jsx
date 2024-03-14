@@ -1,8 +1,8 @@
-import { template, titles } from './templates';
-import { createContext, useEffect, useReducer, useState } from 'react';
-import resumeReducer from './resumeReducer';
-import resumesReducer from './resumesReducer';
-import { saveData, getData } from '../database/firebase';
+import { template, titles } from "./templates";
+import { createContext, useEffect, useReducer, useState } from "react";
+import resumeReducer from "./resumeReducer";
+import resumesReducer from "./resumesReducer";
+import { saveData, getData, auth } from "../database/firebase";
 
 export const InitialState = createContext(template);
 
@@ -21,9 +21,9 @@ const ContextProvider = ({ children }) => {
     const fetchData = async () => {
       if (!isInitialized) {
         const initialResumes = await getData();
-        resumesDispatch({ t: 'RES_LOAD', p: initialResumes });
+        resumesDispatch({ t: "RES_LOAD", p: initialResumes });
         setIsInitialized(true);
-      } else {
+      } else if (resumes.length > 0) {
         saveData(resumes);
       }
     };
@@ -31,50 +31,71 @@ const ContextProvider = ({ children }) => {
     fetchData();
   }, [resumes, isInitialized]);
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const initialResumes = await getData();
+        resumesDispatch({ t: "RES_LOAD", p: initialResumes });
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   const chooseResume = (resumeName) => {
-    const chosenResume = resumes.filter(
-      (item) => item.name === resumeName)[0];
+    const chosenResume = resumes.filter((item) => item.name === resumeName)[0];
     setOriginal(chosenResume);
-    resumeDispatch({ t: 'RES_UPD', p: chosenResume });
-  }
+    resumeDispatch({ t: "RES_UPD", p: chosenResume });
+  };
 
   const accessOriginal = (value) => {
-    if (value) setOriginal(value)
+    if (value) setOriginal(value);
     else return original;
-  }
+  };
 
   const accessList = (value = null) => {
     if (value !== null) setList(value);
     else return list;
-  }
+  };
 
   const accessManualList = (value = null) => {
     if (value !== null) setManualList(value);
     else return manualList;
-  }
+  };
 
   const accessPdf = (value = null) => {
     if (value !== null) setPdf(value);
     else return pdf;
-  }
+  };
 
   const accessManualPdf = (value = null) => {
     if (value !== null) setManualPdf(value);
     else return manualPdf;
-  }
+  };
 
-
-  return <InitialState.Provider value={{
-    titles, chooseResume,
-    resume, resumes,
-    resumeDispatch, resumesDispatch,
-    accessList, accessManualList,
-    accessPdf, accessManualPdf,
-    accessOriginal,
-    anyEditMode, setAnyEditMode,
-  }}>
-    {children}
-  </InitialState.Provider>
-}
+  return (
+    <InitialState.Provider
+      value={{
+        titles,
+        chooseResume,
+        resume,
+        resumes,
+        resumeDispatch,
+        resumesDispatch,
+        accessList,
+        accessManualList,
+        accessPdf,
+        accessManualPdf,
+        accessOriginal,
+        anyEditMode,
+        setAnyEditMode,
+      }}
+    >
+      {children}
+    </InitialState.Provider>
+  );
+};
 
 export default ContextProvider;
