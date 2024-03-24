@@ -1,11 +1,11 @@
-import { StyleSheet } from '@react-pdf/renderer';
+import { StyleSheet } from "@react-pdf/renderer";
 
 export const s = StyleSheet.create({
   container: {
-    flexDirection: 'column',
+    flexDirection: "column",
     paddingHorizontal: 24,
     paddingVertical: 24,
-    width: '100%',
+    width: "100%",
     fontSize: 12,
   },
   section: {
@@ -15,17 +15,16 @@ export const s = StyleSheet.create({
     marginVertical: 6,
   },
   flexColumn: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
   },
   flexRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
     gap: 20,
-
   },
   heading: {
     fontSize: 18,
@@ -37,45 +36,44 @@ export const s = StyleSheet.create({
   },
   divider: {
     borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    borderBottomColor: "black",
     marginBottom: 8,
   },
   viewer: {
     marginTop: 30,
-    width: '100%',
-    height: '75vh',
-    borderRadius: '15px',
-    boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.2)',
+    width: "100%",
+    height: "75vh",
+    borderRadius: "15px",
+    boxShadow: "8px 8px 16px rgba(0, 0, 0, 0.2)",
   },
   photo: {
-    width: '20%',
-    borderRadius: '50%',
+    width: "20%",
+    borderRadius: "50%",
   },
   title1: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10,
   },
   title2: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 20,
   },
   labels: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'flex-start',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    gap: '0 20px',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "flex-start",
+    alignItems: "flex-start",
+    flexWrap: "wrap",
+    gap: "0 20px",
   },
   dates: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-end",
     gap: 5,
   },
 });
-
