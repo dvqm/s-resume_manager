@@ -1,5 +1,5 @@
-import Grid from '@mui/material/Grid';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import Grid from "@mui/material/Grid";
+import { PDFDownloadLink } from "@react-pdf/renderer";
 import {
   Avatar,
   Button,
@@ -12,43 +12,47 @@ import {
   List,
   ListItemButton,
   styled,
-} from '@mui/material';
+} from "@mui/material";
 
 // bs = base styles
 const bs = {
   flex: {
     column: {
       nowrap: {
-        display: 'flex',
-        flexFlow: 'column nowrap',
+        display: "flex",
+        flexFlow: "column nowrap",
       },
       wrap: {
-        display: 'flex',
-        flexFlow: 'column wrap',
+        display: "flex",
+        flexFlow: "column wrap",
       },
     },
     row: {
       nowrap: {
-        display: 'flex',
-        flexFlow: 'row nowrap',
+        display: "flex",
+        flexFlow: "row nowrap",
       },
       wrap: {
-        display: 'flex',
-        flexFlow: 'row wrap',
+        display: "flex",
+        flexFlow: "row wrap",
       },
     },
     center: {
-      display: 'flex',
-      justifyContent: 'center',
+      display: "flex",
+      justifyContent: "center",
     },
     items: {
       center: {
-        display: 'flex',
-        alignItems: 'center',
+        display: "flex",
+        alignItems: "center",
       },
       stretch: {
-        display: 'flex',
-        alignItems: 'stretch',
+        display: "flex",
+        alignItems: "stretch",
+      },
+      left: {
+        display: "flex",
+        alignItems: "flex-start",
       },
     },
   },
@@ -56,11 +60,11 @@ const bs = {
   text: {
     margin: {
       bottom: {
-        marginBottom: '1rem',
+        marginBottom: "1rem",
       },
 
       vh: {
-        margin: '0.625rem 2.5rem',
+        margin: "0.625rem 2.5rem",
       },
 
       v: {
@@ -78,74 +82,97 @@ const bs = {
       },
     },
     width: {
-      width: '100%',
+      width: "100%",
     },
     whiteSpace: {
-      whiteSpace: 'pre-wrap',
+      whiteSpace: "pre-wrap",
     },
   },
 };
 
 export const genericStyles = {
-  ArticleStyled: styled('article')({
-    margin: '0.625rem 0',
+  ArticleStyled: styled("article")({
+    marginTop: "1rem",
   }),
 
-  SectionStyled: styled('section')({
+  SectionStyled: styled("section")({
     marginTop: 20,
   }),
 
   PreBlock: styled(Typography)(bs.text.whiteSpace, bs.text.margin.pre),
 
   ManageBtnsWrapper: styled(FormControl)(bs.flex.row.nowrap, {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   }),
 
   StackRow: styled(Stack)(() => [
     bs.flex.items.stretch,
     bs.flex.row.wrap,
     {
-      justifyContent: 'space-between',
-      gap: 40,
-      '&>*': {
-        margin: 0,
-        marginTop: '1.5rem',
-      },
+      justifyContent: "space-between",
+    },
+  ]),
+
+  StackColumn: styled(Stack)(() => [
+    bs.flex.items.stretch,
+    bs.flex.column.wrap,
+    {
+      justifyContent: "space-between",
+    },
+  ]),
+
+  StackRowRight: styled(Stack)(() => [
+    bs.flex.row.wrap,
+    {
+      justifyContent: "flex-end",
+      gap: 15,
+    },
+  ]),
+
+  StackRowLeft: styled(Stack)(() => [
+    bs.flex.row.wrap,
+    {
+      justifyContent: "flex-start",
+      gap: 15,
     },
   ]),
 };
 
 export const resumeStyled = {
-  ResumeLayout: styled(Grid)(({ theme }) => [bs.flex.items.stretch, {
-    background: theme.palette.background.spBgGradient,
-    justifyContent: 'space-between',
-    minHeight: '100vh',
-    padding: '3.5rem',
-    [theme.breakpoints.down('lg')]: {
-      alignContent: 'flex-start',
-      gap: 80,
+  ResumeLayout: styled(Grid)(({ theme }) => [
+    bs.flex.items.stretch,
+    {
+      background: theme.palette.background.spBgGradient,
+      justifyContent: "space-between",
+      minHeight: "100vh",
+      padding: "3.5rem",
+      [theme.breakpoints.down("lg")]: {
+        alignContent: "flex-start",
+        gap: 80,
+      },
+      [theme.breakpoints.down("sm")]: {
+        padding: 8,
+        gap: "2rem",
+        alignContent: "flex-start",
+      },
     },
-    [theme.breakpoints.down('sm')]: {
-      padding: 8,
-      gap: '2rem',
-      alignContent: 'flex-start',
-    },
-  }]),
-
-  ResumeStyled: styled(Grid)(({ theme }) => [bs.flex.column.nowrap, {
-    padding: '4rem',
-    background: 'white',
-    boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.2)',
-    borderRadius: '1rem',
-    [theme.breakpoints.down('sm')]: {
-      width: '95%',
-      padding: '0.9rem',
-    },
-  }]),
-
-  SidePanelGrid: styled(Grid)(() => [
-    bs.flex.column.nowrap,
   ]),
+
+  ResumeStyled: styled(Grid)(({ theme }) => [
+    bs.flex.column.nowrap,
+    {
+      padding: "4rem",
+      background: "white",
+      boxShadow: "8px 8px 16px rgba(0, 0, 0, 0.2)",
+      borderRadius: "1rem",
+      [theme.breakpoints.down("sm")]: {
+        width: "95%",
+        padding: "0.9rem",
+      },
+    },
+  ]),
+
+  SidePanelGrid: styled(Grid)(() => [bs.flex.column.nowrap]),
 };
 
 export const authStyles = {
@@ -153,60 +180,63 @@ export const authStyles = {
     bs.flex.row.wrap,
     {
       background: theme.palette.background.tertiary,
-      padding: '1.25rem',
-      borderRadius: '1rem',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      alignContent: 'center',
-      '& > *': {
-        alignSelf: 'center',
+      padding: "1.25rem",
+      borderRadius: "1rem",
+      justifyContent: "space-between",
+      alignItems: "center",
+      alignContent: "center",
+      "& > *": {
+        alignSelf: "center",
       },
     },
   ]),
 
-  UserInfo: styled('div')(() => [bs.flex.column.nowrap, {
-    justifyContent: 'flex-start',
-  }]),
+  UserInfo: styled("div")(() => [
+    bs.flex.column.nowrap,
+    {
+      justifyContent: "flex-start",
+    },
+  ]),
 
   Avatar: styled(Avatar)({
-    width: '6vh',
-    height: '6vh',
-    margin: '1rem',
+    width: "6vh",
+    height: "6vh",
+    margin: "1rem",
   }),
 
   UserName: styled(Typography)({
-    fontWeight: 'bold',
-    fontSize: '1.1rem',
+    fontWeight: "bold",
+    fontSize: "1.1rem",
   }),
 
   UserEmail: styled(Typography)({
-    fontSize: '1.1rem',
+    fontSize: "1.1rem",
   }),
 
   SignBtn: styled(Button)(({ theme }) => [
     bs.flex.row.nowrap,
     {
       backgroundColor: theme.palette.background.tertiary,
-      color: 'blue',
-      minWidth: '9rem',
-      padding: '1rem 1.5rem',
-      borderRadius: '0.4rem',
-      alignSelf: 'center',
+      color: "blue",
+      minWidth: "9rem",
+      padding: "1rem 1.5rem",
+      borderRadius: "0.4rem",
+      alignSelf: "center",
       gap: 30,
-      '&:hover': {
+      "&:hover": {
         backgroundColor: theme.palette.primary.dark,
       },
-    }]),
-
+    },
+  ]),
 };
 
 export const contentsStyles = {
   BoxStyled: styled(Box)(() => [
     bs.flex.row.nowrap,
     {
-      margin: '0 1.5rem 0.5rem 1.5rem',
-      justifyContent: 'space-between',
-    }
+      margin: "0 1.5rem 0.5rem 1.5rem",
+      justifyContent: "space-between",
+    },
   ]),
 
   ListStyled: styled(List)(({ theme }) => [
@@ -214,17 +244,17 @@ export const contentsStyles = {
     bs.flex.center,
     {
       backgroundColor: theme.palette.background.tertiary,
-      paddingTop: '1rem',
-      borderRadius: '1rem',
-      boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.2)',
-      paddingBottom: '1.5rem',
-      [theme.breakpoints.down('lg')]: {
-        position: 'fixed',
-        border: '2px darkgray solid',
-        top: '15%',
-        width: '83%',
-        left: '8.4%',
-        transform: 'translateX(0%)',
+      paddingTop: "1rem",
+      borderRadius: "1rem",
+      boxShadow: "8px 8px 16px rgba(0, 0, 0, 0.2)",
+      paddingBottom: "1.5rem",
+      [theme.breakpoints.down("lg")]: {
+        position: "fixed",
+        border: "2px darkgray solid",
+        top: "15%",
+        width: "83%",
+        left: "8.4%",
+        transform: "translateX(0%)",
       },
     },
   ]),
@@ -233,7 +263,7 @@ export const contentsStyles = {
     bs.flex.center,
     {
       gap: 30,
-      '&:hover': {
+      "&:hover": {
         backgroundColor: theme.palette.primary.main,
       },
       // '&>div>:last-child': {
@@ -246,78 +276,79 @@ export const contentsStyles = {
     bs.flex.center,
     {
       gap: 30,
-      backgroundColor: 'lightBlue',
+      backgroundColor: "lightBlue",
     },
   ]),
 
   IconButtonStyled: styled(IconButton)(({ theme }) => ({
-    position: 'absolute',
+    position: "absolute",
     right: -10,
     top: -10,
 
-    [theme.breakpoints.up('lg')]: {
-      display: 'none',
-    }
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
   })),
 };
 
 export const pdfStyles = {
   BoxStyled: styled(Box)(({ theme }) => ({
-    [theme.breakpoints.down('lg')]: {
-      position: 'fixed',
-      width: '100%',
-      left: '0%',
-      top: '6rem',
+    [theme.breakpoints.down("lg")]: {
+      position: "fixed",
+      width: "100%",
+      left: "0%",
+      top: "6rem",
     },
   })),
 
   IconButtonStyled: styled(IconButton)(({ theme }) => ({
-    position: 'absolute',
+    position: "absolute",
     right: 20,
     top: 80,
 
-    [theme.breakpoints.up('lg')]: {
-      display: 'none',
-    }
-
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
   })),
 };
 
 export const manageCvStyles = {
-  ManageCvBox: styled(Box)(() => [bs.flex.row.nowrap, {
-    margin: '2rem 0',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '3rem',
-  }]),
+  ManageCvBox: styled(Box)(() => [
+    bs.flex.row.nowrap,
+    {
+      margin: "2rem 0",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "3rem",
+    },
+  ]),
   IconButtonStyled: styled(IconButton)(({ theme }) => ({
-    margin: '1rem 0',
-    [theme.breakpoints.up('lg')]: {
-      display: 'none',
+    margin: "1rem 0",
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
     },
   })),
 
   PDFDownloadLinkStyled: styled(PDFDownloadLink)(({ theme }) => ({
-    [theme.breakpoints.up('lg')]: {
-      display: 'none',
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
     },
   })),
-
 };
 
 export const aboutStyles = {
   EditCredentials: styled(FormControl)(bs.flex.column.nowrap),
 
   EditInfo: styled(FormControl)(({ theme }) => ({
-    [theme.breakpoints.up('lg')]: [
+    [theme.breakpoints.up("lg")]: [
       bs.flex.row.wrap,
       {
-        justifyContent: 'flex-start',
+        justifyContent: "flex-start",
 
-        '&>*:first-of-type': {
+        "&>*:first-of-type": {
           flexGrow: 0,
         },
-        '&>*:last-of-type': {
+        "&>*:last-of-type": {
           flexGrow: 1,
         },
       },
@@ -325,15 +356,15 @@ export const aboutStyles = {
   })),
 
   EditAvatar: styled(FormControl)(({ theme }) => ({
-    [theme.breakpoints.down('lg')]: {
-      margin: '2.5rem auto',
+    [theme.breakpoints.down("lg")]: {
+      margin: "2.5rem auto",
     },
 
-    [theme.breakpoints.up('lg')]: [
+    [theme.breakpoints.up("lg")]: [
       bs.flex.column.nowrap,
       {
-        position: 'relative',
-        margin: '0 1.875rem',
+        position: "relative",
+        margin: "0 1.875rem",
       },
     ],
   })),
@@ -341,14 +372,10 @@ export const aboutStyles = {
   Photo: styled(Avatar)(({ theme }) => ({
     width: 150,
     height: 150,
-    marginBottom: '2rem',
-    [theme.breakpoints.down('sm')]: {
-      margin: '20px auto',
-    },
   })),
 
   ManagePhotoBtn: styled(IconButton)({
-    position: 'absolute',
+    position: "absolute",
     top: -10,
     right: -20,
   }),
@@ -362,13 +389,13 @@ export const aboutStyles = {
   EditAddress: styled(FormControl)(({ theme }) => [
     bs.flex.row.wrap,
     {
-      justifyContent: 'space-between',
+      justifyContent: "space-between",
 
-      '&>*:nth-of-type(2)': { marginLeft: 10, marginRight: 10 },
-      [theme.breakpoints.down('lg')]: [
+      "&>*:nth-of-type(2)": { marginLeft: 10, marginRight: 10 },
+      [theme.breakpoints.down("lg")]: [
         bs.flex.column.wrap,
         {
-          '&>*:nth-of-type(2)': { marginLeft: 0, marginRight: 0 },
+          "&>*:nth-of-type(2)": { marginLeft: 0, marginRight: 0 },
         },
       ],
     },
@@ -384,61 +411,70 @@ export const aboutStyles = {
   EditContacts: styled(FormControl)(({ theme }) => [
     bs.flex.row.wrap,
     {
-      justifyContent: 'space-between',
+      justifyContent: "space-between",
 
-      [theme.breakpoints.down('lg')]: bs.flex.column.wrap,
+      [theme.breakpoints.down("lg")]: bs.flex.column.wrap,
     },
   ]),
 
   ContactInput: styled(TextField)(() => [
     bs.text.margin.bottom,
     {
-      width: '100%',
+      width: "100%",
     },
   ]),
 
-  ViewWrap: styled(Stack)(() => [bs.flex.row.wrap,
-  {
-    justifyContent: 'center',
-    alignItems: 'center',
-    columnGap: 40,
-  }]),
+  ViewWrap: styled(Stack)(() => [
+    bs.flex.row.wrap,
+    {
+      justifyContent: "center",
+      alignItems: "center",
+      gap: 20,
+    },
+  ]),
 
   ViewMainInfo: styled(Stack)(({ theme }) => [
     {
-      justifyContent: 'space-around',
-      alignItems: 'center',
-      gap: 50,
+      justifyContent: "flex-start",
+      alignItems: "flex-start",
+      gap: 20,
 
-      [theme.breakpoints.up('lg')]: bs.flex.row.wrap
-    }]),
+      [theme.breakpoints.up("lg")]: bs.flex.row.wrap,
+    },
+  ]),
 
   ViewTitle: styled(Stack)(({ theme }) => ({
-    '&>*:last-of-type': { marginLeft: 20 },
-    [theme.breakpoints.up('lg')]: bs.flex.column.wrap
-  })),
-
-  ViewAddress: styled('address')(({ theme }) => ({
-    fontSize: '1.5rem',
-    marginLeft: 20,
-    [theme.breakpoints.up('lg')]: bs.flex.row.wrap,
-    [theme.breakpoints.down('lg')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.up("lg")]: {
+      ...bs.flex.column.wrap,
+      alignItems: "flex-start",
+      justifyContent: "flex-start",
+      alignContent: "flex-start",
     },
   })),
 
-  ViewContacts: styled(Stack)(({ theme }) => ([
+  ViewAddress: styled("address")(({ theme }) => ({
+    fontSize: "1.5rem",
+    [theme.breakpoints.up("lg")]: bs.flex.row.wrap,
+    [theme.breakpoints.down("lg")]: {
+      fontSize: "1rem",
+    },
+  })),
+
+  ViewContacts: styled(Stack)(({ theme }) => [
     bs.flex.column.nowrap,
     {
-      fontSize: '1.2rem',
-      marginLeft: 20,
+      justifyContent: "flex-start",
+      alignItems: "flex-start",
+      alignContent: "flex-start",
+      fontSize: "1.2rem",
+      gap: 2,
     },
     {
-      [theme.breakpoints.down('lg')]: {
-        fontSize: '1rem',
+      [theme.breakpoints.down("lg")]: {
+        fontSize: "1rem",
       },
     },
-  ])),
+  ]),
 
   ViewName: styled(Typography)({}),
 
