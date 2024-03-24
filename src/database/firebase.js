@@ -153,7 +153,6 @@ const getData = async () => {
     });
   });
 
-  console.log("firebase.js - storage: ", storage);
   return storage;
 };
 
