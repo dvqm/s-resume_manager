@@ -48,7 +48,7 @@ export const titles = {
   projects: {
     header: 'My Projects',
     title: 'Project name: ',
-    currentlyWork: 'Currently Work',
+    currentlyWork: 'Current Work',
     startDate: 'Start date: ',
     endDate: 'End date: ',
     deployUrl: 'View project',
@@ -70,7 +70,7 @@ export const titles = {
     company: 'Company name: ',
     location: 'Location:',
     contractType: 'Contract type: ',
-    currentlyWork: 'Currently work: ',
+    currentlyWork: 'Current work: ',
     startDate: 'Start date: ',
     endDate: 'End date: ',
     description: 'Description: ',

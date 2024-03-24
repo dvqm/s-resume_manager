@@ -139,7 +139,7 @@ export const ViewExperiences = ({ article, titles }) => {
             {article.currentlyWork ? (
               <>
                 <Typography variant="body1">-</Typography>
-                <Typography variant="body1">Currently work</Typography>
+                <Typography variant="body1">Current work</Typography>
               </>
             ) : (
               <>

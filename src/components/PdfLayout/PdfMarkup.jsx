@@ -177,7 +177,7 @@ const PdfResume = ({ resume }) => {
                   {item.currentlyWork ? (
                     <>
                       <Text>-</Text>
-                      <Text>Currently work</Text>
+                      <Text>Current work</Text>
                     </>
                   ) : (
                     <>
