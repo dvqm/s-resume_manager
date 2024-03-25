@@ -18,6 +18,9 @@ const ContextProvider = ({ children }) => {
   const [initData, setInitData] = useState(true);
   const [userLogged, setUserLogged] = useState(true);
 
+  const setLocalData = (data) =>
+    localStorage.setItem("data", JSON.stringify(data));
+
   useEffect(() => {
     const init = localStorage.getItem("data");
     if (!userLogged) {
@@ -40,11 +43,13 @@ const ContextProvider = ({ children }) => {
   }, [resumes, initData]);
 
   useEffect(() => {
+    syncData();
+  }, [resumes]);
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUserLogged(true);
-        const initData = { resumes: [], timestamp: new Date().getTime() };
-        localStorage.setItem("data", JSON.stringify(initData));
         const init = await syncData();
         resumesDispatch({ t: "RES_LOAD", p: init.resumes });
       } else {
