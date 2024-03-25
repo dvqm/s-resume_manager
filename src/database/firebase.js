@@ -42,7 +42,7 @@ const signInWithGoogle = async () => {
         email: user.email,
       });
 
-      getData();
+      syncData();
     } else {
       console.info("No data available");
     }
@@ -59,101 +59,83 @@ const logout = async () => {
   }
 };
 
-const saveData = async (resumes) => {
-  const localTimestamp = new Date().getTime();
-  const setLocalStorageData = () =>
-    localStorage.setItem(
-      "data",
-      JSON.stringify({
-        resumes,
-        localTimestamp,
-      }),
-    );
+const syncData = async () => {
+  const getLocalData = () => JSON.parse(localStorage.getItem("data"));
 
-  auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      try {
-        setLocalStorageData();
+  const setLocalData = (data) =>
+    localStorage.setItem("data", JSON.stringify(data));
 
-        await set(ref(db, `s-resume_builder/${user.uid}/data/`), {
-          resumes,
-          localTimestamp,
-        });
-      } catch (error) {
-        console.error("Error saving data to database:", error);
-      }
-    } else {
-      setLocalStorageData();
-    }
-  });
-};
-
-const setLocalStorageData = async (resumes, localTimestamp) => {
-  const user = auth.currentUser;
-
-  if (user) {
-    try {
-      await set(ref(db, `s-resume_builder/${user.uid}/data/`), {
-        resumes,
-        localTimestamp,
-      });
-    } catch (error) {
-      console.error("Error saving data to database:", error);
-    }
-  } else {
-    localStorage.setItem("data", JSON.stringify({ resumes, localTimestamp }));
-  }
-};
-
-const getData = async () => {
-  const getLocalStorageData = () => JSON.parse(localStorage.getItem("data"));
-
-  const storage = await new Promise((resolve) => {
+  const promise = new Promise((resolve, reject) => {
     auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        try {
-          const snapshot = await get(
-            child(ref(db), `s-resume_builder/${user.uid}/data/`),
-          );
-          const snapshotData = snapshot.val();
+      if (!user) {
+        resolve();
+        return;
+      }
+      try {
+        const snapshot = await get(
+          child(ref(db), `s-resume_builder/${user.uid}`),
+        );
 
-          if (snapshotData) {
-            const lsData = getLocalStorageData();
-            const lsTimestamp = lsData ? lsData.localTimestamp : 0;
-            const snapshotTimestamp = snapshotData["localTimestamp"];
+        const remoteData = snapshot.val().data;
 
-            if (snapshotTimestamp > lsTimestamp) {
-              localStorage.setItem("data", JSON.stringify(snapshotData));
-              resolve(snapshotData["resumes"]);
-            } else {
-              await setLocalStorageData(lsData.resumes, lsTimestamp);
-              resolve(lsData.resumes);
-            }
-          } else {
-            const localStorageData = getLocalStorageData();
-            if (localStorageData) {
-              await setLocalStorageData(
-                localStorageData.resumes,
-                localStorageData.localTimestamp,
-              );
-              resolve(localStorageData.resumes);
-            } else {
-              console.info("No data available");
-              resolve([]);
-            }
-          }
-        } catch (error) {
-          console.error("Something went wrong:", error);
-          resolve([]);
+        if (!remoteData && !getLocalData()) {
+          console.log("init data");
+          const initData = { resumes: [], timestamp: new Date().getTime() };
+          await set(ref(db, `s-resume_builder/${user.uid}/data/`), initData);
+          setLocalData(initData);
+
+          resolve(getLocalData().resumes);
+          return;
         }
-      } else {
-        const localStorageData = getLocalStorageData();
-        resolve(localStorageData !== null ? localStorageData.resumes : []);
+
+        if (
+          !remoteData.resumes ||
+          remoteData.resumes.length === 0 ||
+          !remoteData.timestamp
+        ) {
+          console.log("init remote");
+          await set(
+            ref(db, `s-resume_builder/${user.uid}/data/`),
+            getLocalData(),
+          );
+          resolve(getLocalData().resumes);
+          return;
+        }
+
+        if (
+          remoteData.timestamp &&
+          getLocalData().timestamp &&
+          (remoteData.timestamp > getLocalData().timestamp ||
+            getLocalData().resumes.length === 0)
+        ) {
+          console.log("remote to local");
+          setLocalData(remoteData);
+          resolve(getLocalData().resumes);
+          return;
+        }
+
+        if (
+          remoteData &&
+          remoteData.timestamp &&
+          getLocalData().timestamp &&
+          remoteData.timestamp <= getLocalData().timestamp
+        ) {
+          console.log("local to remote");
+          await set(
+            ref(db, `s-resume_builder/${user.uid}/data/`),
+            getLocalData(),
+          );
+          resolve(getLocalData().resumes);
+          return;
+        }
+
+      } catch (error) {
+        reject(error);
       }
     });
   });
 
-  return storage;
+  return promise;
 };
 
-export { auth, db, signInWithGoogle, logout, saveData, getData };
+export { auth, db, signInWithGoogle, logout, syncData };
