@@ -68,8 +68,16 @@ const syncData = async () => {
   const promise = new Promise((resolve, reject) => {
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        resolve();
-        return;
+        if (getLocalData() && getLocalData().resumes.length > 0) {
+          console.log('init local');
+          resolve(getLocalData());
+          return;
+        } else {
+          const initData = { resumes: [], timestamp: new Date().getTime() };
+          setLocalData(initData);
+          resolve(getLocalData());
+          return;
+        }
       }
       try {
         const snapshot = await get(
@@ -84,7 +92,7 @@ const syncData = async () => {
           await set(ref(db, `s-resume_builder/${user.uid}/data/`), initData);
           setLocalData(initData);
 
-          resolve(getLocalData().resumes);
+          resolve(getLocalData());
           return;
         }
 
@@ -98,7 +106,7 @@ const syncData = async () => {
             ref(db, `s-resume_builder/${user.uid}/data/`),
             getLocalData(),
           );
-          resolve(getLocalData().resumes);
+          resolve(getLocalData());
           return;
         }
 
@@ -110,7 +118,7 @@ const syncData = async () => {
         ) {
           console.log("remote to local");
           setLocalData(remoteData);
-          resolve(getLocalData().resumes);
+          resolve(getLocalData());
           return;
         }
 
@@ -125,12 +133,11 @@ const syncData = async () => {
             ref(db, `s-resume_builder/${user.uid}/data/`),
             getLocalData(),
           );
-          resolve(getLocalData().resumes);
+          resolve(getLocalData());
           return;
         }
-
       } catch (error) {
-        reject(error);
+        reject("syncData() error: ", error);
       }
     });
   });

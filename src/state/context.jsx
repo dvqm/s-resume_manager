@@ -18,23 +18,27 @@ const ContextProvider = ({ children }) => {
   const [initData, setInitData] = useState(true);
 
   useEffect(() => {
-    const init = JSON.parse(localStorage.getItem("data"));
-    if (initData) {
-      setInitData(false);
-      resumesDispatch({ t: "RES_LOAD", p: init.resumes });
-    }
-  }, [resumes, initData]);
+    const fetchData = async () => {
+      const init = await syncData();
+      console.log('context.jsx - init onInit: ', init);
+      // const init = JSON.parse(localStorage.getItem("data"));
+      if (initData) {
+        setInitData(false);
+        resumesDispatch({ t: "RES_LOAD", p: init.resumes });
+      }
+    };
 
-  useEffect(() => {
-    syncData();
-  }, [resumes]);
+    fetchData();
+  }, [resumes, initData]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         const init = await syncData();
+        // localStorage.setItem("data", JSON.stringify(result));
+        // const init = JSON.parse(localStorage.getItem("data"));
         console.log("context.jsx - init: ", init);
-        resumesDispatch({ t: "RES_LOAD", p: init });
+        resumesDispatch({ t: "RES_LOAD", p: init.resumes });
       }
     });
     return () => {
