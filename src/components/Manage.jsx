@@ -28,13 +28,13 @@ const Manage = () => {
       <Menu />
     </IconButtonStyled>
 
-    <IconButtonStyled
-      title='Show PDF preview'
-      color='primary'
-      onClick={() => accessManualPdf(prev => !prev)}
-    >
-      <PictureAsPdfIcon />
-    </IconButtonStyled>
+    {/* <IconButtonStyled */}
+    {/*   title='Show PDF preview' */}
+    {/*   color='primary' */}
+    {/*   onClick={() => accessManualPdf(prev => !prev)} */}
+    {/* > */}
+    {/*   <PictureAsPdfIcon /> */}
+    {/* </IconButtonStyled> */}
 
     <PDFDownloadLinkStyled 
       document={<PdfResume resume={resume} />}
