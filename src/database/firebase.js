@@ -59,85 +59,71 @@ const logout = async () => {
   }
 };
 
+const getLocalData = () => JSON.parse(localStorage.getItem("data"));
+
+const setLocalData = (data) =>
+  localStorage.setItem("data", JSON.stringify(data));
+
 const syncData = async () => {
-  const getLocalData = () => JSON.parse(localStorage.getItem("data"));
+  const user = getAuth().currentUser;
 
-  const setLocalData = (data) =>
-    localStorage.setItem("data", JSON.stringify(data));
+  if (!user) {
+    const localData = getLocalData();
+    return localData
+      ? localData
+      : { resumes: [], timestamp: new Date().getTime() };
+  }
 
-  const promise = new Promise((resolve, reject) => {
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        if (getLocalData() && getLocalData().resumes.length > 0) {
-          resolve(getLocalData());
-          return;
-        } else {
-          const initData = { resumes: [], timestamp: new Date().getTime() };
-          setLocalData(initData);
-          resolve(getLocalData());
-          return;
-        }
-      }
-      try {
-        const snapshot = await get(
-          child(ref(db), `s-resume_builder/${user.uid}`),
-        );
+  try {
+    const snapshot = await get(child(ref(db), `s-resume_builder/${user.uid}`));
 
-        const remoteData = snapshot.val().data;
+    const snapshotData = snapshot.val();
 
-        if (!remoteData && !getLocalData()) {
-          const initData = { resumes: [], timestamp: new Date().getTime() };
-          await set(ref(db, `s-resume_builder/${user.uid}/data/`), initData);
-          setLocalData(initData);
+    if (!snapshot.exists()) {
+      await update(ref(db, `s-resume_builder/${user.uid}`), {
+        uid: user.uid,
+        name: user.displayName,
+        authProvider: "google",
+        email: user.email,
+      });
+    }
+    
+    const remoteData = snapshotData.data;
 
-          resolve(getLocalData());
-          return;
-        }
+    if (!remoteData || !remoteData.resumes || remoteData.resumes.length === 0) {
+      const localData = getLocalData();
+      await set(ref(db, `s-resume_builder/${user.uid}/data/`), localData);
+      return localData;
+    }
 
-        if (
-          !remoteData.resumes ||
-          remoteData.resumes.length === 0 ||
-          !remoteData.timestamp
-        ) {
-          await set(
-            ref(db, `s-resume_builder/${user.uid}/data/`),
-            getLocalData(),
-          );
-          resolve(getLocalData());
-          return;
-        }
+    const localToRemoteSeed =
+      remoteData.resumes.length > 0 && getLocalData().resumes.length === 0;
+    if (localToRemoteSeed) {
+      setLocalData(remoteData);
+      return getLocalData();
+    }
 
-        if (
-          remoteData.timestamp &&
-          getLocalData().timestamp &&
-          (remoteData.timestamp > getLocalData().timestamp ||
-            getLocalData().resumes.length === 0)
-        ) {
-          setLocalData(remoteData);
-          resolve(getLocalData());
-          return;
-        }
+    const remoteToLocalSeed =
+      getLocalData().resumes.length > 0 && remoteData.resumes.length === 0;
+    if (remoteToLocalSeed) {
+      const localData = getLocalData();
+      await set(ref(db, `s-resume_builder/${user.uid}/data/`), localData);
+      return localData;
+    }
 
-        if (
-          remoteData &&
-          remoteData.timestamp &&
-          getLocalData().timestamp &&
-          remoteData.timestamp <= getLocalData().timestamp
-        ) {
-          await set(
-            ref(db, `s-resume_builder/${user.uid}/data/`),
-            getLocalData(),
-          );
-          resolve(getLocalData());
-          return;
-        }
-      } catch (error) {
-        reject("syncData() error: ", error);
-      }
-    });
-  });
-
-  return promise;
+    const timeStampsExists = remoteData.timestamp && getLocalData().timestamp;
+    const localTimestampOlder = remoteData.timestamp > getLocalData().timestamp;
+    if (timeStampsExists && localTimestampOlder) {
+      setLocalData(remoteData);
+      return getLocalData();
+    } else {
+      const localData = getLocalData();
+      await set(ref(db, `s-resume_builder/${user.uid}/data/`), localData);
+      return localData;
+    }
+  } catch (error) {
+    throw new Error("syncData() error: ", error);
+  }
 };
 
 export { auth, db, signInWithGoogle, logout, syncData };
