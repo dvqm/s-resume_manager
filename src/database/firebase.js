@@ -69,7 +69,6 @@ const syncData = async () => {
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
         if (getLocalData() && getLocalData().resumes.length > 0) {
-          console.log('init local');
           resolve(getLocalData());
           return;
         } else {
@@ -87,7 +86,6 @@ const syncData = async () => {
         const remoteData = snapshot.val().data;
 
         if (!remoteData && !getLocalData()) {
-          console.log("init data");
           const initData = { resumes: [], timestamp: new Date().getTime() };
           await set(ref(db, `s-resume_builder/${user.uid}/data/`), initData);
           setLocalData(initData);
@@ -101,7 +99,6 @@ const syncData = async () => {
           remoteData.resumes.length === 0 ||
           !remoteData.timestamp
         ) {
-          console.log("init remote");
           await set(
             ref(db, `s-resume_builder/${user.uid}/data/`),
             getLocalData(),
@@ -116,7 +113,6 @@ const syncData = async () => {
           (remoteData.timestamp > getLocalData().timestamp ||
             getLocalData().resumes.length === 0)
         ) {
-          console.log("remote to local");
           setLocalData(remoteData);
           resolve(getLocalData());
           return;
@@ -128,7 +124,6 @@ const syncData = async () => {
           getLocalData().timestamp &&
           remoteData.timestamp <= getLocalData().timestamp
         ) {
-          console.log("local to remote");
           await set(
             ref(db, `s-resume_builder/${user.uid}/data/`),
             getLocalData(),
