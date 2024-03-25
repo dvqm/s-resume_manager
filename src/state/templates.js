@@ -70,7 +70,7 @@ export const titles = {
     company: 'Company name: ',
     location: 'Location:',
     contractType: 'Contract type: ',
-    currentlyWork: 'Current work: ',
+    currentlyWork: 'Current Work',
     startDate: 'Start date: ',
     endDate: 'End date: ',
     description: 'Description: ',
