@@ -16,6 +16,16 @@ const ContextProvider = ({ children }) => {
   const [pdf, setPdf] = useState(false);
   const [manualPdf, setManualPdf] = useState(false);
   const [initData, setInitData] = useState(true);
+  const [userLogged, setUserLogged] = useState(true);
+
+  useEffect(() => {
+    const init = localStorage.getItem("data");
+    if (!userLogged) {
+      if (!init.resumes || init.resumes.length === 0) {
+        resumesDispatch({ t: "RES_ADD_MOCK" });
+      }
+    }
+  }, [userLogged]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,8 +42,13 @@ const ContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
+        setUserLogged(true);
+        const initData = { resumes: [], timestamp: new Date().getTime() };
+        localStorage.setItem("data", JSON.stringify(initData));
         const init = await syncData();
         resumesDispatch({ t: "RES_LOAD", p: init.resumes });
+      } else {
+        setUserLogged(false);
       }
     });
     return () => {
