@@ -1,13 +1,10 @@
-import { syncData } from "../database/firebase";
 import { defaultValues, template } from "./templates";
 
 const resumeReducer = (s, a) => {
   const handlers = [
     {
       t: "RES_UPD",
-      handler: (_, p) => {
-        syncData()
-        return { ...p } },
+      handler: (_, p) => ({ ...p }),
     },
 
     {
