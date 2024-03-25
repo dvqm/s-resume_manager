@@ -2,33 +2,33 @@ import { Page, Text, View, Link, Image, Document } from "@react-pdf/renderer";
 import { s } from "./PdfStyles";
 import { titles } from "../../state/templates";
 
+const stringToNull = (obj) => {
+  if (obj === undefined) return <> </>;
+
+  const clonedObj = JSON.parse(JSON.stringify(obj));
+
+  if (Array.isArray(clonedObj)) {
+    clonedObj.forEach((item, index) => {
+      if (typeof item === "object") {
+        clonedObj[index] = stringToNull(item);
+      } else if (item === "") {
+        clonedObj[index] = null;
+      }
+    });
+  } else {
+    Object.entries(clonedObj).forEach(([key, value]) => {
+      if (typeof value === "object") {
+        clonedObj[key] = stringToNull(value);
+      } else if (value === "") {
+        clonedObj[key] = null;
+      }
+    });
+  }
+
+  return clonedObj;
+};
+
 const PdfResume = ({ resume }) => {
-  const stringToNull = (obj) => {
-    if (obj === undefined) return <> </>;
-
-    const clonedObj = JSON.parse(JSON.stringify(obj));
-
-    if (Array.isArray(clonedObj)) {
-      clonedObj.forEach((item, index) => {
-        if (typeof item === "object") {
-          clonedObj[index] = stringToNull(item);
-        } else if (item === "") {
-          clonedObj[index] = null;
-        }
-      });
-    } else {
-      Object.entries(clonedObj).forEach(([key, value]) => {
-        if (typeof value === "object") {
-          clonedObj[key] = stringToNull(value);
-        } else if (value === "") {
-          clonedObj[key] = null;
-        }
-      });
-    }
-
-    return clonedObj;
-  };
-
   const nulledResume = stringToNull(resume);
 
   return (
