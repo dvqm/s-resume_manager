@@ -3,6 +3,7 @@ import { genericStyles } from "./../../mainTheme/localStyles";
 import { InitialState } from "../../state/context";
 import SectionTitle from "./Sections/SectionTitle";
 import SectionManage from "./Sections/SectionManage";
+import { template } from "../../state/templates";
 
 const Section = ({ rubric, editer, viewer }) => {
   const { resume, titles, resumeDispatch, setAnyEditMode } =
@@ -14,6 +15,10 @@ const Section = ({ rubric, editer, viewer }) => {
     resumeDispatch({ t: "SEC_ADD", p: [rubric] });
     setInitial(true);
   };
+
+  if (!resume[rubric]) {
+   resume[rubric] = template[rubric];
+  }
 
   const { SectionStyled } = genericStyles;
   return (
