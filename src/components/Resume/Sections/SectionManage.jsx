@@ -14,7 +14,6 @@ const SectionManage = ({
   setAnyEditMode,
 }) => {
   const [original, setOriginal] = useState();
-  const [init, setInit] = useState(true);
   const [isEdit, setIsEdit] = useState(initial);
 
   const checkAnyEdit = useCallback(
@@ -40,7 +39,6 @@ const SectionManage = ({
 
   const save = () => {
     setIsEdit(false);
-    setInit(false);
   };
 
   const edit = () => {
@@ -51,15 +49,18 @@ const SectionManage = ({
   const remove = () => resumeDispatch({ t: "SEC_DEL", p: [rubric, id] });
 
   const restore = () => {
-    resumeDispatch({ t: "SEC_RESTORE", p: [rubric, id, original] });
     setIsEdit(false);
+    if (!original) {
+      return remove();
+
+    }
+    resumeDispatch({ t: "SEC_RESTORE", p: [rubric, id, original] });
   };
 
   return (
     <>
       {isEdit ? (
         <SectionEdit
-          init={init}
           editer={editer}
           titles={titles}
           article={article}
