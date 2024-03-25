@@ -56,9 +56,11 @@ export const ViewAbout = ({ resume }) => {
           <Typography variant="h3">{resume.position}</Typography>
 
           <ViewAddress>
-            {resume.city && `${resume.city}, `}
-            {resume.state && `${resume.state}, `}
-            {resume.country}
+            <Typography variant="h3">
+              {resume.city && `${resume.city}, `}
+              {resume.state && `${resume.state}, `}
+              {resume.country}
+            </Typography>
           </ViewAddress>
         </ViewTitle>
 
