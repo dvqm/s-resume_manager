@@ -15,23 +15,23 @@ const EditName = ({ updateCurrent, saveAsNew, cancelSave, name, updateName, orig
         onChange={(e) => updateName(e.target.value)}
       />
 
-      <IconButton
-        title='Save/update resume'
-        color='primary'
-        onClick={updateCurrent}
-      >
-        <SaveIcon />
-      </IconButton>
-
       { original !== '' &&
         <IconButton
           title='Save as new resume'
           color='primary'
           onClick={saveAsNew}
         >
-          <DriveFileRenameOutlineIcon />
+        <SaveIcon />
         </IconButton>
       }
+
+      <IconButton
+        title='Save/update resume'
+        color='primary'
+        onClick={updateCurrent}
+      >
+          <DriveFileRenameOutlineIcon />
+      </IconButton>
 
       <IconButton
         title='Cancel'

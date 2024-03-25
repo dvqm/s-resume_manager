@@ -1,6 +1,6 @@
 import { IconButton } from '@mui/material'
 import EditName from './ManageEditName'
-import { SwapVerticalCircleRounded } from '@mui/icons-material'
+import SaveIcon from '@mui/icons-material/Save';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import SaveProcessHandlers from '../../functions/SaveProcessHandlers';
 import ToastMessage from './Toast';
@@ -26,7 +26,7 @@ const SaveProcess = ({ resume, resumeDispatch, resumes, resumesDispatch, save, s
           color='primary'
           onClick={() => setSave(true)}
         >
-          <SwapVerticalCircleRounded />
+          <SaveIcon />
           <DriveFileRenameOutlineIcon /> { /* if new */}
         </IconButton>
       )
