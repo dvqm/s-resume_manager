@@ -2,7 +2,7 @@ import { template, titles } from "./templates";
 import { createContext, useEffect, useReducer, useState } from "react";
 import resumeReducer from "./resumeReducer";
 import resumesReducer from "./resumesReducer";
-import { saveData, getData, auth } from "../database/firebase";
+import { auth, syncData } from "../database/firebase";
 
 export const InitialState = createContext(template);
 
@@ -15,30 +15,28 @@ const ContextProvider = ({ children }) => {
   const [anyEditMode, setAnyEditMode] = useState(false);
   const [pdf, setPdf] = useState(false);
   const [manualPdf, setManualPdf] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [initData, setInitData] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!isInitialized) {
-        const initialResumes = await getData();
-        resumesDispatch({ t: "RES_LOAD", p: initialResumes });
-        setIsInitialized(true);
-      } else if (resumes.length > 0) {
-        saveData(resumes);
-      }
-    };
+    const init = JSON.parse(localStorage.getItem("data"));
+    if (initData) {
+      setInitData(false);
+      resumesDispatch({ t: "RES_LOAD", p: init.resumes });
+    }
+  }, [resumes, initData]);
 
-    fetchData();
-  }, [resumes, isInitialized]);
+  useEffect(() => {
+    syncData();
+  }, [resumes]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const initialResumes = await getData();
-        resumesDispatch({ t: "RES_LOAD", p: initialResumes });
+        const init = await syncData();
+        console.log("context.jsx - init: ", init);
+        resumesDispatch({ t: "RES_LOAD", p: init });
       }
     });
-
     return () => {
       unsubscribe();
     };
